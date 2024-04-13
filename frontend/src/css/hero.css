@@ -1,0 +1,128 @@
+.hero-section {
+    width: 100%;
+    height: 500px;
+}
+
+.hero-section img {
+    width: 100%;
+    height: 100%;
+}
+
+.our-title {
+    position: absolute;
+    top: 150px;
+    left: 150px;
+    font-size: 35px;
+    color: #b7ffeb;
+}
+
+.our-title span:first-child {
+    color: #F7C566;
+}
+
+.our-title span:last-child {
+    color: #fff;
+}
+
+/* Appointment */
+.appointment-box {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    top: 250px;
+    left: 70px;
+}
+
+/* Responsive */
+/* 768px to 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+    
+    .our-title {
+        left: 10px;
+    }
+    
+    .appointment-box {
+        left: 10px;
+    }
+}
+
+/* 628px to 767px */
+@media (min-width: 628px) and (max-width: 768px) {
+
+    .our-title {
+        left: 10px;
+    }
+
+    .appointment-box {
+        left: 10px;
+    }
+
+    .appointment-box .appointment {
+        width: 600px;
+        padding: 0px 10px;
+    }
+
+    .appointment .find-query {
+        width: 200px;
+    }
+
+    .appointment .find-doctor {
+        width: 180px;
+    }
+
+    .appointment button {
+        width: 80px;
+    }
+
+    .hero-section {
+        height: 400px;
+    }
+
+}
+
+/* 320px to 628px */
+@media (min-width: 320px) and (max-width: 628px) {
+
+    .our-title {
+        width: 200px;
+        left: 10px;
+        top: 70px;
+        font-size: 20px;
+    }
+
+    .hero-section {
+        height: 200px;
+    }
+
+    .appointment-box {
+        top: 200px;
+        left: 0px;
+        width: 100%;
+    }
+    
+    .appointment-box .appointment {
+        width: 280px;
+        align-items: center;
+        height: fit-content;
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+        margin: auto;
+    }
+
+    .appointment input[type="date"] {
+        width: 100%;
+    }
+
+    .appointment .find-query {
+        width: 100%;
+    }
+
+    .appointment .find-doctor {
+        width: 100%;
+    }
+
+    .appointment button {
+        width: 100px;
+    }
+}

@@ -1,17 +1,17 @@
+import Home from './pages/home';
 import './App.css';
-import DoctorCard from './components/doctorcard';
-import Header from './components/header';
 import './css/doctorcard.css'
 import './css/header.css'
 import './css/footer.css'
-import Footer from './components/footer';
+import './css/footer.css'
+import './css/hero.css'
+import './css/appointment.css'
+import './css/worktutorial.css'
 
 function App() {
   return (
     <>
-      <Header/>
-      <Footer/>
-      {/* <DoctorCard/> */}
+      {<Home/>}
     </>
   );
 }
