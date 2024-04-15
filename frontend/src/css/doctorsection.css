@@ -1,0 +1,15 @@
+.doctor-section {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.doctor-section>h2 {
+    font-size: 45px;
+}
+
+

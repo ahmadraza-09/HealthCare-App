@@ -123,6 +123,7 @@ select{
 
     .login-registration-right {
         gap: 20px;
+        width: 100%;
     }
 
 }
@@ -136,6 +137,7 @@ select{
 
     .login-registration-right {
         gap: 20px;
+        width: 100%;
     }
 
     .login-registration-right form  {
@@ -170,6 +172,8 @@ select{
 
     .login-registration-right {
         gap: 20px;
+        width: 100%;
+        padding: 0px 20px;
     }
 
     .login-registration-right form  {
@@ -181,16 +185,21 @@ select{
     }
 
     .login-registration-right form input[type="text"],
-    input[type="password"],
-    input[type="date"] {
+    input[type="date"],
+    select {
         height: 30px;
         padding-left: 20px;
         font-size: 12px;
     }
 
-        .login-registration-right form input[type="button"] {
-            font-size: 15px;
-            height: 30px;
-        }
+    .login-registration-right form input[type="button"] {
+        font-size: 15px;
+        height: 30px;
+    }
+
+    .create-account {
+        width: 100%;
+        gap: 10px;
+    }
 
 }

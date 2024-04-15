@@ -114,3 +114,21 @@
 .doctor-image:hover .doctor-socialmedia {
     top: 60%;
 }
+
+/* Responsive */
+/* 628px to 2000px */
+@media (min-width: 628px) and (max-width: 2000px) {
+    .doctor-card {
+        display: flex;
+        width: 450px;
+        height: 300px;
+    }
+
+    .doctor-socialmedia {
+        left: 130px;
+    }
+
+    .doctor-image:hover .doctor-socialmedia {
+        top: 80%;
+    }
+}
