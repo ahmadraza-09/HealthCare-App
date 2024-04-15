@@ -1,6 +1,10 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+
+  const navigate = useNavigate();
+
   return (
     <>
       <nav>
@@ -8,20 +12,20 @@ const Header = () => {
 
         <div className="logo">
             <label htmlFor="check"><i class="fa-solid fa-bars"></i></label>
-            <h2>Health<span>Care</span></h2>
+            <h2 onClick={() => {navigate('/')}}>Health<span>Care</span></h2>
         </div>
 
         <ul className="menu">
             <label htmlFor="check"><i class="fa-solid fa-close"></i></label>
-            <li>Home</li>
-            <li>Doctors</li>
-            <li>Appointment</li>
-            <li>About</li>
-            <li>Contact</li>
+            <li onClick={() => {navigate('/')}}>Home</li>
+            <li onClick={() => {navigate('/doctors')}}>Doctors</li>
+            <li onClick={() => {navigate('/appointment')}}>Appointment</li>
+            <li onClick={() => {navigate('/about')}}>About</li>
+            <li onClick={() => {navigate('/contact')}}>Contact</li>
         </ul>
 
         <div className="login">
-            <button>Login</button>
+            <button onClick={() => {navigate('/register')}}>Login</button>
         </div>
       </nav>
     </>
