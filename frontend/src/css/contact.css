@@ -110,3 +110,21 @@ form .input-box textarea {
     align-items: center;
     gap: 10px;
 }
+
+/* Responsive */
+/* 320px to 628px */
+@media (min-width: 320px) and (max-width:628px) {
+
+    .contat-page .contat-form img {
+        display: none;
+    }
+    
+    .contat-page .call-location {
+        flex-direction: column;
+    }
+
+    .contat-page .contat-form form {
+        width: 100%;
+    }
+
+}
