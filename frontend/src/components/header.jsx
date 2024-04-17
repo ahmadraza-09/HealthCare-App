@@ -18,7 +18,7 @@ const Header = () => {
         <ul className="menu">
             <label htmlFor="check"><i class="fa-solid fa-close"></i></label>
             <li onClick={() => {navigate('/')}}>Home</li>
-            <li onClick={() => {navigate('/doctors')}}>Doctors</li>
+            <li onClick={() => {navigate('/doctor')}}>Doctor</li>
             <li onClick={() => {navigate('/appointment')}}>Appointment</li>
             <li onClick={() => {navigate('/about')}}>About</li>
             <li onClick={() => {navigate('/contact')}}>Contact</li>

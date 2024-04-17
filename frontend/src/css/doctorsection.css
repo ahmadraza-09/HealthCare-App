@@ -6,10 +6,17 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
+    gap: 30px;
 }
 
 .doctor-section>h2 {
     font-size: 45px;
 }
 
-
+/* Responsive */
+/* 320px to 628px */
+@media (min-width: 320px) and (max-width: 628px) {
+    .doctor-section>h2 {
+        font-size: 25px;
+    }
+}

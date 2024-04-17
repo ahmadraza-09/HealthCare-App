@@ -1,0 +1,107 @@
+.about-page {
+    width: 100%;
+    height: fit-content;
+    padding: 20px 80px;
+    background-color: #9AC8CD;
+    display: flex;  
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.about-page>h2 {
+    font-size: 40px;
+    font-weight: 800;
+    background-color: #135D66;
+    width: 250px;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    border-radius: 55%;
+    margin: 0px auto;
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;    
+}
+
+.about-page>h2 span {
+    color: #F7C566;
+}
+
+.about-page-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.about-page-section>h2 {
+    font-size: 30px;
+}
+
+
+.about-page-section .box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: fit-content;
+    gap: 40px;
+}
+
+.about-page-section-content {
+    width: 100%;
+}
+
+.box1 .about-page-section-content p img {
+    float: left;
+    width: 500px;
+}
+
+.box2 .about-page-section-content p img {
+    float: right;
+    width: 600px;
+}
+
+.box3 .about-page-section-content p img {
+    float: left;
+    width: 500px;
+}
+
+
+
+/* Responsive */
+/* 320px to 628px */
+@media (min-width: 320px) and (max-width: 628px) {
+
+    .about-page>h2 {
+        font-size: 25px;
+        width: 160px;
+        height: 160px;
+    }
+
+    .about-page {
+        padding: 20px 20px;
+    }
+
+    .about-page-section>h2 {
+        font-size: 25px;
+    }
+
+    .box1 .about-page-section-content p img {
+        float: top;
+        width: 300px;
+    }
+
+    .box2 .about-page-section-content p img {
+        float: top;
+        width: 300px;
+    }
+
+    .box3 .about-page-section-content p img {
+        float: top;
+        width: 300px;
+    }
+    
+}

@@ -2,7 +2,6 @@ const express = require('express');
 const mysql = require('mysql');
 const app = express();
 require('dotenv').config();
-// app.use('/auth',require('./routes/auth'));
 
 const db = mysql.createConnection ({
     host:process.env.DATABASE_HOST,
@@ -11,16 +10,14 @@ const db = mysql.createConnection ({
     database:process.env.DATABASE
 })
 
+app.use('/auth',require('./routes/authroute'));
+
 db.connect((error) => {
     if (error) {
         console.log(error.message);
     }else {
         console.log('Database connected successfully');
     }
-})
-
-app.get('/', (req, res) => {
-    res.send('Welcome to the HealthCare API');
 })
 
 const port = 3050;

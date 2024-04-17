@@ -5,6 +5,8 @@ import Hero from '../components/hero'
 import WorkTutorial from '../components/worktutorial'
 import DoctorCard from '../components/doctorcard'
 import DoctorSection from '../components/doctorsection'
+import About from '../components/about'
+import Testimonials from '../components/testimonials'
 
 const Home = () => {
   return (
@@ -13,6 +15,8 @@ const Home = () => {
       {<Hero/>}
       {<WorkTutorial/>}
       {<DoctorSection/>}
+      {<About/>}
+      {<Testimonials/>}
       {<Footer/>}
     </>
   )

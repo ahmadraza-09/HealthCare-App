@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/home';
 import Login from './pages/login';
 import Register from './pages/register';
+import Doctor from './pages/doctor';
+import About from './pages/about';
+import Contact from './pages/contact';
 import './App.css';
 import './css/doctorcard.css'
 import './css/header.css'
@@ -19,6 +22,9 @@ function App() {
         <Route  path="/" element={<Home/>}/>
         <Route  path="/login" element={<Login/>}/>
         <Route  path="/register" element={<Register/>}/>
+        <Route  path="/doctor" element={<Doctor/>}/>
+        <Route  path="/about" element={<About/>}/>
+        <Route  path="/contact" element={<Contact/>}/>
       </Routes>
     </BrowserRouter>
       

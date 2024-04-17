@@ -1,0 +1,112 @@
+.contat-page {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    background-color: #77B0AA;
+    /* background-color: #fff; */
+    padding: 20px;
+}
+
+.contat-page .contat-form {
+    width: 100%;
+    height: fit-content;
+    /* border: 2px solid #000; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contat-page .contat-form img {
+    width: 40%;
+}
+
+.contat-page .contat-form form {
+    width: 60%;
+    height: fit-content;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.contat-form form .input-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.contat-form form button {
+    height: 40px;
+    cursor: pointer;
+    background-color: #1fab89;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+form .input-box label {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+form .input-box input {
+    height: 30px;
+    padding-left: 10px;
+}
+
+form .input-box textarea {
+    padding-left: 10px;
+    padding-top: 10px;
+    max-width: 100%;
+}
+
+.contat-form form>h2 {
+    text-align: center;
+    font-size: 30px;
+}
+
+.contat-page .call-location {
+    width: 100%;
+    height: fit-content;
+    /* border: 2px solid #000; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    gap: 30px;
+}
+
+.call-location-box {
+    width: 300px;
+    height: 150px;
+    /* border: 2px solid #000; */
+    border-radius: 10px;
+    background-color: #E1F7F5;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    padding-left: 20px;
+    justify-content: center;
+    gap: 20px;
+}
+
+.call-location-box .head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.call-location-box .foot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
