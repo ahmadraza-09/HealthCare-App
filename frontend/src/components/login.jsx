@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import {useNavigate, useLocation, useParams} from 'react-router-dom';
 import '../css/login.css'
+import axios from 'axios';
+
 
 const Login = () => {
 
@@ -35,95 +37,8 @@ const Login = () => {
     }, []);
 
 
-    const nameHandler = (event) => {
-        getName(event.target.value);
-    }
-
-    const dateOfBirthHandler = (event) => {
-        getDate(event.target.value);
-    }
-
-    const genderHandler = (event) => {
-        getGender(event.target.value);
-    }
-
-    const mobilenumberHandler = (event) => {
-        getMobilenumber(event.target.value);
-    }
-
     
-    // const submitHandler = (e) => {
-    // e.preventDefault(); {
-    //   if (name === '') {
-    //     getFormerror("Enter your Name");
-    //     return false;
-    //   } else if (!name.match(nameregex)) {
-    //     getFormerror("Enter Name in Letters");
-    //     return false;
-    //   } else if (date === '') {
-    //     getFormerror("Select your Date Of Birth");
-    //     return false;
-    //   } else if (gender === '') {
-    //     getFormerror("Select your Gender");
-    //     return false;
-    //   } else if (mobilenumber === '') {
-    //     getFormerror("Enter your Mobile Number");
-    //     return false;
-    //   } else if (!mobilenumber.match(mobilenumberregex)) {
-    //     getFormerror("Invalid Number! Please write only numbers");
-    //     return false;
-    //   } else {
-    //     if(location.pathname === '/login'){
-    //       let loginData = {email, password };
-    //       axios.post('http://localhost:8080/auth/login', loginData)
-    //         .then((response) => {
-    //           console.log(response.data.response);
-    //           if(response.data.response == "Plese enter email and password"){
-    //               getFormerror(response.data.response);
-    //               return false;
-    //           } else if(response.data.response == "Email or password is incorrect"){
-    //               getFormerror(response.data.response);
-    //               return false;
-    //           }else if(response.data.response[1].userdata[0].email != ''){
-    //               getFormerror('')
-                  
-    //               const id = response.data.response[1].userdata[0].id;
-    //               localStorage.setItem('email', response.data.response[1].userdata[0].email); 
-    //               localStorage.setItem('id', response.data.response[1].userdata[0].id); 
-    //               localStorage.setItem('token', response.data.response[0].jwt); 
-
-    //               navigate(`/profile/${id}`);
-    //               console.log("User logged in successfully with ID:", id);
-    //           }
-
-    //         })
-    //         .catch((error) => {
-    //           console.error("Error logging in:", error);
-    //         });
-    //     } else if (params.id) {
-    //       const jsonData = { name,date,gender, mobilenumber };
-    //       axios.put(`http://localhost:8080/auth/updateuser/${params.id}`, jsonData)
-    //       .then((response) => {
-    //           navigate('/userlist');
-    //         })
-    //         .catch((error) => {
-    //           console.error("Error updating user:", error);
-    //         });
-    //     } else {
-    //       const jsonData = { firstname, lastname, mobilenumber, email, password };
-    //       axios.post('http://localhost:8080/auth/registeration', jsonData)
-    //         .then((response) => {
-    //           navigate('/login');
-    //         })
-    //         .catch((error) => {
-    //           console.error("Error registering user:", error);
-    //         });
-    //     }
-    //   }
-    // }
-    // }
-
-
+    
 
 
   return (
@@ -137,15 +52,21 @@ const Login = () => {
             <form method="post">
                 <div id="errorMessage">{formerror}</div>
                 {changebutton !== 'Login' && (
-                <div className='flex'>
-                    <label>Your Name</label>
-                    <input type="text" placeholder="Enter Your Name" required/>
+                <div className='line-one'>
+                    <div className='flex'>
+                        <label>Name</label>
+                        <input type="text" placeholder="Enter Your Name" required/>
+                    </div>
+                    <div className='flex'>
+                        <label>Date Of Birth</label>
+                        <input type="date"  required/>
+                    </div>
                 </div>
                 )}
                 {changebutton !== 'Login' && (
                 <div className='flex'>
-                    <label>Date Of Birth</label>
-                    <input type="date"  required/>
+                    <label>Email</label>
+                    <input type="email" placeholder='Email' required/>
                 </div>
                 )}
                 {changebutton !== 'Login' && (
@@ -161,12 +82,10 @@ const Login = () => {
                 )}
                 <label>Mobile Number</label>
                 <input type="text" placeholder="Enter Mobile Number" required/>
-                {changebutton == 'Login' && (
-                    <div className='flex'>
-                        <label>Enter OTP</label>
-                        <input type="text" placeholder="Enter OTP" required/>
-                    </div>
-                )}
+                
+                <label>Password</label>
+                <input type="password" placeholder="Enter Password" required/>
+
                 <div className='submit-button'>
                     <button type='submit' value={changebutton}>{changebutton}</button>
                 </div>

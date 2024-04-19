@@ -2,6 +2,8 @@ const express = require('express');
 const mysql = require('mysql');
 const app = express();
 require('dotenv').config();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const db = mysql.createConnection ({
     host:process.env.DATABASE_HOST,
