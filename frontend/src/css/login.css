@@ -35,12 +35,6 @@
     gap: 20px;
 }
 
-.generate-otp {
-    cursor: pointer;
-    text-decoration: underline;
-    color: blue;
-}
-
 .login-registration-right h2 {
     font-size: 30px;
 }
@@ -200,8 +194,16 @@ select{
     }
 
     .login-registration-right form  {
-        width: 350px;
+        width: 300px;
         padding: 10px;
+    }
+
+    .line-one {
+        flex-direction: column;
+    }
+
+    .line-one .flex {
+        width: 100%;
     }
 
     .login-registration-right form label {
@@ -210,6 +212,8 @@ select{
 
     .login-registration-right form input[type="text"],
     input[type="date"],
+    input[type="email"],
+    input[type="password"],
     select {
         height: 30px;
         padding-left: 20px;

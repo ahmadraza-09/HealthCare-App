@@ -5,6 +5,7 @@ import Register from './pages/register';
 import Doctor from './pages/doctor';
 import About from './pages/about';
 import Contact from './pages/contact';
+import Appointment from './pages/appointment';
 import './App.css';
 import './css/doctorcard.css'
 import './css/header.css'
@@ -25,6 +26,7 @@ function App() {
         <Route  path="/doctor" element={<Doctor/>}/>
         <Route  path="/about" element={<About/>}/>
         <Route  path="/contact" element={<Contact/>}/>
+        <Route  path="/appointment" element={<Appointment/>}/>
       </Routes>
     </BrowserRouter>
       

@@ -33,6 +33,29 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
+.contat-form form input[type="text"],
+input[type="date"],
+input[type="email"],
+select {
+    height: 30px;
+    padding-left: 20px;
+    border: none;
+    background-color: #e2e8f0;
+    font-size: 15px;
+    border-radius: 5px;
+    outline: none;
+}
+
+textarea {
+    background-color: #e2e8f0;
+    font-size: 15px;
+    border-radius: 5px;
+    padding-left: 20px;
+    border: none;
+    outline: none;
+
+}
+
 .contat-form form .input-box {
     display: flex;
     flex-direction: column;

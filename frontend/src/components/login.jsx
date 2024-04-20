@@ -49,6 +49,9 @@ const Login = () => {
         </div>
         <div className="login-registration-right">
             <h2>{heading}</h2>
+            {changebutton.toLowerCase() !== 'register' && (
+                <h3>Welcome Back 😎</h3>
+            )}
             <form method="post">
                 <div id="errorMessage">{formerror}</div>
                 {changebutton !== 'Login' && (
@@ -80,9 +83,18 @@ const Login = () => {
                     </select>
                 </div>
                 )}
-                <label>Mobile Number</label>
-                <input type="text" placeholder="Enter Mobile Number" required/>
-                
+                {changebutton.toLowerCase() !== 'login' && (
+                <div className='flex'>
+                    <label>Mobile Number</label>
+                    <input type="text" placeholder="Enter Mobile Number" required/>
+                </div>
+                )}
+                {changebutton.toLowerCase() !== 'register' && (
+                <div className='flex'>
+                    <label>Email or Mobile Number</label>
+                    <input type="text" placeholder="Enter Email or Mobile Number" required/>
+                </div>
+                )}
                 <label>Password</label>
                 <input type="password" placeholder="Enter Password" required/>
 
