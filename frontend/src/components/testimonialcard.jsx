@@ -14,20 +14,28 @@ const TestimonialCard = () => {
     <>
       <Swiper 
         modules={[Navigation, Autoplay, Pagination, Scrollbar, A11y]} // Include Autoplay module here
-        autoplay={{ delay: 5000, disableOnInteraction: false }} // Configure autoplay options
+        autoplay={{ delay: 2500, disableOnInteraction: false }} // Configure autoplay options
         spaceBetween={30}
         centeredSlides={true}
         slidesPerView={3}
         style={{ maxWidth: '850px', minWidth: '300px' , padding: '40px 20px' }}
         pagination={{ clickable: true }}
         breakpoints={{
-          640: {
+          320: {
             slidesPerView: 1,
+            spaceBetween: 0,
+          },
+          480: {
+            slidesPerView: 1,
+            spaceBetween: 0,
+          },
+          640: {
+            slidesPerView: 2,
             spaceBetween: 0,
           },
           768: {
             slidesPerView: 2,
-            spaceBetween: 20,
+            spaceBetween: 0,
           },
           1024: {
             slidesPerView: 3,
