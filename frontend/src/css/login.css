@@ -39,6 +39,11 @@
     font-size: 30px;
 }
 
+.login-registration-right h3 span {
+    color: #0a3bdb;
+   
+}
+
 .login-registration-right form {
     width: 550px;
     height: fit-content;

@@ -50,7 +50,7 @@ const Login = () => {
         <div className="login-registration-right">
             <h2>{heading}</h2>
             {changebutton.toLowerCase() !== 'register' && (
-                <h3>Welcome Back 😎</h3>
+                <h3>Hello! <span>Welcome</span> Back 😎</h3>
             )}
             <form method="post">
                 <div id="errorMessage">{formerror}</div>
