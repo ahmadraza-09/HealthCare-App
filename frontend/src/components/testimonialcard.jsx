@@ -16,7 +16,6 @@ const TestimonialCard = () => {
         modules={[Navigation, Autoplay, Pagination, Scrollbar, A11y]} // Include Autoplay module here
         autoplay={{ delay: 2500, disableOnInteraction: false }} // Configure autoplay options
         spaceBetween={30}
-        centeredSlides={true}
         slidesPerView={3}
         style={{ maxWidth: '850px', minWidth: '300px' , padding: '40px 20px' }}
         pagination={{ clickable: true }}

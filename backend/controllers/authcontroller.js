@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const md5 = require('md5')
+const jwt = require('jsonwebtoken');
 
 const db = mysql.createConnection({
     host:process.env.DATABASE_HOST,
@@ -42,7 +43,7 @@ exports.registration = async (request,response) => {
                 if (patientData != '') {
                     response.send(JSON.stringify({ "status": 200, "error": null, "message": "Mobile Number already exists" }));
                 }else {
-                    db.query('INSERT INTO patients SET ?', { name: name, email: email, gender: gender, dateofbirth: dateofbirth,  mobilenumber: mobilenumber, password: hashpassword }, (error, patientData) => {
+                    db.query('INSERT INTO patients SET ?', { name: name, email: email, gender: gender, dateofbirth: dateofbirth, mobilenumber: mobilenumber, password: hashpassword }, (error, patientData) => {
                         if (error) {
                             response.send(JSON.stringify({ "status": 500, "error": error }));
                         } else {
@@ -57,6 +58,28 @@ exports.registration = async (request,response) => {
 
 }
 
+exports.updateuser = (request,response)=> {
+    const id = request.params.id;
+    db.query('update patients set ? where id= ?',[request.body,id],(error,userdata)=> {
+        if(error){
+            response.send(JSON.stringify({"status":200,"error":null}))
+        }else{
+            response.send(JSON.stringify({"status":200,"error":null,"message":userdata}))
+        }
+    })
+}
+
+exports.deleteuser = (request,response)=> {
+    var id = request.params.id;
+    db.query('delete from patients where id= ?',[id],(error,userdata)=> {
+    if(error){
+        response.send(JSON.stringify({"status":200,"error":null}))
+    }else{
+        response.send(JSON.stringify({"status":200,"error":null,"message":userdata}))
+    }
+    })
+}
+
 exports.login = (request, response) => {
     const { identifier, password } = request.body;
     
@@ -66,14 +89,15 @@ exports.login = (request, response) => {
 
     const hashedPassword = md5(password);
     
-    db.query('SELECT * FROM patients WHERE (mobilenumber = ? OR email = ?) AND password = ?', [identifier, identifier, hashedPassword], (error, results) => {
+    db.query('SELECT * FROM patients WHERE (mobilenumber = ? OR email = ?) AND password = ?', [identifier, identifier, hashedPassword], (error, patientData) => {
         if (error) {
             return response.send(JSON.stringify({ "status": 500, "error": error, "message": 'Internal server error' }));
         }
-        if (results.length === 0) {
+        if (patientData.length === 0) {
             return response.send(JSON.stringify({ "status": 401, "error": "Invalid Credentials", "message": 'Invalid mobile number/email or password' }));
         }
-        response.send(JSON.stringify({ "status": 200, "error": null, "message": 'Login successfully', "user": results[0] }));
+        const token = jwt.sign({ userId: patientData[0].id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        response.send(JSON.stringify({ "status": 200, "error": null, "message": 'Login successfully', "user": patientData[0], "token": token }));
     });
 };
 

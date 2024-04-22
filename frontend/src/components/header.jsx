@@ -5,6 +5,9 @@ const Header = () => {
 
   const navigate = useNavigate();
 
+  const isLoggedIn = localStorage.getItem('token') !== null;
+  const id = localStorage.getItem('id');
+
   return (
     <>
       <nav>
@@ -21,11 +24,20 @@ const Header = () => {
             <li onClick={() => {navigate('/doctor')}}>Doctor</li>
             <li onClick={() => {navigate('/about')}}>About</li>
             <li onClick={() => {navigate('/contact')}}>Contact</li>
+            {isLoggedIn &&
             <li onClick={() => {navigate('/appointment')}}>Book Appointment</li>
+          }
         </ul>
 
+        
         <div className="login">
-            <button onClick={() => {navigate('/login')}}>Login</button>
+            {isLoggedIn ? (
+              <div className="header-profile" onClick={() => {navigate(`/profile/${id}`)}}>
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="" />
+              </div>
+            ):(
+              <button onClick={() => {navigate('/login')}}>Login</button>
+            )}
         </div>
       </nav>
     </>
