@@ -7,6 +7,7 @@ import About from './pages/about';
 import Contact from './pages/contact';
 import Appointment from './pages/appointment';
 import Profile from './pages/profile';
+import AdminPanel from './pages/adminpanel';
 import './App.css';
 import './css/doctorcard.css'
 import './css/header.css'
@@ -29,6 +30,7 @@ function App() {
         <Route  path="/contact" element={<Contact/>}/>
         <Route  path="/appointment" element={<Appointment/>}/>
         <Route  path="/profile/:id" element={<Profile/>}/>
+        <Route  path="/adminpanel" element={<AdminPanel/>}/>
       </Routes>
     </BrowserRouter>
       

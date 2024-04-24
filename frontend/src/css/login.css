@@ -67,6 +67,19 @@
     font-weight: 600;
 }
 
+.login-as {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 10px;
+}
+
+.login-as select {
+    background-color: #fff;
+    padding: 0px;
+    border: 1px solid #000;
+}
+
 .login-registration-right form input[type="text"],
 input[type="date"],
 input[type="email"],

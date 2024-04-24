@@ -18,6 +18,7 @@ const Login = () => {
     const [identifier, getIdentifier] = useState('');
     const [password, getPassword] = useState('');
     const [email, getEmail] = useState('');
+    const [role, getRole] = useState('patient');
     const [heading, getHeading] = useState('Sign Up');
     const [changebutton, getChangebutton] = useState('Register');
     const [linktext, getLinktext] = useState('Login');
@@ -76,6 +77,10 @@ const Login = () => {
     const passwordHandler = (event) => {
         getPassword(event.target.value);
     }
+
+    const roleHandler = (event) => {
+        getRole(event.target.value);
+    }
     
 
     const submitHandler = (e) => {
@@ -115,7 +120,9 @@ const Login = () => {
                 return false;
             } else {
                 if (location.pathname === '/login') {
-                    let patientData = {identifier, password };
+                    
+                    if (role === 'patient') {
+                        let patientData = {identifier, password, role: 'patient' };
                     axios.post('http://localhost:3050/auth/login', patientData)
                         .then((response) => {
                             console.log(response.data); 
@@ -135,6 +142,7 @@ const Login = () => {
                                 localStorage.setItem('gender', user.gender);
                                 localStorage.setItem('mobileNumber', user.mobilenumber);
                                 localStorage.setItem('email', user.email);
+                                localStorage.setItem('role', 'patient');
                                 
                                 navigate('/');
                                 console.log("User logged in successfully with ID:", response.data.user.id);
@@ -143,6 +151,35 @@ const Login = () => {
                         .catch((error) => {
                             console.error("Error logging in:", error);
                         });
+                    } else if (role === 'doctor') {
+                        let doctorData = {identifier, password, role: 'doctor' };
+                        axios.post('http://localhost:3050/auth/doctorlogin', doctorData)
+                        .then((response) => {
+                            console.log(response.data); 
+                            const message = response.data.message;
+                            if (message === "Mobile number/email and password are required" || message === "Invalid mobile number/email or password") {
+                                getFormerror(message);
+                                return false;
+                            } else {
+                                getFormerror('');
+
+                                    const { token, user } = response.data;
+
+                                    localStorage.setItem('token', token);
+                                    localStorage.setItem('id', user.id);
+                                    localStorage.setItem('name', user.name);
+                                    localStorage.setItem('mobileNumber', user.mobilenumber);
+                                    localStorage.setItem('email', user.email);
+                                    localStorage.setItem('role', 'doctor');
+                                    
+                                    navigate('/');
+                                    console.log("User logged in successfully with ID:", response.data.user.id);
+                                }
+                            })
+                            .catch((error) => {
+                                console.error("Error logging in:", error);
+                            });
+                    }
 
                 }else {
                     const patientData = { name, gender, dateofbirth, mobilenumber, email, password };
@@ -230,6 +267,15 @@ const Login = () => {
                         <label>Password</label>
                         <input type="password" placeholder="Enter Password" value={password} onChange={passwordHandler} />
                     </div>
+                    {changebutton == 'Login' && (
+                    <div className='login-as'>
+                        <label>Login As:</label>
+                        <select value={role} onChange={roleHandler}>
+                            <option value="patient">Pateint</option>
+                            <option value="doctor">Doctor</option>
+                        </select>
+                    </div>
+                    )}
                     <div className='submit-button'>
                         <button type='submit'>{changebutton}</button>
                     </div>

@@ -101,6 +101,25 @@ exports.login = (request, response) => {
     });
 };
 
+exports.doctorlogin = (request, response) => {
+    const { identifier, password } = request.body;
+    
+    if (!identifier || !password) {
+        return response.send(JSON.stringify({ "status": 400, "error": "Missing Fields", "message": 'Mobile number/email and password are required' }));
+    }
+    
+    db.query('SELECT * FROM doctor WHERE (mobilenumber = ? OR email = ?) AND password = ?', [identifier, identifier, password], (error, doctorData) => {
+        if (error) {
+            return response.send(JSON.stringify({ "status": 500, "error": error, "message": 'Internal server error' }));
+        }
+        if (doctorData.length === 0) {
+            return response.send(JSON.stringify({ "status": 401, "error": "Invalid Credentials", "message": 'Invalid mobile number/email or password' }));
+        }
+        const token = jwt.sign({ userId: doctorData[0].id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        response.send(JSON.stringify({ "status": 200, "error": null, "message": 'Login successfully', "user": doctorData[0], "token": token }));
+    });
+};
+
 exports.contact = (req, res) => {
     const { name, email, mobilenumber, message } = req.body;
     

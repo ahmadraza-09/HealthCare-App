@@ -5,6 +5,7 @@ const Header = () => {
 
   const navigate = useNavigate();
 
+  const role = localStorage.getItem('role');
   const isLoggedIn = localStorage.getItem('token') !== null;
   const id = localStorage.getItem('id');
 
@@ -26,18 +27,23 @@ const Header = () => {
             <li onClick={() => {navigate('/contact')}}>Contact</li>
             {isLoggedIn &&
             <li onClick={() => {navigate('/appointment')}}>Book Appointment</li>
-          }
+            }
         </ul>
 
         
         <div className="login">
-            {isLoggedIn ? (
+            {(isLoggedIn && role === 'patient') ? (
               <div className="header-profile" onClick={() => {navigate(`/profile/${id}`)}}>
                 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="" />
+              </div>
+            ):(isLoggedIn && role === 'doctor') ? (
+              <div className="admin-panel" onClick={() => {navigate(`/adminpanel`)}}>
+                <button>Admin Panel</button>
               </div>
             ):(
               <button onClick={() => {navigate('/login')}}>Login</button>
             )}
+            
         </div>
       </nav>
     </>

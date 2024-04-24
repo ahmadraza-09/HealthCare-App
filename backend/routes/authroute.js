@@ -5,6 +5,7 @@ router.get('/userlist', authcontroller.userlist);
 router.get('/singleuserlist/(:id)', authcontroller.singleuserlist);
 router.post('/registration', authcontroller.registration);
 router.post('/login', authcontroller.login);
+router.post('/doctorlogin', authcontroller.doctorlogin);
 router.post('/contact', authcontroller.contact);
 router.get('/contactlist', authcontroller.contactlist);
 router.get('/singlecontactlist/(:mobilenumber)', authcontroller.singlecontactlist);
