@@ -28,6 +28,10 @@
     border-radius: 10px;
 }
 
+.appointment-section-right form>p {
+    color: red;
+}
+
 .appointment-section-right form input[type="text"],
 input[type="date"],
 input[type="email"],

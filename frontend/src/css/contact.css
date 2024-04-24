@@ -33,6 +33,10 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
+.contat-page .contat-form form>p {
+    color: red;
+}
+
 .contat-form form input[type="text"],
 input[type="date"],
 input[type="email"],
