@@ -8,7 +8,6 @@ const AdminPanel = () => {
     <>
       {<Header/>}
       {<AdminPanelComp/>}
-      {<Footer/>}
     </>
   )
 }
