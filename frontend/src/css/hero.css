@@ -1,4 +1,4 @@
-.hero-section {
+/* .hero-section {
     width: 100%;
     height: 500px;
     padding-top: 60px;
@@ -23,20 +23,20 @@
 
 .our-title span:last-child {
     color: #fff;
-}
+} */
 
 /* Appointment */
-.appointment-box {
+/* .appointment-box {
     width: fit-content;
     height: fit-content;
     position: absolute;
     top: 250px;
     left: 70px;
-}
+} */
 
 /* Responsive */
 /* 768px to 1024px */
-@media (min-width: 768px) and (max-width: 1024px) {
+/* @media (min-width: 768px) and (max-width: 1024px) {
     
     .our-title {
         left: 10px;
@@ -45,10 +45,10 @@
     .appointment-box {
         left: 10px;
     }
-}
+} */
 
 /* 628px to 767px */
-@media (min-width: 628px) and (max-width: 768px) {
+/* @media (min-width: 628px) and (max-width: 768px) {
 
     .our-title {
         left: 10px;
@@ -79,10 +79,10 @@
         height: 400px;
     }
 
-}
+} */
 
 /* 320px to 628px */
-@media (min-width: 320px) and (max-width: 628px) {
+/* @media (min-width: 320px) and (max-width: 628px) {
 
     .our-title {
         width: 200px;
@@ -127,4 +127,4 @@
         width: 100px;
     }
 
-}
+} */

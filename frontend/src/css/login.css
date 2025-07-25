@@ -3,10 +3,10 @@
     text-align: center;
 }
 
-.flex {
+/* .flex {
     display: flex; 
     flex-direction: column;
-}
+} */
 
 .login-registration {
     width: 100%;
@@ -47,7 +47,7 @@
 
 .login-registration-right h3 span {
     color: #0a3bdb;
-   
+
 }
 
 .login-registration-right form {
@@ -85,7 +85,7 @@
 input[type="date"],
 input[type="email"],
 input[type="password"],
-select{
+select {
     height: 30px;
     padding-left: 20px;
     border: none;
@@ -143,7 +143,7 @@ select{
 
 /* Responsive */
 /* 768px to 1024px */
-@media (min-width: 768px) and (max-width: 1024px){
+@media (min-width: 768px) and (max-width: 1024px) {
 
     .login-registration-left {
         display: none;
@@ -156,7 +156,7 @@ select{
 }
 
 /* 628px to 768px */
-@media (min-width: 628px) and (max-width: 768px){
+@media (min-width: 628px) and (max-width: 768px) {
 
     .login-registration-left {
         display: none;
@@ -170,7 +170,7 @@ select{
 }
 
 /* 428px to 628px */
-@media (min-width: 428px) and (max-width: 628px){
+@media (min-width: 428px) and (max-width: 628px) {
 
     .login-registration-left {
         display: none;
@@ -181,7 +181,7 @@ select{
         width: 100%;
     }
 
-    .login-registration-right form  {
+    .login-registration-right form {
         width: 400px;
     }
 
@@ -197,15 +197,15 @@ select{
         font-size: 12px;
     }
 
-        .login-registration-right form input[type="button"] {
-            font-size: 15px;
-            height: 30px;
-        }
+    .login-registration-right form input[type="button"] {
+        font-size: 15px;
+        height: 30px;
+    }
 
 }
 
 /* 320px to 428px */
-@media (min-width: 320px) and (max-width: 428px){
+@media (min-width: 320px) and (max-width: 428px) {
 
     .login-registration-left {
         display: none;
@@ -217,7 +217,7 @@ select{
         padding: 0px 20px;
     }
 
-    .login-registration-right form  {
+    .login-registration-right form {
         width: 300px;
         padding: 10px;
     }
