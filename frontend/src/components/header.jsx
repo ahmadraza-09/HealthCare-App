@@ -25,6 +25,7 @@ const Header = () => {
             onClick={() => {
               navigate("/");
             }}
+            className="cursor-pointer"
           >
             Health<span className="text-yellow-500">Care</span>
           </h2>
@@ -90,6 +91,7 @@ const Header = () => {
               <img
                 src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
                 alt=""
+                className="w-10 cursor-pointer"
               />
             </div>
           ) : isLoggedIn && role === "doctor" ? (

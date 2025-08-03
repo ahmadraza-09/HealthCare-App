@@ -1,64 +1,94 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import '../css/appointmentlist.css'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const AppointmentList = () => {
-
   const [appointmentData, setAppointmentData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     getAppointmentList();
   }, []);
 
   const getAppointmentList = () => {
-    axios.get('http://localhost:3050/auth/appointmentlist')
-      .then(response => {
+    axios
+      .get("http://localhost:3050/auth/appointmentlist")
+      .then((response) => {
         setAppointmentData(response.data.message);
         setLoading(false);
       })
-      .catch(error => {
-        setError('Error fetching user data');
+      .catch((error) => {
+        setError("Error fetching user data");
         setLoading(false);
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       });
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-40 text-lg font-semibold text-blue-600">
+        Loading...
+      </div>
+    );
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div className="flex items-center justify-center h-40 text-lg font-semibold text-red-500">
+        {error}
+      </div>
+    );
   }
 
   return (
-    <>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Date of Birth</th>
-            <th>Gender</th>
-            <th>Concern</th>
-            <th>Mobile Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          {appointmentData.map(appointment => (
-            <tr key={appointment.id}>
-              <td>{appointment.name}</td>
-              <td>{new Date(appointment.dateofbirth).toLocaleDateString()}</td>
-              <td>{appointment.gender}</td>
-              <td>{appointment.concern}</td>
-              <td>{appointment.mobilenumber}</td>
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">
+        Appointment List
+      </h2>
+      <div className="overflow-x-auto bg-white rounded-lg shadow">
+        <table className="min-w-full divide-y divide-gray-200 text-sm">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left font-medium text-gray-600 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-6 py-3 text-left font-medium text-gray-600 uppercase tracking-wider">
+                Date of Birth
+              </th>
+              <th className="px-6 py-3 text-left font-medium text-gray-600 uppercase tracking-wider">
+                Gender
+              </th>
+              <th className="px-6 py-3 text-left font-medium text-gray-600 uppercase tracking-wider">
+                Concern
+              </th>
+              <th className="px-6 py-3 text-left font-medium text-gray-600 uppercase tracking-wider">
+                Mobile Number
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
-  )
-}
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {appointmentData.map((appointment) => (
+              <tr key={appointment.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 text-gray-800">{appointment.name}</td>
+                <td className="px-6 py-4 text-gray-800">
+                  {new Date(appointment.dateofbirth).toLocaleDateString()}
+                </td>
+                <td className="px-6 py-4 text-gray-800">
+                  {appointment.gender}
+                </td>
+                <td className="px-6 py-4 text-gray-800">
+                  {appointment.concern}
+                </td>
+                <td className="px-6 py-4 text-gray-800">
+                  {appointment.mobilenumber}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
 
-export default AppointmentList
+export default AppointmentList;

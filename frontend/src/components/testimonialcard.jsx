@@ -1,160 +1,95 @@
-import React from 'react'
-import { Navigation, Autoplay, Pagination, Scrollbar, A11y } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import '../css/testimonialcard.css'
+import React from "react";
+import {
+  Navigation,
+  Autoplay,
+  Pagination,
+  Scrollbar,
+  A11y,
+} from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+const testimonials = [
+  {
+    name: "Ahmad Raza",
+    img: "images/doctor.png",
+    message:
+      "The doctors were professional and very attentive. Highly recommended!",
+    rating: 5,
+  },
+  {
+    name: "Sara Khan",
+    img: "images/doctor.png",
+    message:
+      "Amazing experience. The booking was easy and the service was top-notch.",
+    rating: 5,
+  },
+  {
+    name: "Rahul Mehra",
+    img: "images/doctor.png",
+    message: "Friendly staff and quick appointment scheduling. Thank you!",
+    rating: 5,
+  },
+  {
+    name: "Nisha Verma",
+    img: "images/doctor.png",
+    message: "Very clean clinic and the doctor explained everything clearly.",
+    rating: 5,
+  },
+  {
+    name: "Farhan Ali",
+    img: "images/doctor.png",
+    message: "I felt comfortable and cared for throughout my visit.",
+    rating: 5,
+  },
+];
 
 const TestimonialCard = () => {
   return (
-    <>
-      <Swiper 
-        modules={[Navigation, Autoplay, Pagination, Scrollbar, A11y]} // Include Autoplay module here
-        autoplay={{ delay: 2500, disableOnInteraction: false }} // Configure autoplay options
-        spaceBetween={30}
-        slidesPerView={3}
-        style={{ maxWidth: '850px', minWidth: '300px' , padding: '40px 20px' }}
-        pagination={{ clickable: true }}
-        breakpoints={{
-          320: {
-            slidesPerView: 1,
-            spaceBetween: 0,
-          },
-          480: {
-            slidesPerView: 1,
-            spaceBetween: 0,
-          },
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 0,
-          },
-          768: {
-            slidesPerView: 2,
-            spaceBetween: 0,
-          },
-          1024: {
-            slidesPerView: 3,
-            spaceBetween: 30,
-          },
-        }}
-      >
-        <SwiperSlide style={{width: '250px'}}>  
-          <div className="testimonial-card">
-            <div className="image-and-name">
-              <img src="images/doctor.png" alt="" />
-              <div className="name-stars">
-                <h4>Ahmad Raza</h4>
-                <div className="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
+    <Swiper
+      modules={[Navigation, Autoplay, Pagination, Scrollbar, A11y]}
+      autoplay={{ delay: 3000, disableOnInteraction: false }}
+      spaceBetween={30}
+      pagination={{ clickable: true }}
+      breakpoints={{
+        320: { slidesPerView: 1 },
+        640: { slidesPerView: 1 },
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 },
+      }}
+      style={{ padding: "0 20px" }}
+    >
+      {testimonials.map((item, index) => (
+        <SwiperSlide key={index}>
+          <div className="bg-white rounded-lg shadow-md p-6 mx-auto max-w-sm text-left">
+            <div className="flex items-center mb-4">
+              <img
+                src={item.img}
+                alt={item.name}
+                className="w-14 h-14 rounded-full object-cover mr-4"
+              />
+              <div>
+                <h4 className="text-lg font-semibold text-teal-700">
+                  {item.name}
+                </h4>
+                <div className="flex text-yellow-400">
+                  {Array(item.rating)
+                    .fill(0)
+                    .map((_, i) => (
+                      <i key={i} className="fa-solid fa-star text-sm mr-1"></i>
+                    ))}
                 </div>
               </div>
             </div>
-
-            <p>
-              "I will seen very experince of the following people"
-            </p>
+            <p className="text-gray-600 text-sm">"{item.message}"</p>
           </div>
-          
         </SwiperSlide>
-        <SwiperSlide style={{width: '250px'}}>
-          <div className="testimonial-card">
-            <div className="image-and-name">
-              <img src="images/doctor.png" alt="" />
-              <div className="name-stars">
-                <h4>Ahmad Raza</h4>
-                <div className="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                </div>
-              </div>
-            </div>
+      ))}
+    </Swiper>
+  );
+};
 
-            <p>
-              "I will seen very experince of the following people"
-            </p>
-          </div>
-          
-        </SwiperSlide>
-        <SwiperSlide style={{width: '250px'}}>
-          <div className="testimonial-card">
-            <div className="image-and-name">
-              <img src="images/doctor.png" alt="" />
-              <div className="name-stars">
-                <h4>Ahmad Raza</h4>
-                <div className="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                </div>
-              </div>
-            </div>
-
-            <p>
-              "I will seen very experince of the following people"
-            </p>
-          </div>
-          
-        </SwiperSlide>
-        <SwiperSlide style={{width: '250px'}}>
-          <div className="testimonial-card">
-            <div className="image-and-name">
-              <img src="images/doctor.png" alt="" />
-              <div className="name-stars">
-                <h4>Ahmad Raza</h4>
-                <div className="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                </div>
-              </div>
-            </div>
-
-            <p>
-              "I will seen very experince of the following people"
-            </p>
-          </div>
-          
-        </SwiperSlide>
-        <SwiperSlide style={{width: '250px'}}>
-          <div className="testimonial-card">
-            <div className="image-and-name">
-              <img src="images/doctor.png" alt="" />
-              <div className="name-stars">
-                <h4>Ahmad Raza</h4>
-                <div className="stars">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                </div>
-              </div>
-            </div>
-
-            <p>
-              "I will seen very experince of the following people"
-            </p>
-          </div>
-          
-        </SwiperSlide>
-      </Swiper>
-    </>
-  )
-}
-
-export default TestimonialCard
+export default TestimonialCard;

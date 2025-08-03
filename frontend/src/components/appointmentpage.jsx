@@ -1,146 +1,157 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios';
-import '../css/appointmentpage.css'
+import React, { useState } from "react";
+import axios from "axios";
 
 const AppointmentPage = () => {
+  const [name, getName] = useState("");
+  const [dateofbirth, getDateofbirth] = useState("");
+  const [gender, getGender] = useState("");
+  const [concern, getConcern] = useState("");
+  const [mobilenumber, getMobilenumber] = useState("");
+  const [formerror, getFormerror] = useState("");
 
-    const [name, getName] = useState('');
-    const [dateofbirth, getDateofbirth] = useState('');
-    const [gender, getGender] = useState('');
-    const [concern, getConcern] = useState('');
-    const [mobilenumber, getMobilenumber] = useState('');
-    const [formerror, getFormerror] = useState('');
-    const nameregex = /^[a-z A-Z]{2,15}$/;
-    const mobilenumberregex = /^[0-9]{10}$/;
+  const nameregex = /^[a-z A-Z]{2,15}$/;
+  const mobilenumberregex = /^[0-9]{10}$/;
 
-    const nameHandler = (event) => {
-        getName(event.target.value);
-    }
+  const submitHandler = (e) => {
+    e.preventDefault();
 
-    const dateofbirthHandler = (event) => {
-        getDateofbirth(event.target.value);
-    }
+    if (!name) return getFormerror("Enter your Name");
+    if (!nameregex.test(name)) return getFormerror("Enter Name in Letters");
+    if (!dateofbirth) return getFormerror("Select your Date of Birth");
+    if (!gender) return getFormerror("Select your Gender");
+    if (!concern) return getFormerror("Select Your Health Concern");
+    if (!mobilenumber) return getFormerror("Enter your Mobile Number");
+    if (!mobilenumberregex.test(mobilenumber))
+      return getFormerror("Invalid Mobile Number");
 
-    const genderHandler = (event) => {
-        getGender(event.target.value);
-    }
+    const appointmentData = {
+      name,
+      dateofbirth,
+      gender,
+      concern,
+      mobilenumber,
+    };
 
-    const concernHandler = (event) => {
-        getConcern(event.target.value);
-    }
-
-    const mobilenumberHandler = (event) => {
-        getMobilenumber(event.target.value);
-    }
-
-    const submitHandler = (e) => {
-        e.preventDefault(); {
-            if (name === '') {
-                getFormerror("Enter your Name");
-                return false;
-            } else if (!name.match(nameregex)) {
-                getFormerror("Enter Name in Letters");
-                return false;
-            } else if (dateofbirth === '') {
-                getFormerror("Select your Date of Birth");
-                return false;
-            } else if (gender === '') {
-                getFormerror("Select your Gender");
-                return false;
-            } else if (concern === '') {
-                getFormerror("Select Your Health Concern");
-                return false;
-            } else if (mobilenumber === '') {
-                getFormerror("Enter your Mobile Number");
-                return false;
-            } else if (!mobilenumber.match(mobilenumberregex)) {
-                getFormerror("Invalid Number! Please write only numbers");
-                return false;
-            } else {
-                    const appointmentData = { name, dateofbirth, gender, concern, mobilenumber, };
-                    axios.post('http://localhost:3050/auth/appointment', appointmentData)
-                        .then((response) => {
-                        const responseData = response.data;
-                        console.log("Response data:", responseData);
-                            const message = responseData.message;
-                            console.log("Message:", message);
-                            if (message === "All fields are required") {
-                                getFormerror("All fields are required");
-                            } else if (response.data.message === "Appointment limit reached for today. Try again tomorrow.") {
-                                getFormerror("Appointment limit reached for today. Try again tomorrow.");
-                            } else {
-                                alert("Appointment Booked Successfully");
-                                getName('');
-                                getDateofbirth('');
-                                getGender('');
-                                getConcern('');
-                                getMobilenumber('');
-                                getFormerror('');
-                            }
-                    })
-                    .catch((error) => {
-                        console.error("Error contacting:", error);
-                        getFormerror("appointment Request failed");
-                    });
-                }
-          }
-    }
+    axios
+      .post("http://localhost:3050/auth/appointment", appointmentData)
+      .then((response) => {
+        const msg = response.data.message;
+        if (
+          msg === "All fields are required" ||
+          msg.includes("limit reached")
+        ) {
+          getFormerror(msg);
+        } else {
+          alert("Appointment Booked Successfully");
+          getName("");
+          getDateofbirth("");
+          getGender("");
+          getConcern("");
+          getMobilenumber("");
+          getFormerror("");
+        }
+      })
+      .catch(() => {
+        getFormerror("Appointment request failed");
+      });
+  };
 
   return (
-    <>
-      <div className="appointment-section">
-        <div className="appointment-section-left">
-            <img src="images/appointment2.png" alt="" />
+    <div className="bg-gradient-to-br from-cyan-100 via-white to-blue-100 min-h-screen py-10 px-4 pt-32">
+      <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-10 bg-white rounded-2xl shadow-lg p-8">
+        {/* Left Image */}
+        <div className="w-full lg:w-1/2">
+          <img
+            src="images/appointment2.png"
+            alt="Appointment"
+            className="w-full h-auto rounded-xl"
+          />
         </div>
 
-        <div className="appointment-section-right">
-            <h2>Book Your Appointment</h2>
-            <form onSubmit={submitHandler}>
-                {formerror && <p className="error-message">{formerror}</p>}
-                <div className='line-one'>
-                    <div className='flex'>
-                        <label>Name</label>
-                        <input type="text" placeholder="Name" value={name} onChange={nameHandler} />
-                    </div>
-                    <div className='flex'>
-                        <label>Date Of Birth</label>
-                        <input type="date" value={dateofbirth} onChange={dateofbirthHandler} />
-                    </div>
-                </div>
+        {/* Form Section */}
+        <div className="w-full lg:w-1/2">
+          <h2 className="text-3xl font-bold text-[#135D66] mb-6 text-center">
+            Book Your Appointment
+          </h2>
 
-                <div className='flex'>
-                    <label>Gender</label>
-                    <select id="gender" value={gender} onChange={genderHandler}>
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
+          {formerror && (
+            <p className="text-red-600 text-sm text-center mb-4">{formerror}</p>
+          )}
 
-                <div className='flex'>
-                    <label>Select Your Health Concern</label>
-                    <select id="gender" name="gender" value={concern} onChange={concernHandler}>
-                        <option value="">Select</option>
-                        <option value="Headache">Headache</option>
-                        <option value="Fever">Fever</option>
-                        <option value="Cough">Cough</option>
-                        <option value="Back Pain">Back Pain</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
+          <form onSubmit={submitHandler} className="space-y-4">
+            <div className="flex flex-col">
+              <label className="font-medium">Name</label>
+              <input
+                type="text"
+                className="border rounded-lg px-4 py-2"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => getName(e.target.value)}
+              />
+            </div>
 
-                <div className='flex'>
-                    <label>Mobile Number</label>
-                    <input type="text" placeholder="Enter Mobile Number" value={mobilenumber} onChange={mobilenumberHandler} />
-                </div>
+            <div className="flex flex-col">
+              <label className="font-medium">Date of Birth</label>
+              <input
+                type="date"
+                className="border rounded-lg px-4 py-2"
+                value={dateofbirth}
+                onChange={(e) => getDateofbirth(e.target.value)}
+              />
+            </div>
 
-                <button type='submit'>Book Now</button>
-            </form>
+            <div className="flex flex-col">
+              <label className="font-medium">Gender</label>
+              <select
+                className="border rounded-lg px-4 py-2"
+                value={gender}
+                onChange={(e) => getGender(e.target.value)}
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col">
+              <label className="font-medium">Health Concern</label>
+              <select
+                className="border rounded-lg px-4 py-2"
+                value={concern}
+                onChange={(e) => getConcern(e.target.value)}
+              >
+                <option value="">Select</option>
+                <option value="Headache">Headache</option>
+                <option value="Fever">Fever</option>
+                <option value="Cough">Cough</option>
+                <option value="Back Pain">Back Pain</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col">
+              <label className="font-medium">Mobile Number</label>
+              <input
+                type="text"
+                className="border rounded-lg px-4 py-2"
+                placeholder="Enter Mobile Number"
+                value={mobilenumber}
+                onChange={(e) => getMobilenumber(e.target.value)}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="bg-[#135D66] text-white w-full py-2 rounded-lg mt-4 hover:bg-[#104c55] transition"
+            >
+              Book Now
+            </button>
+          </form>
         </div>
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};
 
-export default AppointmentPage
+export default AppointmentPage;
