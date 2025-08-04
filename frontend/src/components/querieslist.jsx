@@ -38,16 +38,16 @@ const QueriesList = () => {
         <table className="min-w-full table-auto bg-white">
           <thead className="bg-blue-600 text-white">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold">
+              <th className="px-6 py-3 text-left text-sm font-bold uppercase">
                 Name
               </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">
+              <th className="px-6 py-3 text-left text-sm font-bold uppercase">
                 Email
               </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">
+              <th className="px-6 py-3 text-left text-sm font-bold uppercase">
                 Mobile Number
               </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">
+              <th className="px-6 py-3 text-left text-sm font-bold uppercase">
                 Message
               </th>
             </tr>

@@ -68,16 +68,16 @@ const Header = () => {
           >
             Contact
           </li>
-          {isLoggedIn && (
-            <li
-              onClick={() => {
-                navigate("/appointment");
-              }}
-              className="cursor-pointer"
-            >
-              Book Appointment
-            </li>
-          )}
+          {/* {isLoggedIn && ( */}
+          <li
+            onClick={() => {
+              navigate("/appointment");
+            }}
+            className="cursor-pointer"
+          >
+            Book Appointment
+          </li>
+          {/* )} */}
         </ul>
 
         <div className="login">

@@ -1,7 +1,9 @@
 import React from "react";
 import Appointment from "./appointment";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <div className="relative w-full h-fit sm:h-[500px] pt-[60px] overflow-hidden">
       {/* Background Image */}
@@ -24,7 +26,12 @@ const Hero = () => {
           Providing world-class clinical care with compassion and excellence.
         </p>
 
-        <button className="mt-6 px-6 py-3 bg-yellow-400 text-black font-semibold rounded-full shadow hover:bg-yellow-300 transition duration-300">
+        <button
+          className="mt-6 px-6 py-3 bg-yellow-400 text-black font-semibold rounded-full shadow hover:bg-yellow-300 transition duration-300"
+          onClick={() => {
+            navigate("/appointment");
+          }}
+        >
           Book Appointment
         </button>
       </div>

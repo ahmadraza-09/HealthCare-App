@@ -47,21 +47,21 @@ const AppointmentList = () => {
       </h2>
       <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
-          <thead className="bg-gray-50">
+          <thead className="bg-blue-600 text-white">
             <tr>
-              <th className="px-6 py-3 text-left font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold text-white uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-left font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold text-white uppercase tracking-wider">
                 Date of Birth
               </th>
-              <th className="px-6 py-3 text-left font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold text-white uppercase tracking-wider">
                 Gender
               </th>
-              <th className="px-6 py-3 text-left font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold text-white uppercase tracking-wider">
                 Concern
               </th>
-              <th className="px-6 py-3 text-left font-medium text-gray-600 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold text-white uppercase tracking-wider">
                 Mobile Number
               </th>
             </tr>
