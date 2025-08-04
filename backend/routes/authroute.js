@@ -14,5 +14,8 @@ router.get('/appointmentlist', authcontroller.appointmentlist);
 router.get('/singleappointmentlist/(:mobilenumber)', authcontroller.singleappointmentlist);
 router.delete('/deleteuser/(:id)', authcontroller.deleteuser);
 router.put('/updateuser/(:id)', authcontroller.updateuser);
+router.post('/addprescription', authcontroller.addPrescription);
+router.get('/showallprescription', authcontroller.showAllPrescription);
+
 
 module.exports = router;
