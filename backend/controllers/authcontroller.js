@@ -252,7 +252,7 @@ exports.addPrescription = (req, res) => {
             console.error('Failed to insert into prescription: ' + error.message);
             return res.status(500).json({ message: 'Internal server error' });
         }
-        res.send(JSON.stringify({ status: '201', message: 'Prescripion Added Successfully', data: result }));
+        res.send(JSON.stringify({ status: '201', message: result }));
     })
 }
 
