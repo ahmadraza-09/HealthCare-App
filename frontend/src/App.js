@@ -16,24 +16,37 @@ import './css/footer.css'
 import './css/hero.css'
 import './css/appointment.css'
 import './css/worktutorial.css'
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <>
-    <BrowserRouter>
-      <Routes>
-        <Route  path="/" element={<Home/>}/>
-        <Route  path="/login" element={<Login/>}/>
-        <Route  path="/register" element={<Register/>}/>
-        <Route  path="/doctor" element={<Doctor/>}/>
-        <Route  path="/about" element={<About/>}/>
-        <Route  path="/contact" element={<Contact/>}/>
-        <Route  path="/appointment" element={<Appointment/>}/>
-        <Route  path="/profile/:id" element={<Profile/>}/>
-        <Route  path="/adminpanel" element={<AdminPanel/>}/>
-      </Routes>
-    </BrowserRouter>
-      
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/doctor" element={<Doctor />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/appointment" element={<Appointment />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/adminpanel" element={<AdminPanel />} />
+        </Routes>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+      </BrowserRouter>
+
     </>
   );
 }

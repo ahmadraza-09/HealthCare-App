@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AllPatients from "./patientslist";
 import AppointmentList from "./appointmentlist";
@@ -15,6 +16,7 @@ import {
   SettingsIcon,
   Pen,
 } from "lucide-react";
+import PrescriptionList from "./prescriptionlist";
 
 const navItems = [
   { label: "Dashboard", icon: <HomeIcon size={20} /> },
@@ -29,12 +31,67 @@ const navItems = [
 const AdminPanelComp = () => {
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState("Dashboard");
+  const [userCount, setUserCount] = useState(0);
+  const [queryCount, setQueryCount] = useState(0);
+  const [appointmentCount, setAppointmentCount] = useState(0);
+  const [prescriptionCount, setPrescriptionCount] = useState(0);
 
   const handleItemClick = (item) => setSelectedItem(item);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
+  };
+
+  useEffect(() => {
+    getUserCount();
+    getQueryCount();
+    getAppointmentCount();
+    getPrescriptionCount();
+  }, []);
+
+  const getUserCount = () => {
+    axios
+      .get("http://localhost:3050/auth/userlist")
+      .then((response) => {
+        setUserCount(response.data.message.length);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  };
+
+  const getQueryCount = () => {
+    axios
+      .get("http://localhost:3050/auth/contactlist")
+      .then((response) => {
+        setQueryCount(response.data.message.length);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  };
+
+  const getAppointmentCount = () => {
+    axios
+      .get("http://localhost:3050/auth/appointmentlist")
+      .then((response) => {
+        setAppointmentCount(response.data.message.length);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  };
+
+  const getPrescriptionCount = () => {
+    axios
+      .get("http://localhost:3050/auth/showallprescription")
+      .then((response) => {
+        setPrescriptionCount(response.data.message.length);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
   };
 
   return (
@@ -75,9 +132,17 @@ const AdminPanelComp = () => {
 
       {/* Main Content */}
       <main className="ml-20 md:ml-60 flex-1 p-6 overflow-y-auto h-[calc(100vh-3.5rem)]">
-        {selectedItem === "Dashboard" && <Dashboard />}
+        {selectedItem === "Dashboard" && (
+          <Dashboard
+            userCount={userCount}
+            queryCount={queryCount}
+            appointmentCount={appointmentCount}
+            prescriptionCount={prescriptionCount}
+          />
+        )}
         {selectedItem === "Patients" && <AllPatients />}
         {selectedItem === "Appointments" && <AppointmentList />}
+        {selectedItem === "Prescriptions" && <PrescriptionList />}
         {selectedItem === "Queries" && <QueriesList />}
         {selectedItem === "Revenue" && <Revenue />}
       </main>

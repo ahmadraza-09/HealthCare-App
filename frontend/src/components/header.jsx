@@ -16,7 +16,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className="w-full h-[60px] bg-[#135D66] flex px-5 items-center justify-between text-[#E3FEF7] fixed z-[999]">
+      <nav className="w-full h-[60px] bg-[#135D66] flex px-5 items-center justify-between text-[#E3FEF7] fixed z-10">
         <div className="logo text-[#FFF7FC] text-2xl font-semibold flex items-center justify-start gap-5">
           <label htmlFor="check" onClick={showMenuFunc} className="sm:hidden">
             <i class="fa-solid fa-bars "></i>

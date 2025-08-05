@@ -53,14 +53,16 @@ const QueriesList = () => {
             </tr>
           </thead>
           <tbody>
-            {queriesData.map((query) => (
-              <tr key={query.id} className="hover:bg-gray-100 border-b">
-                <td className="px-6 py-4">{query.name}</td>
-                <td className="px-6 py-4">{query.email}</td>
-                <td className="px-6 py-4">{query.mobilenumber}</td>
-                <td className="px-6 py-4">{query.message}</td>
-              </tr>
-            ))}
+            {[...queriesData]
+              .sort((a, b) => b.id - a.id)
+              .map((query) => (
+                <tr key={query.id} className="hover:bg-gray-100 border-b">
+                  <td className="px-6 py-4">{query.name}</td>
+                  <td className="px-6 py-4">{query.email}</td>
+                  <td className="px-6 py-4">{query.mobilenumber}</td>
+                  <td className="px-6 py-4">{query.message}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

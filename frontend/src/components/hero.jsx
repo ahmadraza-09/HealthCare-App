@@ -14,10 +14,10 @@ const Hero = () => {
       />
 
       {/* Overlay for darkening background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-teal-800/30 z-10"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-teal-800/30 z-0"></div>
 
       {/* Text Content */}
-      <div className="absolute z-20 top-[40%] left-[10%] sm:left-[15%] transform -translate-y-1/2">
+      <div className="absolute z-0 top-[40%] left-[10%] sm:left-[15%] transform -translate-y-1/2">
         <h2 className="text-white text-2xl sm:text-5xl font-bold leading-snug drop-shadow-md">
           We <span className="text-yellow-400">Care</span> About Your{" "}
           <span className="text-teal-300">Health</span>

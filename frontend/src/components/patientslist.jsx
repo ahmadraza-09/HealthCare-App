@@ -15,6 +15,7 @@ const PatientsList = () => {
       .get("http://localhost:3050/auth/userlist")
       .then((response) => {
         setUserdata(response.data.message);
+        // setUserCount(response.data.message.length);
         setLoading(false);
       })
       .catch((error) => {
@@ -51,17 +52,19 @@ const PatientsList = () => {
             </tr>
           </thead>
           <tbody>
-            {userdata.map((user) => (
-              <tr key={user.id} className="hover:bg-gray-50">
-                <td className="py-3 px-4 border-b">{user.name}</td>
-                <td className="py-3 px-4 border-b">{user.gender}</td>
-                <td className="py-3 px-4 border-b">
-                  {new Date(user.dateofbirth).toLocaleDateString()}
-                </td>
-                <td className="py-3 px-4 border-b">{user.email}</td>
-                <td className="py-3 px-4 border-b">{user.mobilenumber}</td>
-              </tr>
-            ))}
+            {[...userdata]
+              .sort((a, b) => b.id - a.id)
+              .map((user) => (
+                <tr key={user.id} className="hover:bg-gray-50">
+                  <td className="py-3 px-4 border-b">{user.name}</td>
+                  <td className="py-3 px-4 border-b">{user.gender}</td>
+                  <td className="py-3 px-4 border-b">
+                    {new Date(user.dateofbirth).toLocaleDateString()}
+                  </td>
+                  <td className="py-3 px-4 border-b">{user.email}</td>
+                  <td className="py-3 px-4 border-b">{user.mobilenumber}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

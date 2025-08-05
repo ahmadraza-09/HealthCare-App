@@ -10,9 +10,14 @@ import {
   CartesianGrid,
 } from "recharts";
 
-const Dashboard = () => {
+const Dashboard = ({
+  userCount,
+  queryCount,
+  appointmentCount,
+  prescriptionCount,
+}) => {
   return (
-    <div className="flex-1 px-6 overflow-y-auto">
+    <div className="flex-1 px-6 overflow-y-auto ">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-indigo-900">
           Welcome Back, Admin 👋
@@ -21,38 +26,40 @@ const Dashboard = () => {
           Here’s an overview of today’s performance
         </p>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="bg-white shadow rounded-xl p-4 flex gap-5 items-center">
           <UsersIcon size={40} />
           <div>
             <h3 className="text-md text-gray-500 font-bold">Total Patients</h3>
-            <p className="text-2xl font-bold text-indigo-700">580</p>
+            <p className="text-2xl font-bold text-indigo-700">{userCount}</p>
           </div>
         </div>
         <div className="bg-white shadow rounded-xl p-4 flex gap-5 items-center">
           <Mail size={40} />
           <div>
             <h3 className="text-md text-gray-500 font-bold">Queries</h3>
-            <p className="text-2xl font-bold text-orange-500">356</p>
+            <p className="text-2xl font-bold text-orange-500">{queryCount}</p>
           </div>
         </div>
         <div className="bg-white shadow rounded-xl p-4 flex gap-5 items-center">
           <CalendarIcon size={40} />
           <div>
             <h3 className="text-md text-gray-500 font-bold">Appointments</h3>
-            <p className="text-2xl font-bold text-green-500">288</p>
+            <p className="text-2xl font-bold text-green-500">
+              {appointmentCount}
+            </p>
           </div>
         </div>
         <div className="bg-white shadow rounded-xl p-4 flex gap-5 items-center">
           <NotepadText size={40} />
           <div>
             <h3 className="text-md text-gray-500 font-bold">Prescriptions</h3>
-            <p className="text-2xl font-bold text-red-500">85</p>
+            <p className="text-2xl font-bold text-red-500">
+              {prescriptionCount}
+            </p>
           </div>
         </div>
       </div>
-
       {/* Analytics Section */}
       <div className="bg-white shadow rounded-xl p-6">
         <h3 className="text-lg font-bold text-indigo-900 mb-4">

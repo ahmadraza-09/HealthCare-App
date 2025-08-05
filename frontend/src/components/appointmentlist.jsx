@@ -67,23 +67,27 @@ const AppointmentList = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {appointmentData.map((appointment) => (
-              <tr key={appointment.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 text-gray-800">{appointment.name}</td>
-                <td className="px-6 py-4 text-gray-800">
-                  {new Date(appointment.dateofbirth).toLocaleDateString()}
-                </td>
-                <td className="px-6 py-4 text-gray-800">
-                  {appointment.gender}
-                </td>
-                <td className="px-6 py-4 text-gray-800">
-                  {appointment.concern}
-                </td>
-                <td className="px-6 py-4 text-gray-800">
-                  {appointment.mobilenumber}
-                </td>
-              </tr>
-            ))}
+            {[...appointmentData]
+              .sort((a, b) => b.id - a.id)
+              .map((appointment) => (
+                <tr key={appointment.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 text-gray-800">
+                    {appointment.name}
+                  </td>
+                  <td className="px-6 py-4 text-gray-800">
+                    {new Date(appointment.dateofbirth).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 text-gray-800">
+                    {appointment.gender}
+                  </td>
+                  <td className="px-6 py-4 text-gray-800">
+                    {appointment.concern}
+                  </td>
+                  <td className="px-6 py-4 text-gray-800">
+                    {appointment.mobilenumber}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
