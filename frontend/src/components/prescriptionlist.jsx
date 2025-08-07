@@ -63,6 +63,16 @@ const PrescriptionList = () => {
       setShowModal(false);
 
       console.log(response.data.message);
+      getPrescriptionList();
+      setAddPrescriptionData({
+        patient_name: "",
+        email: "",
+        phone_number: "",
+        date_of_birth: "",
+        concern: "",
+        address: "",
+        message: "",
+      });
 
       toast.success("Prescription Added Successfully");
     } catch (error) {

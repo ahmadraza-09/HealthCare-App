@@ -17,6 +17,8 @@ import {
   Pen,
 } from "lucide-react";
 import PrescriptionList from "./prescriptionlist";
+import Settings from "./settings";
+import { toast } from "react-toastify";
 
 const navItems = [
   { label: "Dashboard", icon: <HomeIcon size={20} /> },
@@ -40,6 +42,7 @@ const AdminPanelComp = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    toast.success("Logout Successfully");
     navigate("/login");
   };
 
@@ -145,6 +148,7 @@ const AdminPanelComp = () => {
         {selectedItem === "Prescriptions" && <PrescriptionList />}
         {selectedItem === "Queries" && <QueriesList />}
         {selectedItem === "Revenue" && <Revenue />}
+        {selectedItem === "Settings" && <Settings />}
       </main>
     </div>
   );

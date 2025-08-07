@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -84,6 +85,7 @@ const Login = () => {
             localStorage.setItem("dateofbirth", data.user.dateofbirth);
             localStorage.setItem("gender", data.user.gender);
           }
+          toast.success("Logged In Successfully");
           getFormerror("");
           navigate("/");
         }
@@ -106,6 +108,7 @@ const Login = () => {
         } else {
           getFormerror("");
           navigate("/login");
+          toast.success("Registerred In Successfully");
         }
       }
     } catch (err) {

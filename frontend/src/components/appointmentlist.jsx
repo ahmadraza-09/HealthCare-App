@@ -75,7 +75,14 @@ const AppointmentList = () => {
                     {appointment.name}
                   </td>
                   <td className="px-6 py-4 text-gray-800">
-                    {new Date(appointment.dateofbirth).toLocaleDateString()}
+                    {new Date(appointment.dateofbirth).toLocaleDateString(
+                      "en-IN",
+                      {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      }
+                    )}
                   </td>
                   <td className="px-6 py-4 text-gray-800">
                     {appointment.gender}
