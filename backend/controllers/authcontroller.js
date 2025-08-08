@@ -84,41 +84,105 @@ exports.login = (request, response) => {
     const { identifier, password } = request.body;
 
     if (!identifier || !password) {
-        return response.send(JSON.stringify({ "status": 400, "error": "Missing Fields", "message": 'Mobile number/email and password are required' }));
+        return response.status(400).json({
+            status: 400,
+            error: "Missing Fields",
+            message: 'Mobile number/email and password are required'
+        });
     }
 
     const hashedPassword = md5(password);
 
-    db.query('SELECT * FROM patients WHERE (mobilenumber = ? OR email = ?) AND password = ?', [identifier, identifier, hashedPassword], (error, patientData) => {
-        if (error) {
-            return response.send(JSON.stringify({ "status": 500, "error": error, "message": 'Internal server error' }));
+    db.query(
+        'SELECT * FROM patients WHERE (mobilenumber = ? OR email = ?) AND password = ?',
+        [identifier, identifier, hashedPassword],
+        (error, patientData) => {
+            if (error) {
+                return response.status(500).json({
+                    status: 500,
+                    error: error,
+                    message: 'Internal server error'
+                });
+            }
+
+            if (patientData.length === 0) {
+                return response.status(401).json({
+                    status: 401,
+                    error: "Invalid Credentials",
+                    message: 'Invalid mobile number/email or password'
+                });
+            }
+
+            // Include role in JWT
+            const token = jwt.sign(
+                { userId: patientData[0].id, role: "patient" },
+                process.env.JWT_SECRET,
+                { expiresIn: "1h" }
+            );
+
+
+            response.status(200).json({
+                status: 200,
+                error: null,
+                message: 'Login successfully',
+                user: patientData[0],
+                token: token
+            });
         }
-        if (patientData.length === 0) {
-            return response.send(JSON.stringify({ "status": 401, "error": "Invalid Credentials", "message": 'Invalid mobile number/email or password' }));
-        }
-        const token = jwt.sign({ userId: patientData[0].id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        response.send(JSON.stringify({ "status": 200, "error": null, "message": 'Login successfully', "user": patientData[0], "token": token }));
-    });
+    );
 };
+
 
 exports.doctorlogin = (request, response) => {
     const { identifier, password } = request.body;
 
     if (!identifier || !password) {
-        return response.send(JSON.stringify({ "status": 400, "error": "Missing Fields", "message": 'Mobile number/email and password are required' }));
+        return response.status(400).json({
+            status: 400,
+            error: "Missing Fields",
+            message: 'Mobile number/email and password are required'
+        });
     }
 
-    db.query('SELECT * FROM doctor WHERE (mobilenumber = ? OR email = ?) AND password = ?', [identifier, identifier, password], (error, doctorData) => {
-        if (error) {
-            return response.send(JSON.stringify({ "status": 500, "error": error, "message": 'Internal server error' }));
+    db.query(
+        'SELECT * FROM doctor WHERE (mobilenumber = ? OR email = ?) AND password = ?',
+        [identifier, identifier, password],
+        (error, doctorData) => {
+            if (error) {
+                return response.status(500).json({
+                    status: 500,
+                    error: error,
+                    message: 'Internal server error'
+                });
+            }
+
+            if (doctorData.length === 0) {
+                return response.status(401).json({
+                    status: 401,
+                    error: "Invalid Credentials",
+                    message: 'Invalid mobile number/email or password'
+                });
+            }
+
+            // Include role in JWT
+            const token = jwt.sign(
+                { userId: doctorData[0].id, role: "doctor" },
+                process.env.JWT_SECRET,
+                { expiresIn: "1h" }
+            );
+
+
+            response.status(200).json({
+                status: 200,
+                error: null,
+                message: 'Login successfully',
+                user: doctorData[0],
+                token: token
+            });
         }
-        if (doctorData.length === 0) {
-            return response.send(JSON.stringify({ "status": 401, "error": "Invalid Credentials", "message": 'Invalid mobile number/email or password' }));
-        }
-        const token = jwt.sign({ userId: doctorData[0].id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        response.send(JSON.stringify({ "status": 200, "error": null, "message": 'Login successfully', "user": doctorData[0], "token": token }));
-    });
+    );
 };
+
 
 exports.contact = (req, res) => {
     const { name, email, mobilenumber, message } = req.body;

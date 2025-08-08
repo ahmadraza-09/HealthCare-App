@@ -1,6 +1,9 @@
 const express = require('express');
 const authcontroller = require('../controllers/authcontroller');
 const router = express.Router();
+const verifyToken = require("../middlewares/verify-roles");
+
+
 router.get('/userlist', authcontroller.userlist);
 router.get('/singleuserlist/(:id)', authcontroller.singleuserlist);
 router.post('/registration', authcontroller.registration);
