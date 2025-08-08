@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Pen, X } from "lucide-react";
-import { toast } from "react-toastify";
+import { NotebookPen, X } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 const PrescriptionList = () => {
   const [prescriptionData, setPrescriptionData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false); // ✅ Modal toggle
+  const [showModal, setShowModal] = useState(false);
+
+  const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
 
   const [addPrescriptionData, setAddPrescriptionData] = useState({
     patient_name: "",
@@ -37,6 +40,64 @@ const PrescriptionList = () => {
       });
   };
 
+  const handleAddPrescription = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        "http://localhost:3050/auth/addprescription",
+        addPrescriptionData
+      );
+      setShowModal(false);
+      getPrescriptionList();
+      setAddPrescriptionData({
+        patient_name: "",
+        email: "",
+        phone_number: "",
+        date_of_birth: "",
+        concern: "",
+        address: "",
+        message: "",
+      });
+      toast.success("Prescription Added Successfully");
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Error : Something happen !");
+    }
+  };
+
+  const isToday = (date) => {
+    const today = new Date();
+    const d = new Date(date);
+    return d.toDateString() === today.toDateString();
+  };
+
+  const isYesterday = (date) => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const d = new Date(date);
+    return d.toDateString() === yesterday.toDateString();
+  };
+
+  const filteredPrescriptions = prescriptionData
+    .filter((prescription) => {
+      if (filter === "today") return isToday(prescription.visit_date);
+      if (filter === "yesterday") return isYesterday(prescription.visit_date);
+      return true;
+    })
+    .filter(
+      (prescription) =>
+        prescription.patient_name
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+        prescription.email.toLowerCase().includes(search.toLowerCase()) ||
+        prescription.phone_number
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+        prescription.concern.toLowerCase().includes(search.toLowerCase()) ||
+        prescription.address.toLowerCase().includes(search.toLowerCase())
+    )
+    .sort((a, b) => b.prescription_id - a.prescription_id);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-40 text-lg font-semibold text-blue-600">
@@ -53,45 +114,43 @@ const PrescriptionList = () => {
     );
   }
 
-  const handleAddPrescription = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:3050/auth/addprescription",
-        addPrescriptionData
-      );
-      setShowModal(false);
-
-      console.log(response.data.message);
-      getPrescriptionList();
-      setAddPrescriptionData({
-        patient_name: "",
-        email: "",
-        phone_number: "",
-        date_of_birth: "",
-        concern: "",
-        address: "",
-        message: "",
-      });
-
-      toast.success("Prescription Added Successfully");
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Error : Something happen !");
-    }
-  };
-
   return (
-    <div className="p-6 bg-gray-100 min-h-screen relative">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+    <div className="sm:p-6 p-4 bg-transparent min-h-screen relative">
+      <Toaster />
+
+      {/* Header with Filters */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Prescription List</h2>
-        <button
-          onClick={() => setShowModal(true)} // ✅ Open modal
-          className="bg-blue-600 text-white font-bold px-4 py-2 flex gap-2 items-center justify-center rounded-lg"
-        >
-          <Pen size={20} /> Add Prescription
-        </button>
+
+        <div className="flex gap-3 sm:flex-row flex-col">
+          {/* Search Bar */}
+          <input
+            type="text"
+            placeholder="Search prescriptions..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="border rounded px-3 py-2 shadow"
+          />
+
+          {/* Dropdown Filter */}
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="border rounded px-3 py-2 shadow"
+          >
+            <option value="all">All Prescriptions</option>
+            <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
+          </select>
+
+          {/* Add Prescription Button */}
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-white text-black font-bold px-4 py-2 flex gap-2 items-center justify-center rounded-lg"
+          >
+            <NotebookPen size={20} color="red" /> Add Prescription
+          </button>
+        </div>
       </div>
 
       {/* Table */}
@@ -119,67 +178,64 @@ const PrescriptionList = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-100">
-            {[...prescriptionData]
-              .sort((a, b) => b.prescription_id - a.prescription_id)
-              .map((prescription) => (
-                <tr
-                  key={prescription.prescription_id}
-                  className="hover:bg-gray-50 even:bg-gray-50"
+            {filteredPrescriptions.map((prescription) => (
+              <tr
+                key={prescription.prescription_id}
+                className="hover:bg-gray-50 even:bg-gray-50"
+              >
+                <td className="px-6 py-4 truncate">
+                  {prescription.patient_name}
+                </td>
+                <td
+                  className="px-6 py-4 max-w-xs truncate"
+                  title={prescription.email}
                 >
-                  <td className="px-6 py-4 truncate">
-                    {prescription.patient_name}
-                  </td>
-                  <td
-                    className="px-6 py-4 max-w-xs truncate"
-                    title={prescription.email}
-                  >
-                    {prescription.email}
-                  </td>
-                  <td className="px-6 py-4">{prescription.phone_number}</td>
-                  <td className="px-6 py-4">
-                    {new Date(prescription.date_of_birth).toLocaleDateString(
-                      "en-IN",
-                      {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      }
-                    )}
-                  </td>
-                  <td className="px-6 py-4">{prescription.concern}</td>
-                  <td
-                    className="px-6 py-4 max-w-xs truncate"
-                    title={prescription.address}
-                  >
-                    {prescription.address}
-                  </td>
-                  <td
-                    className="px-6 py-4 max-w-xs truncate"
-                    title={prescription.message}
-                  >
-                    {prescription.message}
-                  </td>
-                  <td className="px-6 py-4 truncate">
-                    {new Date(prescription.visit_date).toLocaleDateString(
-                      "en-IN",
-                      {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      }
-                    )}
-                  </td>
-                </tr>
-              ))}
+                  {prescription.email}
+                </td>
+                <td className="px-6 py-4">{prescription.phone_number}</td>
+                <td className="px-6 py-4">
+                  {new Date(prescription.date_of_birth).toLocaleDateString(
+                    "en-IN",
+                    {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    }
+                  )}
+                </td>
+                <td className="px-6 py-4">{prescription.concern}</td>
+                <td
+                  className="px-6 py-4 max-w-xs truncate"
+                  title={prescription.address}
+                >
+                  {prescription.address}
+                </td>
+                <td
+                  className="px-6 py-4 max-w-xs truncate"
+                  title={prescription.message}
+                >
+                  {prescription.message}
+                </td>
+                <td className="px-6 py-4 truncate">
+                  {new Date(prescription.visit_date).toLocaleDateString(
+                    "en-IN",
+                    {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    }
+                  )}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
-      {/* ✅ Form Modal */}
+      {/* Add Prescription Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-20">
           <div className="bg-white rounded-lg p-6 w-full max-w-xl shadow-lg relative">
-            {/* Close Button */}
             <button
               onClick={() => setShowModal(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-black"
@@ -195,7 +251,7 @@ const PrescriptionList = () => {
               className="grid grid-cols-1 gap-4"
               onSubmit={handleAddPrescription}
             >
-              {/* Add your form fields here */}
+              {/* Patient Name & Email */}
               <div className="flex gap-4">
                 <div>
                   <label className="text-sm font-semibold">Patient Name</label>
@@ -203,6 +259,7 @@ const PrescriptionList = () => {
                     type="text"
                     placeholder="Patient Name"
                     value={addPrescriptionData.patient_name}
+                    required
                     onChange={(e) =>
                       setAddPrescriptionData({
                         ...addPrescriptionData,
@@ -228,6 +285,8 @@ const PrescriptionList = () => {
                   />
                 </div>
               </div>
+
+              {/* Phone Number & DOB */}
               <div className="flex gap-4">
                 <div className="w-full">
                   <label className="text-sm font-semibold">
@@ -236,6 +295,7 @@ const PrescriptionList = () => {
                   <input
                     type="tel"
                     placeholder="Phone Number"
+                    required
                     value={addPrescriptionData.phone_number}
                     onChange={(e) =>
                       setAddPrescriptionData({
@@ -253,6 +313,7 @@ const PrescriptionList = () => {
                   <input
                     type="date"
                     placeholder="Date Of Birth"
+                    required
                     value={addPrescriptionData.date_of_birth}
                     onChange={(e) =>
                       setAddPrescriptionData({
@@ -264,6 +325,8 @@ const PrescriptionList = () => {
                   />
                 </div>
               </div>
+
+              {/* Concern & Address */}
               <div className="flex gap-4">
                 <div>
                   <label className="text-sm font-semibold">
@@ -272,6 +335,7 @@ const PrescriptionList = () => {
                   <input
                     type="text"
                     placeholder="Concern"
+                    required
                     value={addPrescriptionData.concern}
                     onChange={(e) =>
                       setAddPrescriptionData({
@@ -289,6 +353,7 @@ const PrescriptionList = () => {
                   <input
                     type="text"
                     placeholder="Address"
+                    required
                     value={addPrescriptionData.address}
                     onChange={(e) =>
                       setAddPrescriptionData({
@@ -301,6 +366,7 @@ const PrescriptionList = () => {
                 </div>
               </div>
 
+              {/* Treatment & Medicines */}
               <div className="flex flex-col">
                 <label className="text-sm font-semibold">
                   Doctor Treatment & Medicines
@@ -317,7 +383,7 @@ const PrescriptionList = () => {
                   className="border rounded px-4 py-2 max-w-full"
                 />
               </div>
-              {/* Add other fields as needed */}
+
               <button
                 type="submit"
                 className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"

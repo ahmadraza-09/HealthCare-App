@@ -3,8 +3,11 @@ import axios from "axios";
 
 const AppointmentList = () => {
   const [appointmentData, setAppointmentData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [filterType, setFilterType] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     getAppointmentList();
@@ -15,6 +18,7 @@ const AppointmentList = () => {
       .get("http://localhost:3050/auth/appointmentlist")
       .then((response) => {
         setAppointmentData(response.data.message);
+        setFilteredData(response.data.message);
         setLoading(false);
       })
       .catch((error) => {
@@ -22,6 +26,48 @@ const AppointmentList = () => {
         setLoading(false);
         console.error("Error fetching user data:", error);
       });
+  };
+
+  const handleFilterChange = (value) => {
+    setFilterType(value);
+    applyFilters(value, searchTerm);
+  };
+
+  const handleSearchChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    applyFilters(filterType, term);
+  };
+
+  const applyFilters = (filter, search) => {
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+
+    let data = [...appointmentData];
+
+    if (filter === "today") {
+      data = data.filter((a) => {
+        const appointmentDate = new Date(a.created_at);
+        return appointmentDate.toDateString() === today.toDateString();
+      });
+    } else if (filter === "yesterday") {
+      data = data.filter((a) => {
+        const appointmentDate = new Date(a.created_at);
+        return appointmentDate.toDateString() === yesterday.toDateString();
+      });
+    }
+
+    if (search.trim() !== "") {
+      data = data.filter(
+        (a) =>
+          a.name.toLowerCase().includes(search.toLowerCase()) ||
+          a.mobilenumber.toLowerCase().includes(search.toLowerCase()) ||
+          a.concern.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    setFilteredData(data);
   };
 
   if (loading) {
@@ -41,37 +87,59 @@ const AppointmentList = () => {
   }
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">
-        Appointment List
-      </h2>
+    <div className="sm:p-6 p-4 bg-transparent min-h-screen">
+      <div className="flex justify-between sm:items-center items-start gap-4  mb-4 flex-col sm:flex-row">
+        <h2 className="text-2xl font-bold text-gray-800">Appointment List</h2>
+        <div className="flex sm:items-center items-start gap-3 flex-col sm:flex-row sm:w-fit w-full">
+          <input
+            type="text"
+            placeholder="Search Appointments..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="border rounded px-3 py-1 w-full shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <select
+            value={filterType}
+            onChange={(e) => handleFilterChange(e.target.value)}
+            className="border rounded w-full px-3 py-1 focus:outline-none shadow focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="all">All Appointments</option>
+            <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
+          </select>
+        </div>
+      </div>
+
       <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-blue-600 text-white">
             <tr>
-              <th className="px-6 py-3 text-left font-bold text-white uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-left font-bold text-white uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider truncate">
                 Date of Birth
               </th>
-              <th className="px-6 py-3 text-left font-bold text-white uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
                 Gender
               </th>
-              <th className="px-6 py-3 text-left font-bold text-white uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
                 Concern
               </th>
-              <th className="px-6 py-3 text-left font-bold text-white uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
                 Mobile Number
+              </th>
+              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+                Appointment Date
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {[...appointmentData]
+            {[...filteredData]
               .sort((a, b) => b.id - a.id)
               .map((appointment) => (
                 <tr key={appointment.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-gray-800">
+                  <td className="px-6 py-4 text-gray-800 truncate">
                     {appointment.name}
                   </td>
                   <td className="px-6 py-4 text-gray-800">
@@ -92,6 +160,16 @@ const AppointmentList = () => {
                   </td>
                   <td className="px-6 py-4 text-gray-800">
                     {appointment.mobilenumber}
+                  </td>
+                  <td className="px-6 py-4 text-gray-800">
+                    {new Date(appointment.created_at).toLocaleDateString(
+                      "en-IN",
+                      {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      }
+                    )}
                   </td>
                 </tr>
               ))}

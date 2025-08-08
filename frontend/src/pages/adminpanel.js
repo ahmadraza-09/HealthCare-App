@@ -6,8 +6,7 @@ import Footer from '../components/footer'
 const AdminPanel = () => {
   return (
     <>
-      {<Header/>}
-      {<AdminPanelComp/>}
+      {<AdminPanelComp />}
     </>
   )
 }

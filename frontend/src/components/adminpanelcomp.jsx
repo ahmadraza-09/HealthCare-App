@@ -14,17 +14,17 @@ import {
   BarChart3,
   LogOutIcon,
   SettingsIcon,
-  Pen,
+  NotebookText,
 } from "lucide-react";
 import PrescriptionList from "./prescriptionlist";
 import Settings from "./settings";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 
 const navItems = [
   { label: "Dashboard", icon: <HomeIcon size={20} /> },
   { label: "Patients", icon: <UsersIcon size={20} /> },
   { label: "Appointments", icon: <CalendarIcon size={20} /> },
-  { label: "Prescriptions", icon: <Pen size={20} /> },
+  { label: "Prescriptions", icon: <NotebookText size={20} /> },
   { label: "Queries", icon: <MailIcon size={20} /> },
   { label: "Revenue", icon: <BarChart3 size={20} /> },
   { label: "Settings", icon: <SettingsIcon size={20} /> },
@@ -98,11 +98,11 @@ const AdminPanelComp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f2f6ff] pt-14 to-[#e0e7ff] flex">
+    <div className="min-h-screen bg-gradient-to-br from-[#f2f6ff] to-[#e0e7ff] flex">
       {/* Fixed Sidebar */}
-      <aside className="fixed top-14 left-0 h-[calc(100vh-3.5rem)] w-20 md:w-60 bg-indigo-700 text-white flex flex-col py-6 px-4 space-y-6 shadow-lg z-10">
-        <h1 className="text-2xl md:text-3xl font-bold hidden md:block">
-          HealthCare
+      <aside className="fixed left-0 h-screen w-20 md:w-60 bg-indigo-700 text-white flex flex-col py-4 px-4 space-y-4 shadow-lg z-10">
+        <h1 className="text-2xl md:text-3xl font-bold hidden md:block bg-[#135D66] px-4 py-2 rounded-lg border-white border-2">
+          Health<span className="text-yellow-500">Care</span>
         </h1>
 
         <div className="flex flex-col gap-4">
@@ -110,7 +110,7 @@ const AdminPanelComp = () => {
             <button
               key={item.label}
               onClick={() => handleItemClick(item.label)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-indigo-600 ${
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ${
                 selectedItem === item.label
                   ? "bg-white text-indigo-700 font-semibold"
                   : ""
@@ -134,7 +134,7 @@ const AdminPanelComp = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="ml-20 md:ml-60 flex-1 p-6 overflow-y-auto h-[calc(100vh-3.5rem)]">
+      <main className="ml-20 md:ml-60 flex-1 py-6 px-0 overflow-y-auto h-screen">
         {selectedItem === "Dashboard" && (
           <Dashboard
             userCount={userCount}

@@ -114,7 +114,7 @@ const Dashboard = ({
       </div>
 
       {/* Weekly Chart */}
-      <div className="bg-white shadow rounded-xl p-6">
+      <div className="bg-white shadow rounded-xl p-6 hidden sm:flex sm:flex-col">
         <h3 className="text-lg font-bold text-indigo-900 mb-4">
           Week Appointment Data
         </h3>

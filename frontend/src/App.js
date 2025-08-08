@@ -16,7 +16,8 @@ import './css/footer.css'
 import './css/hero.css'
 import './css/appointment.css'
 import './css/worktutorial.css'
-import { ToastContainer } from 'react-toastify';
+import { Toaster } from 'react-hot-toast';
+import ProtectedRoute from './protectedroute';
 
 function App() {
   return (
@@ -30,20 +31,36 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/appointment" element={<Appointment />} />
-          <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/adminpanel" element={<AdminPanel />} />
+          <Route path="/profile/:id" element={<ProtectedRoute allowedRoles={["patient"]}> <Profile /></ProtectedRoute>} />
+          <Route path="/adminpanel" element={<ProtectedRoute allowedRoles={["doctor"]}>
+            <AdminPanel />
+          </ProtectedRoute>} />
         </Routes>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          gutter={8}
+          containerClassName=""
+          containerStyle={{}}
+          toastOptions={{
+            // Define default options
+            className: '',
+            duration: 5000,
+            removeDelay: 1000,
+            style: {
+              background: '#fff',
+              color: '#000',
+            },
+
+            // Default options for specific types
+            success: {
+              duration: 3000,
+              iconTheme: {
+                primary: 'green',
+                secondary: 'white',
+              },
+            },
+          }}
         />
       </BrowserRouter>
 

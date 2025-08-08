@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -87,7 +87,11 @@ const Login = () => {
           }
           toast.success("Logged In Successfully");
           getFormerror("");
-          navigate("/");
+          if (role === "doctor") {
+            navigate("/adminpanel");
+          } else {
+            navigate("/");
+          }
         }
       } else {
         const newUser = {
