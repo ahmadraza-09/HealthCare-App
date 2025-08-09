@@ -15,6 +15,7 @@ import {
   LogOutIcon,
   SettingsIcon,
   NotebookText,
+  Heart,
 } from "lucide-react";
 import PrescriptionList from "./prescriptionlist";
 import Settings from "./settings";
@@ -101,9 +102,18 @@ const AdminPanelComp = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#f2f6ff] to-[#e0e7ff] flex">
       {/* Fixed Sidebar */}
       <aside className="fixed left-0 h-screen w-20 md:w-60 bg-indigo-700 text-white flex flex-col py-4 px-4 space-y-4 shadow-lg z-10">
-        <h1 className="text-2xl md:text-3xl font-bold hidden md:block bg-[#135D66] px-4 py-2 rounded-lg border-white border-2">
+        {/* <h1 className="text-2xl md:text-3xl font-bold hidden md:block bg-[#135D66] px-4 py-2 rounded-lg border-white border-2">
           Health<span className="text-yellow-500">Care</span>
-        </h1>
+        </h1> */}
+
+        <div className="flex items-center space-x-2 cursor-pointer bg-white p-2 rounded-lg">
+          <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
+            <Heart className="w-6 h-6 text-white" />
+          </div>
+          <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+            MediCare+
+          </span>
+        </div>
 
         <div className="flex flex-col gap-4">
           {navItems.map((item) => (

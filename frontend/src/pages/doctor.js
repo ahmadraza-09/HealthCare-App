@@ -1,15 +1,15 @@
 import React from 'react'
 import Header from '../components/header'
 import Footer from '../components/footer'
-import DoctorPage from '../components/doctorpage'
+import DoctorSection from '../components/doctorsection'
 
 
 const Doctor = () => {
   return (
     <>
-      {<Header/>}
-      {<DoctorPage/>}
-      {<Footer/>}
+      {<Header />}
+      {<DoctorSection />}
+      {<Footer />}
     </>
   )
 }

@@ -1,20 +1,85 @@
 import React from "react";
-import DoctorCard from "./doctorcard";
+import { Star } from "lucide-react";
 
 const DoctorSection = () => {
-  return (
-    <section className="py-12 bg-gray-50">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl font-bold text-teal-700">Our Doctors</h2>
-        <p className="text-gray-600 mt-2">
-          Meet our team of experienced medical professionals
-        </p>
-      </div>
+  const doctors = [
+    {
+      name: "Dr. Emily Rodriguez",
+      specialty: "Cardiologist",
+      experience: "15+ years",
+      image:
+        "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=400",
+    },
+    {
+      name: "Dr. James Mitchell",
+      specialty: "Neurologist",
+      experience: "12+ years",
+      image:
+        "https://images.pexels.com/photos/6129967/pexels-photo-6129967.jpeg?auto=compress&cs=tinysrgb&w=400",
+    },
+    {
+      name: "Dr. Lisa Thompson",
+      specialty: "Pediatrician",
+      experience: "18+ years",
+      image:
+        "https://images.pexels.com/photos/5327580/pexels-photo-5327580.jpeg?auto=compress&cs=tinysrgb&w=400",
+    },
+  ];
 
-      <div className="max-w-6xl mx-auto px-4 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <DoctorCard />
-        <DoctorCard />
-        <DoctorCard />
+  return (
+    <section id="doctors" className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            Meet Our{" "}
+            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Experts
+            </span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Our team of renowned specialists brings decades of experience and a
+            commitment to excellence in patient care.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {doctors.map((doctor, index) => (
+            <div
+              key={index}
+              className="group bg-gradient-to-b from-white to-gray-50 rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-gray-100"
+            >
+              <div className="relative mb-6">
+                <img
+                  src={doctor.image}
+                  alt={doctor.name}
+                  className="w-32 h-32 rounded-full object-cover mx-auto border-4 border-white shadow-lg group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-medium">
+                  {doctor.experience}
+                </div>
+              </div>
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  {doctor.name}
+                </h3>
+                <p className="text-blue-600 font-semibold mb-4">
+                  {doctor.specialty}
+                </p>
+                <div className="flex justify-center space-x-1 mb-6">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-5 h-5 text-yellow-400 fill-current"
+                    />
+                  ))}
+                </div>
+                <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300">
+                  Book Appointment
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

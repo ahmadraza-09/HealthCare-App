@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
-  const id = params.id;
 
   const [name, getName] = useState("");
   const [dateofbirth, getDateofbirth] = useState("");
@@ -34,20 +33,12 @@ const Login = () => {
       getLinktext("Register");
       getTextlink("Not Registered Yet?");
       getHeading("Sign In");
-      getName("Ahmad");
-      getDateofbirth("2004-08-20");
-      getGender("male");
-      getEmail("ahmad@gmail.com");
-      getMobilenumber("9297829642");
-    } else {
-      getIdentifier("9292929292");
     }
-  }, []);
+  }, [location.pathname]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    // Validations
     if (changebutton !== "Login") {
       if (!name.match(nameregex)) return getFormerror("Invalid Name");
       if (!dateofbirth) return getFormerror("Enter DOB");
@@ -72,8 +63,12 @@ const Login = () => {
 
         const { data } = await axios.post(endpoint, loginData);
 
-        if (data.message.includes("Invalid")) {
+        if (
+          typeof data.message === "string" &&
+          data.message.includes("Invalid")
+        ) {
           getFormerror(data.message);
+          return;
         } else {
           localStorage.setItem("token", data.token);
           localStorage.setItem("role", role);
@@ -87,11 +82,7 @@ const Login = () => {
           }
           toast.success("Logged In Successfully");
           getFormerror("");
-          if (role === "doctor") {
-            navigate("/adminpanel");
-          } else {
-            navigate("/");
-          }
+          navigate(role === "doctor" ? "/adminpanel" : "/");
         }
       } else {
         const newUser = {
@@ -107,150 +98,161 @@ const Login = () => {
           newUser
         );
 
-        if (data.message.includes("exists")) {
+        if (
+          typeof data.message === "string" &&
+          data.message.includes("exists")
+        ) {
           getFormerror(data.message);
+          return;
         } else {
           getFormerror("");
           navigate("/login");
-          toast.success("Registerred In Successfully");
+          toast.success("Registered Successfully");
         }
       }
     } catch (err) {
-      getFormerror("Something went wrong. Try again.");
+      if (err.response && err.response.data && err.response.data.message) {
+        getFormerror(err.response.data.message);
+      } else {
+        getFormerror("Something went wrong. Try again.");
+      }
       console.error(err);
     }
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen pt-14">
-      <div className="md:w-1/2 bg-blue-100 flex items-center justify-center p-8">
-        <img
-          src="/images/slider2.png"
-          alt="Illustration"
-          className="max-w-full h-auto"
-        />
-      </div>
-      <div className="md:w-1/2 p-6 md:p-12 bg-white flex flex-col justify-center">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-2">{heading}</h2>
-        {changebutton !== "Register" && (
-          <h3 className="text-lg text-gray-600 mb-6">
-            Hello! <span className="text-blue-600 font-semibold">Welcome</span>{" "}
-            Back 😎
-          </h3>
-        )}
+    <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Heading */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">
+            {heading}{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              {role === "doctor" ? "Doctor" : "Patient"}
+            </span>
+          </h2>
+          {changebutton !== "Register" && (
+            <p className="text-gray-600 mt-2">
+              Hello!{" "}
+              <span className="text-blue-600 font-semibold">Welcome</span> Back
+              😎
+            </p>
+          )}
+        </div>
 
-        {formerror && <div className="text-red-600 mb-4">{formerror}</div>}
-
-        <form onSubmit={submitHandler} className="space-y-4">
-          {changebutton !== "Login" && (
-            <>
-              <InputField
-                label="Name"
-                value={name}
-                onChange={(e) => getName(e.target.value)}
-                placeholder="Enter your name"
-              />
-              <InputField
-                label="Date of Birth"
-                type="date"
-                value={dateofbirth}
-                onChange={(e) => getDateofbirth(e.target.value)}
-              />
-              <SelectField
-                label="Gender"
-                value={gender}
-                onChange={(e) => getGender(e.target.value)}
-                options={["male", "female", "other"]}
-              />
-              <InputField
-                label="Email"
-                type="email"
-                value={email}
-                onChange={(e) => getEmail(e.target.value)}
-                placeholder="Email"
-              />
-              <InputField
-                label="Mobile Number"
-                value={mobilenumber}
-                onChange={(e) => getMobilenumber(e.target.value)}
-                placeholder="Mobile Number"
-              />
-            </>
+        {/* Form Card */}
+        <div className="bg-white rounded-3xl p-8 shadow-2xl border border-gray-100 max-w-md mx-auto">
+          {formerror && (
+            <p className="text-red-600 text-sm mb-4 text-center">{formerror}</p>
           )}
 
-          {changebutton === "Login" && (
+          <form className="space-y-6" onSubmit={submitHandler}>
+            {changebutton !== "Login" && (
+              <>
+                <InputField
+                  label="Name"
+                  value={name}
+                  onChange={(e) => getName(e.target.value)}
+                />
+                <InputField
+                  label="Date of Birth"
+                  type="date"
+                  value={dateofbirth}
+                  onChange={(e) => getDateofbirth(e.target.value)}
+                />
+                <SelectField
+                  label="Gender"
+                  value={gender}
+                  onChange={(e) => getGender(e.target.value)}
+                  options={["male", "female", "other"]}
+                />
+                <InputField
+                  label="Email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => getEmail(e.target.value)}
+                />
+                <InputField
+                  label="Mobile Number"
+                  value={mobilenumber}
+                  onChange={(e) => getMobilenumber(e.target.value)}
+                />
+              </>
+            )}
+
+            {changebutton === "Login" && (
+              <InputField
+                label="Email or Mobile"
+                value={identifier}
+                onChange={(e) => getIdentifier(e.target.value)}
+              />
+            )}
+
             <InputField
-              label="Email or Mobile"
-              value={identifier}
-              onChange={(e) => getIdentifier(e.target.value)}
-              placeholder="Email or Mobile"
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => getPassword(e.target.value)}
             />
-          )}
 
-          <InputField
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => getPassword(e.target.value)}
-            placeholder="Password"
-          />
+            {changebutton === "Login" && (
+              <SelectField
+                label="Login As"
+                value={role}
+                onChange={(e) => getRole(e.target.value)}
+                options={["patient", "doctor"]}
+              />
+            )}
 
-          {changebutton === "Login" && (
-            <SelectField
-              label="Login As"
-              value={role}
-              onChange={(e) => getRole(e.target.value)}
-              options={["patient", "doctor"]}
-            />
-          )}
-
-          <div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               {changebutton}
             </button>
-          </div>
-        </form>
+          </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-gray-600">{textlink}</p>
-          <button
-            onClick={() => navigate(`/${linktext.toLowerCase()}`)}
-            className="mt-2 text-blue-600 hover:underline"
-          >
-            {linktext}
-          </button>
+          <div className="mt-6 text-center">
+            <p className="text-gray-600">{textlink}</p>
+            <button
+              onClick={() => navigate(`/${linktext.toLowerCase()}`)}
+              className="mt-2 text-blue-600 hover:underline"
+            >
+              {linktext}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
 export default Login;
 
-// Reusable input component
-const InputField = ({ label, type = "text", value, onChange, placeholder }) => (
+const InputField = ({ label, type = "text", value, onChange }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-700">{label}</label>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      {label}
+    </label>
     <input
       type={type}
       value={value}
       onChange={onChange}
-      placeholder={placeholder}
-      className="mt-1 block w-full px-4 py-2 border rounded shadow-sm focus:ring focus:ring-blue-200 focus:outline-none"
+      placeholder={`Enter ${label}`}
+      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
     />
   </div>
 );
 
 const SelectField = ({ label, value, onChange, options }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-700">{label}</label>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      {label}
+    </label>
     <select
       value={value}
       onChange={onChange}
-      className="mt-1 block w-full px-4 py-2 border rounded shadow-sm focus:ring focus:ring-blue-200 focus:outline-none"
+      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
     >
       <option value="">Select {label}</option>
       {options.map((opt) => (

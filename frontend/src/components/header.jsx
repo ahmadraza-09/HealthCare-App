@@ -1,120 +1,182 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Menu, X, Heart } from "lucide-react";
 
 const Header = () => {
   const navigate = useNavigate();
-
-  const [showMenu, setShowMenu] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const role = localStorage.getItem("role");
   const isLoggedIn = localStorage.getItem("token") !== null;
   const id = localStorage.getItem("id");
 
-  const showMenuFunc = () => {
-    setShowMenu(!showMenu);
-  };
-
   return (
-    <>
-      <nav className="w-full h-[60px] bg-[#135D66] flex px-5 items-center justify-between text-[#E3FEF7] fixed z-10">
-        <div className="logo text-[#FFF7FC] text-2xl font-semibold flex items-center justify-start gap-5">
-          <label htmlFor="check" onClick={showMenuFunc} className="sm:hidden">
-            <i class="fa-solid fa-bars "></i>
-          </label>
-          <h2
-            onClick={() => {
-              navigate("/");
-            }}
-            className="cursor-pointer"
+    <nav
+      className={`fixed top-0 w-full z-50 transition-all duration-300 
+      bg-white/90 backdrop-blur-md shadow-lg`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div
+            onClick={() => navigate("/")}
+            className="flex items-center space-x-2 cursor-pointer"
           >
-            Health<span className="text-yellow-500">Care</span>
-          </h2>
-        </div>
-
-        <ul
-          className={`menu w-full h-screen sm:static sm:h-0 sm:w-fit sm:flex-row items-center justify-start gap-8 sm:text-lg font-normal sm:flex absolute top-[60px] py-5 px-5 left-0 bg-[#135D66] text-xl flex flex-col ${
-            showMenu === true ? "flex" : "hidden"
-          }`}
-        >
-          <li
-            onClick={() => {
-              navigate("/");
-            }}
-            className="cursor-pointer"
-          >
-            Home
-          </li>
-          <li
-            onClick={() => {
-              navigate("/doctor");
-            }}
-            className="cursor-pointer"
-          >
-            Doctor
-          </li>
-          <li
-            onClick={() => {
-              navigate("/about");
-            }}
-            className="cursor-pointer"
-          >
-            About
-          </li>
-          <li
-            onClick={() => {
-              navigate("/contact");
-            }}
-            className="cursor-pointer"
-          >
-            Contact
-          </li>
-          {/* {isLoggedIn && ( */}
-          <li
-            onClick={() => {
-              navigate("/appointment");
-            }}
-            className="cursor-pointer"
-          >
-            Book Appointment
-          </li>
-          {/* )} */}
-        </ul>
-
-        <div className="login">
-          {isLoggedIn && role === "patient" ? (
-            <div
-              className="header-profile"
-              onClick={() => {
-                navigate(`/profile/${id}`);
-              }}
-            >
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                alt=""
-                className="w-10 cursor-pointer"
-              />
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
+              <Heart className="w-6 h-6 text-white" />
             </div>
-          ) : isLoggedIn && role === "doctor" ? (
-            <div
-              className="admin-panel"
-              onClick={() => {
-                navigate(`/adminpanel`);
-              }}
-            >
-              <button>Admin Panel</button>
-            </div>
-          ) : (
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+              MediCare+
+            </span>
+          </div>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-8">
             <button
-              onClick={() => {
-                navigate("/login");
-              }}
+              onClick={() => navigate("/")}
+              className="text-gray-800 hover:text-blue-600 transition-colors"
             >
-              Login
+              Home
             </button>
-          )}
+            <button
+              onClick={() => navigate("/doctor")}
+              className="text-gray-800 hover:text-blue-600 transition-colors"
+            >
+              Doctor
+            </button>
+            <button
+              onClick={() => navigate("/services")}
+              className="text-gray-800 hover:text-blue-600 transition-colors"
+            >
+              Services
+            </button>
+            <button
+              onClick={() => navigate("/about")}
+              className="text-gray-800 hover:text-blue-600 transition-colors"
+            >
+              About
+            </button>
+            <button
+              onClick={() => navigate("/contact")}
+              className="text-gray-800 hover:text-blue-600 transition-colors"
+            >
+              Contact
+            </button>
+            <button
+              onClick={() => navigate("/appointment")}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200"
+            >
+              Book Appointment
+            </button>
+
+            {/* Login/Profile/Admin */}
+            {isLoggedIn && role === "patient" ? (
+              <img
+                onClick={() => navigate(`/profile/${id}`)}
+                src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                alt="Profile"
+                className="w-10 h-10 rounded-full cursor-pointer border-2 border-blue-600"
+              />
+            ) : isLoggedIn && role === "doctor" ? (
+              <button
+                onClick={() => navigate("/adminpanel")}
+                className="ml-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all"
+              >
+                Admin Panel
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="ml-4 text-blue-600 border border-blue-600 px-4 py-1 font-medium rounded-lg hover:bg-blue-600 hover:text-white transition-all"
+              >
+                Login
+              </button>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-gray-800 hover:text-blue-600 p-2"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
-      </nav>
-    </>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-white/95 backdrop-blur-md border-t">
+          <div className="px-4 py-4 flex flex-col space-y-4">
+            <button
+              onClick={() => navigate("/")}
+              className="text-gray-800 hover:text-blue-600"
+            >
+              Home
+            </button>
+            <button
+              onClick={() => navigate("/doctor")}
+              className="text-gray-800 hover:text-blue-600"
+            >
+              Doctor
+            </button>
+            <button
+              onClick={() => navigate("/services")}
+              className="text-gray-800 hover:text-blue-600"
+            >
+              Services
+            </button>
+            <button
+              onClick={() => navigate("/about")}
+              className="text-gray-800 hover:text-blue-600"
+            >
+              About
+            </button>
+            <button
+              onClick={() => navigate("/contact")}
+              className="text-gray-800 hover:text-blue-600"
+            >
+              Contact
+            </button>
+            <button
+              onClick={() => navigate("/appointment")}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-full hover:from-blue-700 hover:to-blue-800"
+            >
+              Book Appointment
+            </button>
+
+            {/* Login/Profile/Admin for Mobile */}
+            {isLoggedIn && role === "patient" ? (
+              <div className="flex items-center space-x-3 mt-4">
+                <img
+                  onClick={() => navigate(`/profile/${id}`)}
+                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full cursor-pointer border-2 border-blue-600"
+                />
+                <span className="text-gray-800 font-medium">My Profile</span>
+              </div>
+            ) : isLoggedIn && role === "doctor" ? (
+              <button
+                onClick={() => navigate("/adminpanel")}
+                className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all"
+              >
+                Admin Panel
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="mt-4 text-blue-600 border border-blue-600 px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition-all"
+              >
+                Login
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </nav>
   );
 };
 

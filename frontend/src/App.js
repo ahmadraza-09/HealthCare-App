@@ -9,15 +9,9 @@ import Appointment from './pages/appointment';
 import Profile from './pages/profile';
 import AdminPanel from './pages/adminpanel';
 import './App.css';
-import './css/doctorcard.css'
-import './css/header.css'
-import './css/footer.css'
-import './css/footer.css'
-import './css/hero.css'
-import './css/appointment.css'
-import './css/worktutorial.css'
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './protectedroute';
+import Services from './pages/services';
 
 function App() {
   return (
@@ -30,6 +24,7 @@ function App() {
           <Route path="/doctor" element={<Doctor />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/services" element={<Services />} />
           <Route path="/appointment" element={<Appointment />} />
           <Route path="/profile/:id" element={<ProtectedRoute allowedRoles={["patient"]}> <Profile /></ProtectedRoute>} />
           <Route path="/adminpanel" element={<ProtectedRoute allowedRoles={["doctor"]}>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const AppointmentPage = () => {
   const [name, getName] = useState("");
@@ -42,7 +43,7 @@ const AppointmentPage = () => {
         ) {
           getFormerror(msg);
         } else {
-          alert("Appointment Booked Successfully");
+          toast.success("Appointment Booked Successfully");
           getName("");
           getDateofbirth("");
           getGender("");
@@ -57,55 +58,79 @@ const AppointmentPage = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-cyan-100 via-white to-blue-100 min-h-screen py-10 px-4 pt-32">
-      <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-10 bg-white rounded-2xl shadow-lg p-8">
-        {/* Left Image */}
-        <div className="w-full lg:w-1/2">
-          <img
-            src="images/appointment2.png"
-            alt="Appointment"
-            className="w-full h-auto rounded-xl"
-          />
+    <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Heading */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            Book Your{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+              Appointment
+            </span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Schedule a consultation with our experienced doctors in just a few
+            easy steps.
+          </p>
         </div>
 
-        {/* Form Section */}
-        <div className="w-full lg:w-1/2">
-          <h2 className="text-3xl font-bold text-[#135D66] mb-6 text-center">
-            Book Your Appointment
-          </h2>
-
+        {/* Form Card */}
+        <div className="bg-white rounded-3xl p-8 shadow-2xl border border-gray-100 max-w-3xl mx-auto">
           {formerror && (
-            <p className="text-red-600 text-sm text-center mb-4">{formerror}</p>
+            <p className="text-red-600 text-sm mb-4 text-center">{formerror}</p>
           )}
 
-          <form onSubmit={submitHandler} className="space-y-4">
-            <div className="flex flex-col">
-              <label className="font-medium">Name</label>
+          <form className="space-y-6" onSubmit={submitHandler}>
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Name
+              </label>
               <input
                 type="text"
-                className="border rounded-lg px-4 py-2"
-                placeholder="Name"
                 value={name}
                 onChange={(e) => getName(e.target.value)}
+                placeholder="Enter your name"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               />
             </div>
 
-            <div className="flex flex-col">
-              <label className="font-medium">Date of Birth</label>
+            {/* Mobile Number */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Mobile Number
+              </label>
+              <input
+                type="text"
+                value={mobilenumber}
+                onChange={(e) => getMobilenumber(e.target.value)}
+                placeholder="Enter Mobile Number"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              />
+            </div>
+
+            {/* Date of Birth */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Date of Birth
+              </label>
               <input
                 type="date"
-                className="border rounded-lg px-4 py-2"
                 value={dateofbirth}
                 onChange={(e) => getDateofbirth(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               />
             </div>
 
-            <div className="flex flex-col">
-              <label className="font-medium">Gender</label>
+            {/* Gender */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Gender
+              </label>
               <select
-                className="border rounded-lg px-4 py-2"
                 value={gender}
                 onChange={(e) => getGender(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               >
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
@@ -114,12 +139,15 @@ const AppointmentPage = () => {
               </select>
             </div>
 
-            <div className="flex flex-col">
-              <label className="font-medium">Health Concern</label>
+            {/* Health Concern */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Health Concern
+              </label>
               <select
-                className="border rounded-lg px-4 py-2"
                 value={concern}
                 onChange={(e) => getConcern(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               >
                 <option value="">Select</option>
                 <option value="Headache">Headache</option>
@@ -130,27 +158,17 @@ const AppointmentPage = () => {
               </select>
             </div>
 
-            <div className="flex flex-col">
-              <label className="font-medium">Mobile Number</label>
-              <input
-                type="text"
-                className="border rounded-lg px-4 py-2"
-                placeholder="Enter Mobile Number"
-                value={mobilenumber}
-                onChange={(e) => getMobilenumber(e.target.value)}
-              />
-            </div>
-
+            {/* Submit Button */}
             <button
               type="submit"
-              className="bg-[#135D66] text-white w-full py-2 rounded-lg mt-4 hover:bg-[#104c55] transition"
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               Book Now
             </button>
           </form>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
