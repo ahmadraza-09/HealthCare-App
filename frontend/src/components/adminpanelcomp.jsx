@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import PrescriptionList from "./prescriptionlist";
 import Settings from "./settings";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const navItems = [
   { label: "Dashboard", icon: <HomeIcon size={20} /> },
@@ -107,10 +107,10 @@ const AdminPanelComp = () => {
         </h1> */}
 
         <div className="flex items-center space-x-2 cursor-pointer bg-white p-2 rounded-lg">
-          <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
+          <div className="w-10 md:h-10 h-8 bg-gradient-to-r from-blue-600 to-blue-800 md:rounded-xl rounded-md flex items-center justify-center">
             <Heart className="w-6 h-6 text-white" />
           </div>
-          <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+          <span className="hidden md:block text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
             MediCare+
           </span>
         </div>

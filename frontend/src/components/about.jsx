@@ -35,10 +35,10 @@ const About = () => {
                 Leading Healthcare Excellence Since 2008
               </h2>
               <p className="text-xl text-gray-600 leading-relaxed">
-                At HealthCare Plus, we're committed to providing exceptional
-                medical care with a personal touch. Our state-of-the-art
-                facility combines cutting-edge technology with compassionate
-                healthcare professionals.
+                At HealthCare Plus, we&apos;re committed to providing
+                exceptional medical care with a personal touch. Our
+                state-of-the-art facility combines cutting-edge technology with
+                compassionate healthcare professionals.
               </p>
             </div>
 

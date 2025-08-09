@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Heart } from "lucide-react";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const role = localStorage.getItem("role");
@@ -31,34 +32,48 @@ const Header = () => {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-8">
             <button
               onClick={() => navigate("/")}
-              className="text-gray-800 hover:text-blue-600 transition-colors"
+              className={`text-black hover:text-blue-600 transition-colors ${
+                location.pathname === "/" ? "text-blue-600 font-bold" : ""
+              }`}
             >
               Home
             </button>
             <button
               onClick={() => navigate("/doctor")}
-              className="text-gray-800 hover:text-blue-600 transition-colors"
+              className={`text-black hover:text-blue-600 transition-colors ${
+                location.pathname === "/doctor" ? "text-blue-600 font-bold" : ""
+              }`}
             >
               Doctor
             </button>
             <button
               onClick={() => navigate("/services")}
-              className="text-gray-800 hover:text-blue-600 transition-colors"
+              className={`text-black hover:text-blue-600 transition-colors ${
+                location.pathname === "/services"
+                  ? "text-blue-600 font-bold"
+                  : ""
+              }`}
             >
               Services
             </button>
             <button
               onClick={() => navigate("/about")}
-              className="text-gray-800 hover:text-blue-600 transition-colors"
+              className={`text-black hover:text-blue-600 transition-colors ${
+                location.pathname === "/about" ? "text-blue-600 font-bold" : ""
+              }`}
             >
               About
             </button>
             <button
               onClick={() => navigate("/contact")}
-              className="text-gray-800 hover:text-blue-600 transition-colors"
+              className={`text-black hover:text-blue-600 transition-colors ${
+                location.pathname === "/contact"
+                  ? "text-blue-600 font-bold"
+                  : ""
+              }`}
             >
               Contact
             </button>
@@ -95,7 +110,7 @@ const Header = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-800 hover:text-blue-600 p-2"
@@ -108,41 +123,53 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-md border-t">
+        <div className="lg:hidden bg-white/95 backdrop-blur-md border-t">
           <div className="px-4 py-4 flex flex-col space-y-4">
             <button
               onClick={() => navigate("/")}
-              className="text-gray-800 hover:text-blue-600"
+              className={`text-black hover:text-blue-600 transition-colors ${
+                location.pathname === "/" ? "text-blue-600 font-bold" : ""
+              }`}
             >
               Home
             </button>
             <button
               onClick={() => navigate("/doctor")}
-              className="text-gray-800 hover:text-blue-600"
+              className={`text-black hover:text-blue-600 transition-colors ${
+                location.pathname === "/doctor" ? "text-blue-600 font-bold" : ""
+              }`}
             >
               Doctor
             </button>
             <button
               onClick={() => navigate("/services")}
-              className="text-gray-800 hover:text-blue-600"
+              className={`text-black hover:text-blue-600 transition-colors ${
+                location.pathname === "/services"
+                  ? "text-blue-600 font-bold"
+                  : ""
+              }`}
             >
               Services
             </button>
             <button
               onClick={() => navigate("/about")}
-              className="text-gray-800 hover:text-blue-600"
+              className={`text-black hover:text-blue-600 transition-colors ${
+                location.pathname === "/about" ? "text-blue-600 font-bold" : ""
+              }`}
             >
               About
             </button>
             <button
               onClick={() => navigate("/contact")}
-              className="text-gray-800 hover:text-blue-600"
+              className={`text-black hover:text-blue-600 transition-colors ${
+                location.pathname === "/about" ? "text-blue-600 font-bold" : ""
+              }`}
             >
               Contact
             </button>
             <button
               onClick={() => navigate("/appointment")}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-full hover:from-blue-700 hover:to-blue-800"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-blue-800"
             >
               Book Appointment
             </button>

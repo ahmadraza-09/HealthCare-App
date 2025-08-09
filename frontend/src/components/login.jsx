@@ -1,12 +1,12 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const params = useParams();
 
   const [name, getName] = useState("");
   const [dateofbirth, getDateofbirth] = useState("");
@@ -82,7 +82,7 @@ const Login = () => {
           }
           toast.success("Logged In Successfully");
           getFormerror("");
-          navigate(role === "doctor" ? "/adminpanel" : "/");
+          navigate(role === "doctor" ? "/dashboard" : "/");
         }
       } else {
         const newUser = {

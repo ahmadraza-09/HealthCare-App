@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/home';
 import Login from './pages/login';
@@ -27,7 +28,7 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/appointment" element={<Appointment />} />
           <Route path="/profile/:id" element={<ProtectedRoute allowedRoles={["patient"]}> <Profile /></ProtectedRoute>} />
-          <Route path="/adminpanel" element={<ProtectedRoute allowedRoles={["doctor"]}>
+          <Route path="/dashboard" element={<ProtectedRoute allowedRoles={["doctor"]}>
             <AdminPanel />
           </ProtectedRoute>} />
         </Routes>

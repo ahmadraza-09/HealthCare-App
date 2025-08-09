@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import axios from "axios";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";

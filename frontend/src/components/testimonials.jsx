@@ -71,7 +71,7 @@ const TestimonialsSection = () => {
             </div>
 
             <blockquote className="text-xl lg:text-2xl text-gray-700 text-center mb-8 leading-relaxed">
-              "{testimonials[currentTestimonial].content}"
+              &quot;{testimonials[currentTestimonial].content}&quot;
             </blockquote>
 
             <div className="text-center">
