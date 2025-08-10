@@ -1,28 +1,30 @@
 import React from "react";
 import { Star } from "lucide-react";
+import doctor_image1 from "../assets/doctor1.jpg";
+import doctor_image2 from "../assets/doctor1.avif";
+import doctor_image3 from "../assets/doctor3.jpg";
+import { useNavigate } from "react-router-dom";
 
 const DoctorSection = () => {
+  const navigate = useNavigate();
   const doctors = [
     {
       name: "Dr. Emily Rodriguez",
       specialty: "Cardiologist",
       experience: "15+ years",
-      image:
-        "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: doctor_image1,
     },
     {
       name: "Dr. James Mitchell",
       specialty: "Neurologist",
       experience: "12+ years",
-      image:
-        "https://images.pexels.com/photos/6129967/pexels-photo-6129967.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: doctor_image2,
     },
     {
       name: "Dr. Lisa Thompson",
       specialty: "Pediatrician",
       experience: "18+ years",
-      image:
-        "https://images.pexels.com/photos/5327580/pexels-photo-5327580.jpeg?auto=compress&cs=tinysrgb&w=400",
+      image: doctor_image3,
     },
   ];
 
@@ -81,7 +83,10 @@ const DoctorSection = () => {
                     />
                   ))}
                 </div>
-                <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300">
+                <button
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300"
+                  onClick={() => navigate("/appointment")}
+                >
                   Book Appointment
                 </button>
               </div>

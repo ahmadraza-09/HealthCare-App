@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Heart, Moon, Sun } from "lucide-react";
 import { useTheme } from "../contexts/themeContext";
+import TopBanner from "./top-banner";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -15,137 +16,181 @@ const Header = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 
+    <div className="flex flex-row">
+      {/* Top Banner */}
+      {/* <div className="fixed top-0 left-0 w-full z-50">
+        <TopBanner />
+      </div> */}
+
+      {/* Header */}
+      <nav
+        className={`fixed top-0 w-full z-50 transition-all duration-300 
       bg-white/90 dark:bg-gray-900 dark:text-white backdrop-blur-md shadow-lg`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div
-            onClick={() => navigate("/")}
-            className="flex items-center space-x-2 cursor-pointer"
-          >
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
-              <Heart className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-              MediCare+
-            </span>
-          </div>
-
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center space-x-8">
-            <button
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div
               onClick={() => navigate("/")}
-              className={`hover:text-blue-600 transition-colors ${
-                location.pathname === "/" ? "text-blue-600 font-bold" : ""
-              }`}
+              className="flex items-center space-x-2 cursor-pointer"
             >
-              Home
-            </button>
-            <button
-              onClick={() => navigate("/doctor")}
-              className={`hover:text-blue-600 transition-colors ${
-                location.pathname === "/doctor" ? "text-blue-600 font-bold" : ""
-              }`}
-            >
-              Doctor
-            </button>
-            <button
-              onClick={() => navigate("/services")}
-              className={`hover:text-blue-600 transition-colors ${
-                location.pathname === "/services"
-                  ? "text-blue-600 font-bold"
-                  : ""
-              }`}
-            >
-              Services
-            </button>
-            <button
-              onClick={() => navigate("/about")}
-              className={`hover:text-blue-600 transition-colors ${
-                location.pathname === "/about" ? "text-blue-600 font-bold" : ""
-              }`}
-            >
-              About
-            </button>
-            <button
-              onClick={() => navigate("/contact")}
-              className={`hover:text-blue-600 transition-colors ${
-                location.pathname === "/contact"
-                  ? "text-blue-600 font-bold"
-                  : ""
-              }`}
-            >
-              Contact
-            </button>
-            <button
-              onClick={() => navigate("/appointment")}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200"
-            >
-              Book Appointment
-            </button>
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
+                <Heart className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                MediCare+
+              </span>
+            </div>
 
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-            >
-              {theme === "light" ? (
-                <Moon className="w-5 h-5" />
-              ) : (
-                <Sun className="w-5 h-5" />
-              )}
-            </button>
+            {/* Desktop Menu */}
+            <div className="hidden lg:flex items-center space-x-8">
+              {[
+                { label: "Home", path: "/" },
+                { label: "Doctor", path: "/doctor" },
+                { label: "Services", path: "/services" },
+                { label: "About", path: "/about" },
+                { label: "Contact", path: "/contact" },
+              ].map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => navigate(item.path)}
+                  className={`text-black dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors ${
+                    location.pathname === item.path
+                      ? "text-blue-600 dark:text-blue-400 font-bold"
+                      : ""
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
 
-            {/* Login/Profile/Admin */}
-            {isLoggedIn && role === "patient" ? (
-              <img
-                onClick={() => navigate(`/profile/${id}`)}
-                src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                alt="Profile"
-                className="w-10 h-10 rounded-full cursor-pointer border-2 border-blue-600"
-              />
-            ) : isLoggedIn && role === "doctor" ? (
               <button
-                onClick={() => navigate("/adminpanel")}
-                className="ml-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all"
+                onClick={() => navigate("/appointment")}
+                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200"
               >
-                Admin Panel
+                Book Appointment
               </button>
-            ) : (
-              <button
-                onClick={() => navigate("/login")}
-                className="ml-4 text-blue-600 border border-blue-600 px-4 py-1 font-medium rounded-lg hover:bg-blue-600 hover:text-white transition-all"
-              >
-                Login
-              </button>
-            )}
-          </div>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center gap-3">
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-            >
-              {theme === "light" ? (
-                <Moon className="w-5 h-5" />
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+              >
+                {theme === "light" ? (
+                  <Moon className="w-5 h-5" />
+                ) : (
+                  <Sun className="w-5 h-5" />
+                )}
+              </button>
+
+              {isLoggedIn && role === "patient" ? (
+                <img
+                  onClick={() => navigate(`/profile/${id}`)}
+                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full cursor-pointer border-2 border-blue-600"
+                />
+              ) : isLoggedIn && role === "doctor" ? (
+                <button
+                  onClick={() => navigate("/adminpanel")}
+                  className="ml-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all"
+                >
+                  Admin Panel
+                </button>
               ) : (
-                <Sun className="w-5 h-5" />
+                <button
+                  onClick={() => navigate("/login")}
+                  className="ml-4 text-blue-600 border border-blue-600 px-4 py-1 font-medium rounded-lg hover:bg-blue-600 hover:text-white transition-all"
+                >
+                  Login
+                </button>
               )}
-            </button>
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-800 dark:text-white hover:text-blue-600 p-2"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden flex items-center gap-3">
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+              >
+                {theme === "light" ? (
+                  <Moon className="w-5 h-5" />
+                ) : (
+                  <Sun className="w-5 h-5" />
+                )}
+              </button>
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 p-2"
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="lg:hidden bg-white/95 dark:bg-gray-800 dark:text-gray-200 backdrop-blur-md border-t dark:border-gray-700">
+            <div className="px-4 py-4 flex flex-col space-y-4">
+              {[
+                { label: "Home", path: "/" },
+                { label: "Doctor", path: "/doctor" },
+                { label: "Services", path: "/services" },
+                { label: "About", path: "/about" },
+                { label: "Contact", path: "/contact" },
+              ].map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => navigate(item.path)}
+                  className={`text-black dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors ${
+                    location.pathname === item.path
+                      ? "text-blue-600 dark:text-blue-400 font-bold"
+                      : ""
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+
+              <button
+                onClick={() => navigate("/appointment")}
+                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-blue-800"
+              >
+                Book Appointment
+              </button>
+
+              {isLoggedIn && role === "patient" ? (
+                <div className="flex items-center space-x-3 mt-4">
+                  <img
+                    onClick={() => navigate(`/profile/${id}`)}
+                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full cursor-pointer border-2 border-blue-600"
+                  />
+                  <span className="text-gray-800 dark:text-gray-200 font-medium">
+                    My Profile
+                  </span>
+                </div>
+              ) : isLoggedIn && role === "doctor" ? (
+                <button
+                  onClick={() => navigate("/adminpanel")}
+                  className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all"
+                >
+                  Admin Panel
+                </button>
+              ) : (
+                <button
+                  onClick={() => navigate("/login")}
+                  className="mt-4 text-blue-600 border border-blue-600 px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition-all"
+                >
+                  Login
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+      </nav>
+    </div>
   );
 };
 

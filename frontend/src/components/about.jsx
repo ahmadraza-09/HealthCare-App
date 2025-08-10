@@ -1,5 +1,9 @@
 import React from "react";
 import { Award, Users, Clock, MapPin } from "lucide-react";
+import clinic_image1 from "../assets/clinic1.jpg";
+import clinic_image2 from "../assets/clinic2.webp";
+import clinic_image3 from "../assets/clinic3.avif";
+import clinic_image4 from "../assets/clinic4.jpg";
 
 const About = () => {
   const stats = [
@@ -124,25 +128,22 @@ const About = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <img
-                  src="https://images.pexels.com/photos/5863391/pexels-photo-5863391.jpeg?auto=compress&cs=tinysrgb&w=400"
+                  src={clinic_image1}
                   alt="Medical consultation"
                   className="rounded-2xl shadow-lg w-full h-48 object-cover"
                 />
                 <img
-                  src="https://images.pexels.com/photos/4021775/pexels-photo-4021775.jpeg?auto=compress&cs=tinysrgb&w=400"
-                  alt="Modern medical equipment"
+                  src={clinic_image2}
                   className="rounded-2xl shadow-lg w-full h-32 object-cover"
                 />
               </div>
               <div className="space-y-4 mt-8">
                 <img
-                  src="https://images.pexels.com/photos/7469137/pexels-photo-7469137.jpeg?auto=compress&cs=tinysrgb&w=400"
-                  alt="Healthcare team"
+                  src={clinic_image3}
                   className="rounded-2xl shadow-lg w-full h-32 object-cover"
                 />
                 <img
-                  src="https://images.pexels.com/photos/4033148/pexels-photo-4033148.jpeg?auto=compress&cs=tinysrgb&w=400"
-                  alt="Patient care"
+                  src={clinic_image4}
                   className="rounded-2xl shadow-lg w-full h-48 object-cover"
                 />
               </div>

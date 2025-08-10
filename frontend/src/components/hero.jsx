@@ -1,6 +1,7 @@
 import React from "react";
 import { Heart, ChevronRight, Shield, Award } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import doctor_image from "../assets/doctor_image.jpg";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Hero = () => {
                   Our Priority
                 </span>
               </h1>
-              <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 max-w-2xl leading-relaxed">
+              <p className="text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl leading-relaxed">
                 Experience world-class medical care with cutting-edge technology
                 and compassionate professionals dedicated to your wellbeing.
               </p>
@@ -84,12 +85,12 @@ const Hero = () => {
           <div className="relative">
             <div className="relative z-10">
               <img
-                src="https://images.pexels.com/photos/4173251/pexels-photo-4173251.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src={doctor_image}
                 alt="Medical Team"
                 className="w-full h-96 lg:h-[600px] object-cover rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-500"
               />
               {/* Emergency badge */}
-              <div className="absolute -bottom-6 -left-6 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-2xl">
+              <div className="absolute -bottom-6 sm:-left-6 -left-4 bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-2xl">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
                     <Shield className="w-6 h-6 text-white" />
@@ -105,7 +106,7 @@ const Hero = () => {
                 </div>
               </div>
               {/* Award badge */}
-              <div className="absolute -top-6 -right-6 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-2xl">
+              <div className="absolute -top-6 sm:-right-6 -right-4 bg-white dark:bg-gray-800 rounded-2xl sm:p-6 p-4 shadow-2xl">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
                     <Award className="w-6 h-6 text-white" />
