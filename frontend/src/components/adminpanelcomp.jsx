@@ -99,14 +99,11 @@ const AdminPanelComp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f2f6ff] to-[#e0e7ff] flex">
-      {/* Fixed Sidebar */}
-      <aside className="fixed left-0 h-screen w-20 md:w-60 bg-indigo-700 text-white flex flex-col py-4 px-4 space-y-4 shadow-lg z-10">
-        {/* <h1 className="text-2xl md:text-3xl font-bold hidden md:block bg-[#135D66] px-4 py-2 rounded-lg border-white border-2">
-          Health<span className="text-yellow-500">Care</span>
-        </h1> */}
-
-        <div className="flex items-center space-x-2 cursor-pointer bg-white p-2 rounded-lg">
+    <div className="min-h-screen flex bg-gradient-to-br from-[#f2f6ff] to-[#e0e7ff] dark:from-gray-900 dark:to-gray-800">
+      {/* Sidebar */}
+      <aside className="fixed left-0 h-screen w-20 md:w-60 bg-indigo-700 dark:bg-gray-900 text-white flex flex-col py-4 px-4 space-y-4 shadow-lg z-10">
+        {/* Logo */}
+        <div className="flex items-center space-x-2 cursor-pointer bg-white dark:bg-gray-800 p-2 rounded-lg">
           <div className="w-10 md:h-10 h-8 bg-gradient-to-r from-blue-600 to-blue-800 md:rounded-xl rounded-md flex items-center justify-center">
             <Heart className="w-6 h-6 text-white" />
           </div>
@@ -115,6 +112,7 @@ const AdminPanelComp = () => {
           </span>
         </div>
 
+        {/* Navigation */}
         <div className="flex flex-col gap-4">
           {navItems.map((item) => (
             <button
@@ -122,8 +120,8 @@ const AdminPanelComp = () => {
               onClick={() => handleItemClick(item.label)}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ${
                 selectedItem === item.label
-                  ? "bg-white text-indigo-700 font-semibold"
-                  : ""
+                  ? "bg-white text-indigo-700 font-semibold dark:bg-gray-700 dark:text-white"
+                  : "hover:bg-indigo-600 dark:hover:bg-gray-700"
               }`}
             >
               {item.icon}
@@ -132,6 +130,7 @@ const AdminPanelComp = () => {
           ))}
         </div>
 
+        {/* Logout */}
         <div className="mt-auto">
           <button
             onClick={handleLogout}
@@ -143,8 +142,8 @@ const AdminPanelComp = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="ml-20 md:ml-60 flex-1 py-6 px-0 overflow-y-auto h-screen">
+      {/* Main content */}
+      <main className="ml-20 md:ml-60 flex-1 py-6 px-0 overflow-y-auto h-screen bg-white dark:bg-gray-900 dark:text-gray-200">
         {selectedItem === "Dashboard" && (
           <Dashboard
             userCount={userCount}

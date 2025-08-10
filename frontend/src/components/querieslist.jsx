@@ -21,10 +21,9 @@ const QueriesList = () => {
         setFilteredData(response.data.message);
         setLoading(false);
       })
-      .catch((error) => {
+      .catch(() => {
         setError("Error fetching user data");
         setLoading(false);
-        console.error("Error fetching user data:", error);
       });
   };
 
@@ -72,14 +71,22 @@ const QueriesList = () => {
   };
 
   if (loading)
-    return <div className="text-center mt-10 text-lg">Loading...</div>;
+    return (
+      <div className="text-center mt-10 text-lg text-gray-700 dark:text-gray-300">
+        Loading...
+      </div>
+    );
   if (error)
-    return <div className="text-red-600 text-center mt-10">{error}</div>;
+    return (
+      <div className="text-red-600 dark:text-red-400 text-center mt-10">
+        {error}
+      </div>
+    );
 
   return (
-    <div className="sm:p-6 p-4">
+    <div className="sm:p-6 p-4 bg-gray-50 dark:bg-gray-900 min-h-screen">
       <div className="flex justify-between items-start mb-4 flex-col sm:flex-row sm:items-center">
-        <h2 className="text-2xl font-semibold text-gray-800">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
           Contact Queries
         </h2>
         <div className="flex items-start gap-3 flex-col sm:flex-row sm:items-center w-full sm:w-fit">
@@ -88,12 +95,12 @@ const QueriesList = () => {
             placeholder="Search..."
             value={searchTerm}
             onChange={handleSearchChange}
-            className="border rounded px-3 shadow w-full py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="border dark:border-gray-700 rounded px-3 shadow w-full py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-gray-200"
           />
           <select
             value={filterType}
             onChange={(e) => handleFilterChange(e.target.value)}
-            className="border rounded px-3 w-full shadow py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="border dark:border-gray-700 rounded px-3 w-full shadow py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-gray-200"
           >
             <option value="all">All Queries</option>
             <option value="today">Today</option>
@@ -103,8 +110,8 @@ const QueriesList = () => {
       </div>
 
       <div className="overflow-x-auto shadow-lg rounded-lg">
-        <table className="min-w-full table-auto bg-white">
-          <thead className="bg-blue-600 text-white">
+        <table className="min-w-full table-auto bg-white dark:bg-gray-800 dark:text-gray-200">
+          <thead className="bg-blue-600 dark:bg-blue-800 text-white">
             <tr>
               <th className="px-6 py-3 text-left text-sm font-bold uppercase">
                 Name
@@ -127,7 +134,10 @@ const QueriesList = () => {
             {[...filteredData]
               .sort((a, b) => b.id - a.id)
               .map((query) => (
-                <tr key={query.id} className="hover:bg-gray-100 border-b">
+                <tr
+                  key={query.id}
+                  className="hover:bg-gray-100 dark:hover:bg-gray-700 border-b dark:border-gray-700"
+                >
                   <td className="px-6 py-4 truncate">{query.name}</td>
                   <td className="px-6 py-4">{query.email}</td>
                   <td className="px-6 py-4">{query.mobilenumber}</td>

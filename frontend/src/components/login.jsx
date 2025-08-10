@@ -111,7 +111,7 @@ const Login = () => {
         }
       }
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.message) {
+      if (err.response?.data?.message) {
         getFormerror(err.response.data.message);
       } else {
         getFormerror("Something went wrong. Try again.");
@@ -121,18 +121,18 @@ const Login = () => {
   };
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white">
             {heading}{" "}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               {role === "doctor" ? "Doctor" : "Patient"}
             </span>
           </h2>
           {changebutton !== "Register" && (
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 dark:text-gray-300 mt-2">
               Hello!{" "}
               <span className="text-blue-600 font-semibold">Welcome</span> Back
               😎
@@ -141,9 +141,11 @@ const Login = () => {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-3xl p-8 shadow-2xl border border-gray-100 max-w-md mx-auto">
+        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl border border-gray-100 dark:border-gray-700 max-w-md mx-auto">
           {formerror && (
-            <p className="text-red-600 text-sm mb-4 text-center">{formerror}</p>
+            <p className="text-red-600 dark:text-red-400 text-sm mb-4 text-center">
+              {formerror}
+            </p>
           )}
 
           <form className="space-y-6" onSubmit={submitHandler}>
@@ -213,10 +215,10 @@ const Login = () => {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-600">{textlink}</p>
+            <p className="text-gray-600 dark:text-gray-400">{textlink}</p>
             <button
               onClick={() => navigate(`/${linktext.toLowerCase()}`)}
-              className="mt-2 text-blue-600 hover:underline"
+              className="mt-2 text-blue-600 dark:text-blue-400 hover:underline"
             >
               {linktext}
             </button>
@@ -231,7 +233,7 @@ export default Login;
 
 const InputField = ({ label, type = "text", value, onChange }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-700 mb-2">
+    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
       {label}
     </label>
     <input
@@ -239,20 +241,20 @@ const InputField = ({ label, type = "text", value, onChange }) => (
       value={value}
       onChange={onChange}
       placeholder={`Enter ${label}`}
-      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
     />
   </div>
 );
 
 const SelectField = ({ label, value, onChange, options }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-700 mb-2">
+    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
       {label}
     </label>
     <select
       value={value}
       onChange={onChange}
-      className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+      className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
     >
       <option value="">Select {label}</option>
       {options.map((opt) => (

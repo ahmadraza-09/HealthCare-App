@@ -23,11 +23,11 @@ const WorkTutorial = () => {
   ];
 
   return (
-    <div className="py-14 px-6 bg-gradient-to-b from-white via-white to-gray-50 text-center">
-      <h2 className="text-3xl sm:text-4xl font-bold text-blue-800 mb-4">
+    <div className="py-14 px-6 bg-gradient-to-b from-white via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 text-center transition-colors duration-300">
+      <h2 className="text-3xl sm:text-4xl font-bold text-blue-800 dark:text-blue-400 mb-4">
         How It Works!
       </h2>
-      <p className="text-gray-600 text-sm sm:text-base max-w-xl mx-auto mb-12">
+      <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base max-w-xl mx-auto mb-12">
         Discover, book, and experience personalized healthcare effortlessly with
         our user-friendly Doctor Appointment Website.
       </p>
@@ -36,7 +36,7 @@ const WorkTutorial = () => {
         {steps.map((step) => (
           <div
             key={step.number}
-            className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm hover:shadow-lg transition duration-300"
+            className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-6 rounded-2xl shadow-sm hover:shadow-lg transition duration-300"
           >
             <div className="flex flex-col items-center">
               <div className="mb-4 flex flex-col items-center">
@@ -44,13 +44,15 @@ const WorkTutorial = () => {
                   {step.number}
                 </div>
                 <i
-                  className={`fa-solid ${step.icon} text-teal-600 text-3xl mt-3`}
+                  className={`fa-solid ${step.icon} text-teal-600 dark:text-teal-400 text-3xl mt-3`}
                 ></i>
               </div>
-              <h3 className="text-lg font-semibold text-teal-800 mb-2">
+              <h3 className="text-lg font-semibold text-teal-800 dark:text-teal-300 mb-2">
                 {step.title}
               </h3>
-              <p className="text-gray-600 text-sm">{step.desc}</p>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">
+                {step.desc}
+              </p>
             </div>
           </div>
         ))}

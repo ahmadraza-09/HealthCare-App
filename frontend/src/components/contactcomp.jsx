@@ -55,17 +55,20 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-20 bg-white overflow-hidden">
+    <section
+      id="contact"
+      className="py-16 sm:py-20 bg-white dark:bg-gray-900 overflow-hidden transition-colors duration-300"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">
             Get in{" "}
             <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
               Touch
             </span>
           </h2>
-          <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Ready to take the next step in your healthcare journey? Contact us
             today to schedule your consultation.
           </p>
@@ -74,8 +77,8 @@ const ContactSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-start">
           {/* Contact Info */}
           <div className="space-y-6 sm:space-y-8">
-            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-3xl p-6 sm:p-8">
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8">
+            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 rounded-3xl p-6 sm:p-8 shadow-lg">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8">
                 Contact Information
               </h3>
               <div className="space-y-5 sm:space-y-6">
@@ -106,11 +109,11 @@ const ContactSection = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-3xl p-6 sm:p-8">
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-700 rounded-3xl p-6 sm:p-8 shadow-lg">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
                 Emergency Care
               </h3>
-              <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">
+              <p className="text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base">
                 Need immediate medical attention? Our emergency department is
                 open 24/7.
               </p>
@@ -121,13 +124,15 @@ const ContactSection = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-3xl p-4 sm:p-8 shadow-2xl border border-gray-100">
-            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-3xl p-4 sm:p-8 shadow-2xl border border-gray-100 dark:border-gray-700 transition-colors">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8">
               Contact Us
             </h3>
 
             {formError && (
-              <p className="text-red-600 text-sm mb-4">{formError}</p>
+              <p className="text-red-600 dark:text-red-400 text-sm mb-4">
+                {formError}
+              </p>
             )}
 
             <form className="space-y-5 sm:space-y-6" onSubmit={submitHandler}>
@@ -155,14 +160,14 @@ const ContactSection = () => {
               />
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Message
                 </label>
                 <textarea
                   rows={4}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-900 dark:text-gray-100 transition-colors text-sm sm:text-base"
                   placeholder="Tell us about your concern..."
                 />
               </div>
@@ -189,10 +194,10 @@ const InfoItem = ({ icon, bg, label, value }) => (
       {icon}
     </div>
     <div className="min-w-0">
-      <div className="text-xs sm:text-sm font-medium text-gray-600">
+      <div className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300">
         {label}
       </div>
-      <div className="text-sm sm:text-lg font-semibold text-gray-900 break-words">
+      <div className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white break-words">
         {value}
       </div>
     </div>
@@ -201,7 +206,7 @@ const InfoItem = ({ icon, bg, label, value }) => (
 
 const InputField = ({ label, type = "text", value, onChange, placeholder }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-700 mb-2">
+    <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">
       {label}
     </label>
     <input
@@ -209,7 +214,7 @@ const InputField = ({ label, type = "text", value, onChange, placeholder }) => (
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm sm:text-base"
+      className="w-full px-3 dark:bg-gray-900 dark:text-gray-100 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm sm:text-base"
     />
   </div>
 );

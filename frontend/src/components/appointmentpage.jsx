@@ -58,32 +58,34 @@ const AppointmentPage = () => {
   };
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
             Book Your{" "}
             <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
               Appointment
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Schedule a consultation with our experienced doctors in just a few
             easy steps.
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-3xl p-8 shadow-2xl border border-gray-100 max-w-3xl mx-auto">
+        <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl border border-gray-100 dark:border-gray-700 max-w-3xl mx-auto transition-colors duration-300">
           {formerror && (
-            <p className="text-red-600 text-sm mb-4 text-center">{formerror}</p>
+            <p className="text-red-600 dark:text-red-400 text-sm mb-4 text-center">
+              {formerror}
+            </p>
           )}
 
           <form className="space-y-6" onSubmit={submitHandler}>
             {/* Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Name
               </label>
               <input
@@ -91,13 +93,13 @@ const AppointmentPage = () => {
                 value={name}
                 onChange={(e) => getName(e.target.value)}
                 placeholder="Enter your name"
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               />
             </div>
 
             {/* Mobile Number */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Mobile Number
               </label>
               <input
@@ -105,32 +107,32 @@ const AppointmentPage = () => {
                 value={mobilenumber}
                 onChange={(e) => getMobilenumber(e.target.value)}
                 placeholder="Enter Mobile Number"
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               />
             </div>
 
             {/* Date of Birth */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Date of Birth
               </label>
               <input
                 type="date"
                 value={dateofbirth}
                 onChange={(e) => getDateofbirth(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               />
             </div>
 
             {/* Gender */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Gender
               </label>
               <select
                 value={gender}
                 onChange={(e) => getGender(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               >
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
@@ -141,13 +143,13 @@ const AppointmentPage = () => {
 
             {/* Health Concern */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Health Concern
               </label>
               <select
                 value={concern}
                 onChange={(e) => getConcern(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               >
                 <option value="">Select</option>
                 <option value="Headache">Headache</option>

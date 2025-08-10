@@ -27,42 +27,50 @@ const DoctorSection = () => {
   ];
 
   return (
-    <section id="doctors" className="py-20 bg-white">
+    <section
+      id="doctors"
+      className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Heading */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
             Meet Our{" "}
             <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               Experts
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Our team of renowned specialists brings decades of experience and a
             commitment to excellence in patient care.
           </p>
         </div>
 
+        {/* Doctor Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {doctors.map((doctor, index) => (
             <div
               key={index}
-              className="group bg-gradient-to-b from-white to-gray-50 rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-gray-100"
+              className="group bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-gray-100 dark:border-gray-600"
             >
+              {/* Doctor Image */}
               <div className="relative mb-6">
                 <img
                   src={doctor.image}
                   alt={doctor.name}
-                  className="w-32 h-32 rounded-full object-cover mx-auto border-4 border-white shadow-lg group-hover:scale-110 transition-transform duration-300"
+                  className="w-32 h-32 rounded-full object-cover mx-auto border-4 border-white dark:border-gray-800 shadow-lg group-hover:scale-110 transition-transform duration-300"
                 />
                 <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-medium">
                   {doctor.experience}
                 </div>
               </div>
+
+              {/* Info */}
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                   {doctor.name}
                 </h3>
-                <p className="text-blue-600 font-semibold mb-4">
+                <p className="text-blue-600 dark:text-blue-400 font-semibold mb-4">
                   {doctor.specialty}
                 </p>
                 <div className="flex justify-center space-x-1 mb-6">

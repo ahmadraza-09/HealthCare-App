@@ -41,16 +41,16 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen py-4 px-2 lg:px-20">
+    <div className="min-h-screen py-4 px-2 lg:px-20 bg-gray-50 dark:bg-gray-900 transition-colors">
       <div className="max-w-4xl mx-auto space-y-12">
         {/* Profile Section */}
-        <div className="bg-white shadow-lg rounded-2xl sm:p-8 p-4 border border-gray-100">
-          <h2 className="text-xl sm:text-3xl font-bold text-blue-700 mb-6">
+        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl sm:p-8 p-4 border border-gray-100 dark:border-gray-700">
+          <h2 className="text-xl sm:text-3xl font-bold text-blue-700 dark:text-blue-300 mb-6">
             Profile Details
           </h2>
 
           {!isEditing ? (
-            <div className="space-y-4 text-gray-700 sm:text-lg text-md">
+            <div className="space-y-4 text-gray-700 dark:text-gray-300 sm:text-lg text-md">
               <p>
                 <span className="font-semibold">Name:</span> {profile.name}
               </p>
@@ -71,7 +71,7 @@ const Settings = () => {
           ) : (
             <form onSubmit={handleSaveProfile} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
                   Name
                 </label>
                 <input
@@ -79,12 +79,12 @@ const Settings = () => {
                   name="name"
                   value={profile.name}
                   onChange={handleProfileChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
                   Email
                 </label>
                 <input
@@ -92,12 +92,12 @@ const Settings = () => {
                   name="email"
                   value={profile.email}
                   onChange={handleProfileChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
                   Mobile
                 </label>
                 <input
@@ -105,7 +105,7 @@ const Settings = () => {
                   name="mobile"
                   value={profile.mobile}
                   onChange={handleProfileChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
               </div>
 
@@ -129,13 +129,13 @@ const Settings = () => {
         </div>
 
         {/* Change Password Section */}
-        <div className="bg-white shadow-lg rounded-2xl p-8 border border-gray-100">
-          <h2 className="text-xl sm:text-3xl font-bold text-blue-700 mb-6">
+        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
+          <h2 className="text-xl sm:text-3xl font-bold text-blue-700 dark:text-blue-300 mb-6">
             Change Password
           </h2>
           <form onSubmit={handleSavePassword} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
                 Old Password
               </label>
               <input
@@ -143,13 +143,13 @@ const Settings = () => {
                 name="oldPassword"
                 value={passwordData.oldPassword}
                 onChange={handlePasswordChange}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
                 New Password
               </label>
               <input
@@ -157,13 +157,13 @@ const Settings = () => {
                 name="newPassword"
                 value={passwordData.newPassword}
                 onChange={handlePasswordChange}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
                 Confirm Password
               </label>
               <input
@@ -171,7 +171,7 @@ const Settings = () => {
                 name="confirmPassword"
                 value={passwordData.confirmPassword}
                 onChange={handlePasswordChange}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                 required
               />
             </div>

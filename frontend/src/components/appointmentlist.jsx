@@ -72,7 +72,7 @@ const AppointmentList = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-40 text-lg font-semibold text-blue-600">
+      <div className="flex items-center justify-center h-40 text-lg font-semibold text-blue-600 dark:text-blue-400">
         Loading...
       </div>
     );
@@ -80,28 +80,28 @@ const AppointmentList = () => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-40 text-lg font-semibold text-red-500">
+      <div className="flex items-center justify-center h-40 text-lg font-semibold text-red-500 dark:text-red-400">
         {error}
       </div>
     );
   }
 
   return (
-    <div className="sm:p-6 p-4 bg-transparent min-h-screen">
-      <div className="flex justify-between sm:items-center items-start gap-4  mb-4 flex-col sm:flex-row">
-        <h2 className="text-2xl font-bold text-gray-800">Appointment List</h2>
+    <div className="sm:p-6 p-4 min-h-screen bg-transparent text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+      <div className="flex justify-between sm:items-center items-start gap-4 mb-4 flex-col sm:flex-row">
+        <h2 className="text-2xl font-bold">Appointment List</h2>
         <div className="flex sm:items-center items-start gap-3 flex-col sm:flex-row sm:w-fit w-full">
           <input
             type="text"
             placeholder="Search Appointments..."
             value={searchTerm}
             onChange={handleSearchChange}
-            className="border rounded px-3 py-1 w-full shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="border rounded px-3 py-1 w-full shadow focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white border-gray-300 text-gray-800 placeholder-gray-400 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 dark:placeholder-gray-400"
           />
           <select
             value={filterType}
             onChange={(e) => handleFilterChange(e.target.value)}
-            className="border rounded w-full px-3 py-1 focus:outline-none shadow focus:ring-2 focus:ring-blue-400"
+            className="border rounded w-full px-3 py-1 shadow focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white border-gray-300 text-gray-800 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
           >
             <option value="all">All Appointments</option>
             <option value="today">Today</option>
@@ -110,14 +110,14 @@ const AppointmentList = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto bg-white rounded-lg shadow">
-        <table className="min-w-full divide-y divide-gray-200 text-sm">
-          <thead className="bg-blue-600 text-white">
+      <div className="overflow-x-auto rounded-lg shadow bg-white dark:bg-gray-800">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+          <thead className="bg-blue-600 text-white dark:bg-blue-700">
             <tr>
               <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider truncate">
+              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
                 Date of Birth
               </th>
               <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
@@ -134,15 +134,16 @@ const AppointmentList = () => {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {[...filteredData]
               .sort((a, b) => b.id - a.id)
               .map((appointment) => (
-                <tr key={appointment.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-gray-800 truncate">
-                    {appointment.name}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800">
+                <tr
+                  key={appointment.id}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  <td className="px-6 py-4">{appointment.name}</td>
+                  <td className="px-6 py-4">
                     {new Date(appointment.dateofbirth).toLocaleDateString(
                       "en-IN",
                       {
@@ -152,16 +153,10 @@ const AppointmentList = () => {
                       }
                     )}
                   </td>
-                  <td className="px-6 py-4 text-gray-800">
-                    {appointment.gender}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800">
-                    {appointment.concern}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800">
-                    {appointment.mobilenumber}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800">
+                  <td className="px-6 py-4">{appointment.gender}</td>
+                  <td className="px-6 py-4">{appointment.concern}</td>
+                  <td className="px-6 py-4">{appointment.mobilenumber}</td>
+                  <td className="px-6 py-4">
                     {new Date(appointment.created_at).toLocaleDateString(
                       "en-IN",
                       {

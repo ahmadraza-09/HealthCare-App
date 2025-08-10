@@ -5,7 +5,7 @@ import { Heart } from "lucide-react";
 const Footer = () => {
   const navigate = useNavigate();
   return (
-    <footer className="bg-white text-black flex flex-col items-center gap-5 pt-10 border-t-blue-600 border-2">
+    <footer className="bg-white dark:bg-gray-900 text-black dark:text-gray-300 flex flex-col items-center gap-5 pt-10 border-t-2 border-blue-800">
       <div className="flex flex-wrap w-full max-w-7xl px-4 justify-between">
         {/* Logo & Description */}
         <div className="w-full sm:w-1/2 lg:w-1/5 mb-6">
@@ -20,7 +20,7 @@ const Footer = () => {
               MediCare+
             </span>
           </div>
-          <p className="text-sm text-black mt-4 leading-relaxed">
+          <p className="text-sm mt-4 leading-relaxed text-black dark:text-gray-400">
             Your trusted partner in wellness, offering comprehensive medical
             resources and services.
           </p>
@@ -33,31 +33,22 @@ const Footer = () => {
             <span className="block w-12 h-0.5 bg-blue-800 mt-2"></span>
           </h4>
           <ul className="space-y-2 text-sm">
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                About Us
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                Doctors
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                Appointment
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                Our Services
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                Contact Us
-              </a>
-            </li>
+            {[
+              "About Us",
+              "Doctors",
+              "Appointment",
+              "Our Services",
+              "Contact Us",
+            ].map((link, i) => (
+              <li key={i}>
+                <a
+                  href="#"
+                  className="hover:text-blue-800 dark:hover:text-blue-400 transition"
+                >
+                  {link}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -68,26 +59,18 @@ const Footer = () => {
             <span className="block w-12 h-0.5 bg-blue-800 mt-2"></span>
           </h4>
           <ul className="space-y-2 text-sm">
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                FAQ
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                Shipping
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                Privacy Policy
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                Payment Options
-              </a>
-            </li>
+            {["FAQ", "Shipping", "Privacy Policy", "Payment Options"].map(
+              (link, i) => (
+                <li key={i}>
+                  <a
+                    href="#"
+                    className="hover:text-blue-800 dark:hover:text-blue-400 transition"
+                  >
+                    {link}
+                  </a>
+                </li>
+              )
+            )}
           </ul>
         </div>
 
@@ -98,26 +81,21 @@ const Footer = () => {
             <span className="block w-12 h-0.5 bg-blue-800 mt-2"></span>
           </h4>
           <ul className="space-y-2 text-sm">
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                Appointment Status
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                Check Availability
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                Online Medicine Delivery
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-blue-800 transition">
-                Buy Medicines
-              </a>
-            </li>
+            {[
+              "Appointment Status",
+              "Check Availability",
+              "Online Medicine Delivery",
+              "Buy Medicines",
+            ].map((link, i) => (
+              <li key={i}>
+                <a
+                  href="#"
+                  className="hover:text-blue-800 dark:hover:text-blue-400 transition"
+                >
+                  {link}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -133,7 +111,7 @@ const Footer = () => {
                 <a
                   key={i}
                   href="#"
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-blue-800 hover:text-white transition"
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-blue-800 dark:hover:bg-blue-600 hover:text-white transition"
                 >
                   <i className={`fab fa-${icon}`}></i>
                 </a>
@@ -144,7 +122,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="w-full bg-white py-3 px-4 text-sm text-black flex flex-col sm:flex-row justify-between items-center">
+      <div className="w-full bg-white dark:bg-gray-800 py-3 px-4 text-sm text-black dark:text-gray-400 flex flex-col sm:flex-row justify-between items-center border-t border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-3">
           <p>© 2025</p>
           <div

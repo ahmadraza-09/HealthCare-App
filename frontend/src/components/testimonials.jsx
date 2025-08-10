@@ -41,24 +41,24 @@ const TestimonialsSection = () => {
   return (
     <section
       id="testimonials"
-      className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50"
+      className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
             What Our{" "}
             <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
               Patients Say
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Real stories from real patients who have experienced exceptional
             care at our clinic.
           </p>
         </div>
 
         <div className="relative max-w-4xl mx-auto">
-          <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-2xl">
+          <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 lg:p-12 shadow-2xl transition-colors duration-300">
             <div className="flex justify-center mb-6">
               {[...Array(testimonials[currentTestimonial].rating)].map(
                 (_, i) => (
@@ -70,42 +70,46 @@ const TestimonialsSection = () => {
               )}
             </div>
 
-            <blockquote className="text-xl lg:text-2xl text-gray-700 text-center mb-8 leading-relaxed">
+            <blockquote className="text-xl lg:text-2xl text-gray-700 dark:text-gray-200 text-center mb-8 leading-relaxed">
               &quot;{testimonials[currentTestimonial].content}&quot;
             </blockquote>
 
             <div className="text-center">
-              <div className="text-xl font-bold text-gray-900">
+              <div className="text-xl font-bold text-gray-900 dark:text-white">
                 {testimonials[currentTestimonial].name}
               </div>
-              <div className="text-blue-600">
+              <div className="text-blue-600 dark:text-blue-400">
                 {testimonials[currentTestimonial].role}
               </div>
             </div>
           </div>
 
+          {/* Navigation Buttons */}
           <button
             onClick={prevTestimonial}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-700 rounded-full p-3 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
           >
-            <ChevronLeft className="w-6 h-6 text-gray-600" />
+            <ChevronLeft className="w-6 h-6 text-gray-600 dark:text-gray-300" />
           </button>
 
           <button
             onClick={nextTestimonial}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-700 rounded-full p-3 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
           >
-            <ChevronRight className="w-6 h-6 text-gray-600" />
+            <ChevronRight className="w-6 h-6 text-gray-600 dark:text-gray-300" />
           </button>
         </div>
 
+        {/* Pagination Dots */}
         <div className="flex justify-center space-x-2 mt-8">
           {testimonials.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentTestimonial(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentTestimonial ? "bg-blue-600 w-8" : "bg-gray-300"
+                index === currentTestimonial
+                  ? "bg-blue-600 w-8"
+                  : "bg-gray-300 dark:bg-gray-600"
               }`}
             />
           ))}
