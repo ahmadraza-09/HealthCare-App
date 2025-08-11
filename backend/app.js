@@ -7,19 +7,20 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const db = mysql.createConnection ({
-    host:process.env.DATABASE_HOST,
-    user:process.env.DATABASE_USER,
-    password:process.env.DATABASE_PASSWORD,
-    database:process.env.DATABASE
+const db = mysql.createConnection({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE
 })
 
-app.use('/auth',require('./routes/authroute'));
+app.use('/auth', require('./routes/authroute'));
+app.use('/auth', require('./routes/emailRoutes'));
 
 db.connect((error) => {
     if (error) {
         console.log(error.message);
-    }else {
+    } else {
         console.log('Database connected successfully');
     }
 })
@@ -28,7 +29,7 @@ const port = 3050;
 app.listen(port, (error) => {
     if (error) {
         console.log(error);
-    }else {
+    } else {
         console.log(`Server has started at ${port}`);
     }
 });

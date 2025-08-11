@@ -1,6 +1,8 @@
 const mysql = require('mysql');
 const md5 = require('md5')
 const jwt = require('jsonwebtoken');
+const transporter = require('../controllers/emailController')
+require('dotenv').config();
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -43,10 +45,21 @@ exports.registration = async (request, response) => {
                 if (patientData != '') {
                     response.send(JSON.stringify({ "status": 200, "error": null, "message": "Mobile Number already exists" }));
                 } else {
-                    db.query('INSERT INTO patients SET ?', { name: name, email: email, gender: gender, dateofbirth: dateofbirth, mobilenumber: mobilenumber, password: hashpassword }, (error, patientData) => {
+                    db.query('INSERT INTO patients SET ?', { name: name, email: email, gender: gender, dateofbirth: dateofbirth, mobilenumber: mobilenumber, password: hashpassword }, async (error, patientData) => {
                         if (error) {
                             response.send(JSON.stringify({ "status": 500, "error": error }));
                         } else {
+
+                            // Sending Welcome Email
+                            const mailOptions = {
+                                from: process.env.SENDER_EMAIL,
+                                to: email,
+                                subject: 'Welcome to MediCare+ ',
+                                text: `Hello ${name},\n\nThank you for registering with us. We are excited to have you on board!\n\nBest regards,\nMediCare+ Team`
+                            }
+
+                            await transporter.sendMail(mailOptions);
+
                             response.send(JSON.stringify({ "status": 200, "error": null, "message": patientData }));
                         }
                     });
@@ -329,3 +342,4 @@ exports.showAllPrescription = (req, res) => {
         }
     })
 }
+
