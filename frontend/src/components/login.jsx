@@ -15,7 +15,6 @@ const Login = () => {
   const [identifier, getIdentifier] = useState("");
   const [password, getPassword] = useState("");
   const [email, getEmail] = useState("");
-  const [role, getRole] = useState("patient");
   const [heading, getHeading] = useState("Sign Up");
   const [changebutton, getChangebutton] = useState("Register");
   const [linktext, getLinktext] = useState("Login");
@@ -55,13 +54,12 @@ const Login = () => {
 
     try {
       if (location.pathname === "/login") {
-        const loginData = { identifier, password, role };
-        const endpoint =
-          role === "doctor"
-            ? "http://localhost:3050/auth/doctorlogin"
-            : "http://localhost:3050/auth/login";
+        const loginData = { identifier, password };
 
-        const { data } = await axios.post(endpoint, loginData);
+        const { data } = await axios.post(
+          "http://localhost:3050/auth/login",
+          loginData
+        );
 
         if (
           typeof data.message === "string" &&
@@ -71,18 +69,15 @@ const Login = () => {
           return;
         } else {
           localStorage.setItem("token", data.token);
-          localStorage.setItem("role", role);
           localStorage.setItem("id", data.user.id);
           localStorage.setItem("name", data.user.name);
           localStorage.setItem("email", data.user.email);
           localStorage.setItem("mobileNumber", data.user.mobilenumber);
-          if (role === "patient") {
-            localStorage.setItem("dateofbirth", data.user.dateofbirth);
-            localStorage.setItem("gender", data.user.gender);
-          }
+          localStorage.setItem("dateofbirth", data.user.dateofbirth);
+          localStorage.setItem("gender", data.user.gender);
           toast.success("Logged In Successfully");
           getFormerror("");
-          navigate(role === "doctor" ? "/dashboard" : "/");
+          navigate("/");
         }
       } else {
         const newUser = {
@@ -128,7 +123,7 @@ const Login = () => {
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white">
             {heading}{" "}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              {role === "doctor" ? "Doctor" : "Patient"}
+              Patient
             </span>
           </h2>
           {changebutton !== "Register" && (
@@ -196,15 +191,6 @@ const Login = () => {
               value={password}
               onChange={(e) => getPassword(e.target.value)}
             />
-
-            {changebutton === "Login" && (
-              <SelectField
-                label="Login As"
-                value={role}
-                onChange={(e) => getRole(e.target.value)}
-                options={["patient", "doctor"]}
-              />
-            )}
 
             <button
               type="submit"

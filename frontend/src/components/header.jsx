@@ -9,9 +9,8 @@ const Header = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const role = localStorage.getItem("role");
   const isLoggedIn = localStorage.getItem("token") !== null;
-  const id = localStorage.getItem("id");
+  const id = localStorage.getItem("user_id");
 
   const { theme, toggleTheme } = useTheme();
 
@@ -82,20 +81,13 @@ const Header = () => {
                 )}
               </button>
 
-              {isLoggedIn && role === "patient" ? (
+              {isLoggedIn ? (
                 <img
                   onClick={() => navigate(`/profile/${id}`)}
                   src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
                   alt="Profile"
                   className="w-10 h-10 rounded-full cursor-pointer border-2 border-blue-600"
                 />
-              ) : isLoggedIn && role === "doctor" ? (
-                <button
-                  onClick={() => navigate("/adminpanel")}
-                  className="ml-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all"
-                >
-                  Admin Panel
-                </button>
               ) : (
                 <button
                   onClick={() => navigate("/login")}
@@ -159,7 +151,7 @@ const Header = () => {
                 Book Appointment
               </button>
 
-              {isLoggedIn && role === "patient" ? (
+              {isLoggedIn ? (
                 <div className="flex items-center space-x-3 mt-4">
                   <img
                     onClick={() => navigate(`/profile/${id}`)}
@@ -171,13 +163,6 @@ const Header = () => {
                     My Profile
                   </span>
                 </div>
-              ) : isLoggedIn && role === "doctor" ? (
-                <button
-                  onClick={() => navigate("/adminpanel")}
-                  className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all"
-                >
-                  Admin Panel
-                </button>
               ) : (
                 <button
                   onClick={() => navigate("/login")}

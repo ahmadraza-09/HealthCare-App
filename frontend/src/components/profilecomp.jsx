@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const ProfileComp = () => {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const ProfileComp = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
+    toast.success("Logged Out Successfully");
   };
 
   const handleEdit = () => setIsEditing(true);
@@ -60,9 +62,9 @@ const ProfileComp = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen text-white">
+    <section className="py-20 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 min-h-screen dark:text-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gray-800 rounded-3xl shadow-2xl p-8 border border-gray-700">
+        <div className="dark:bg-gray-800 rounded-3xl shadow-2xl p-8 border dark:border-gray-700">
           {/* Header */}
           <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-6 mb-10">
             <div className="flex items-center gap-6">
@@ -73,7 +75,7 @@ const ProfileComp = () => {
               />
               <div>
                 <h3 className="text-2xl font-bold">{name}</h3>
-                <p className="text-gray-400">User Profile</p>
+                <p className="dark:text-gray-400">User Profile</p>
               </div>
             </div>
             <div className="flex gap-3">
@@ -102,7 +104,7 @@ const ProfileComp = () => {
           </div>
 
           {/* Info */}
-          <h2 className="text-xl font-semibold text-blue-400 border-b border-gray-700 pb-3 mb-6">
+          <h2 className="text-xl font-semibold text-blue-600 border-b border-gray-700 pb-3 mb-6">
             Information
           </h2>
 
@@ -120,13 +122,13 @@ const ProfileComp = () => {
               />
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-sm font-medium dark:text-gray-300 mb-2">
                   Gender
                 </label>
                 <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-600 bg-gray-900 text-gray-300 focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-xl border dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select Gender</option>
                   <option value="male">Male</option>
@@ -172,22 +174,22 @@ const ProfileComp = () => {
 };
 
 const InfoItem = ({ label, value }) => (
-  <div className="p-4 rounded-xl bg-gray-700 shadow-sm">
-    <div className="text-sm font-medium text-gray-400">{label}</div>
+  <div className="p-4 rounded-xl dark:bg-gray-700 shadow-sm">
+    <div className="text-sm font-medium dark:text-gray-400">{label}</div>
     <div className="text-lg font-semibold">{value}</div>
   </div>
 );
 
 const InputField = ({ label, type = "text", value, onChange }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-300 mb-2">
+    <label className="block text-sm font-medium dark:text-gray-300 mb-2">
       {label}
     </label>
     <input
       type={type}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-4 py-3 rounded-xl border border-gray-600 bg-gray-900 text-gray-300 focus:ring-2 focus:ring-blue-500"
+      className="w-full px-4 py-3 rounded-xl border dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 focus:ring-2 focus:ring-blue-500"
     />
   </div>
 );

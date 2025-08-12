@@ -13,6 +13,7 @@ import './App.css';
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './protectedroute';
 import Services from './pages/services';
+import AdminLogin from './components/adminlogin';
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/services" element={<Services />} />
           <Route path="/appointment" element={<Appointment />} />
-          <Route path="/profile/:id" element={<ProtectedRoute allowedRoles={["patient"]}> <Profile /></ProtectedRoute>} />
+          <Route path='/adminlogin' element={<AdminLogin />} />
+          <Route path="/profile/:id" element={<Profile />} />
           <Route path="/dashboard" element={<ProtectedRoute allowedRoles={["doctor"]}>
             <AdminPanel />
           </ProtectedRoute>} />

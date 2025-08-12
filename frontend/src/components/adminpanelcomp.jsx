@@ -44,7 +44,7 @@ const AdminPanelComp = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     toast.success("Logout Successfully");
-    navigate("/login");
+    navigate("/adminlogin");
   };
 
   useEffect(() => {
