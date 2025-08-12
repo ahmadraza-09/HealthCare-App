@@ -27,3 +27,15 @@ exports.showAllPrescription = (req, res) => {
         }
     })
 }
+
+// Delete Prescription
+exports.deletePrescription = (request, response) => {
+    const id = request.params.id;
+    db.query('delete from prescription where prescription_id= ?', [id], (error, prescriptiondata) => {
+        if (error) {
+            response.send(JSON.stringify({ "status": 200, "error": null }))
+        } else {
+            response.send(JSON.stringify({ "status": 200, "error": null, "message": prescriptiondata }))
+        }
+    })
+}

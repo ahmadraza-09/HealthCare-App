@@ -62,3 +62,15 @@ exports.singlecontactlist = (request, response) => {
         }
     });
 }
+
+// Delete Query
+exports.deletequery = (request, response) => {
+    const id = request.params.id;
+    db.query('delete from contact where id= ?', [id], (error, querydata) => {
+        if (error) {
+            response.send(JSON.stringify({ "status": 200, "error": null }))
+        } else {
+            response.send(JSON.stringify({ "status": 200, "error": null, "message": querydata }))
+        }
+    })
+}

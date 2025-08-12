@@ -8,6 +8,7 @@ const appointmentRouter = express.Router();
 appointmentRouter.post('/appointment', appointmentController.appointment);
 appointmentRouter.get('/appointmentlist', appointmentController.appointmentlist);
 appointmentRouter.get('/singleappointmentlist/(:mobilenumber)', appointmentController.singleappointmentlist);
+appointmentRouter.delete('/deleteappointment/(:id)', appointmentController.deleteAppointment);
 
 
 

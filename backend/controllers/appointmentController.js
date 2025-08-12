@@ -61,3 +61,23 @@ exports.singleappointmentlist = (request, response) => {
         }
     });
 }
+
+// Delete Appointment
+exports.deleteAppointment = (request, response) => {
+    const id = request.params.id;
+
+    if (!id) {
+        return response.status(400).json({ status: '400', error: 'Appointment ID parameter is missing.' });
+    }
+
+    db.query('DELETE FROM appointment WHERE id = ?', [id], (error, appointmentData) => {
+        if (error) {
+            console.error('Database error: ' + error.message);
+            response.status(500).json({ status: '500', error: 'Internal server error' });
+        } else if (appointmentData.affectedRows === 0) {
+            response.status(404).json({ status: '404', error: 'No appointment found with the provided ID.' });
+        } else {
+            response.status(200).json({ status: '200', message: 'Appointment deleted successfully' });
+        }
+    });
+};
