@@ -187,10 +187,11 @@ exports.doctorlogin = (request, response) => {
         });
     }
 
+    // Pehle user ko identifier se fetch karo
     db.query(
-        'SELECT * FROM doctor WHERE (mobilenumber = ? OR email = ?) AND password = ?',
-        [identifier, identifier, password],
-        (error, doctorData) => {
+        'SELECT * FROM doctor WHERE mobilenumber = ? OR email = ?',
+        [identifier, identifier],
+        async (error, doctorData) => {
             if (error) {
                 return response.status(500).json({
                     status: 500,
@@ -207,23 +208,78 @@ exports.doctorlogin = (request, response) => {
                 });
             }
 
-            // Include role in JWT
+            const user = doctorData[0];
+            const isMatch = await bcrypt.compare(password, user.password);
+
+            if (!isMatch) {
+                return response.status(401).json({
+                    status: 401,
+                    error: "Invalid Credentials",
+                    message: 'Invalid mobile number/email or password'
+                });
+            }
+
             const token = jwt.sign(
-                { userId: doctorData[0].id, role: "doctor" },
+                { userId: user.id, role: "doctor" },
                 process.env.JWT_SECRET,
                 { expiresIn: "1h" }
             );
-
 
             response.status(200).json({
                 status: 200,
                 error: null,
                 message: 'Login successfully',
-                user: doctorData[0],
+                user: user,
                 token: token
             });
         }
     );
+
+};
+
+exports.registerDoctor = (req, res) => {
+    const { name, email, mobilenumber, password } = req.body;
+
+    if (!name || !email || !mobilenumber || !password) {
+        return res.status(400).json({
+            status: 400,
+            error: "Missing Fields",
+            message: "Please fill all required fields"
+        });
+    }
+
+    // Check if user exists
+    db.query('SELECT * FROM doctor WHERE email = ?', [email], (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: err.message });
+        }
+
+        if (results.length > 0) {
+            return res.status(409).json({ message: 'User already exists' });
+        }
+
+        // Hash password asynchronously (returns Promise)
+        bcrypt.hash(password, 10).then((hashedPassword) => {
+            // Insert user after password is hashed
+            db.query(
+                'INSERT INTO doctor (name, email, mobilenumber, password, created_at) VALUES (?, ?, ?, ?, NOW())',
+                [name, email, mobilenumber, hashedPassword],
+                (err2, results2) => {
+                    if (err2) {
+                        return res.status(500).json({ message: err2.message });
+                    }
+
+                    return res.status(201).json({
+                        status: 201,
+                        error: null,
+                        message: "Registration successful"
+                    });
+                }
+            );
+        }).catch((hashErr) => {
+            return res.status(500).json({ message: hashErr.message });
+        });
+    });
 };
 
 // Otp Based Login

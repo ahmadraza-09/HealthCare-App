@@ -9,6 +9,7 @@ authRouter.get('/singleuserlist/(:id)', authController.singleuserlist);
 // authRouter.post('/registration', authController.registration);
 authRouter.post('/login', authController.login);
 authRouter.post('/doctorlogin', authController.doctorlogin);
+authRouter.post('/registerdoctor', authController.registerDoctor);
 authRouter.delete('/deleteuser/(:id)', authController.deleteuser);
 authRouter.put('/updateuser/(:id)', authController.updateuser);
 
