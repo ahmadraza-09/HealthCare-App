@@ -20,6 +20,8 @@ const Login = () => {
   const [linktext, getLinktext] = useState("Login");
   const [textlink, getTextlink] = useState("Already have an Account?");
   const [formerror, getFormerror] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [otp, getOtp] = useState("");
 
   const nameregex = /^[a-z A-Z]{2,15}$/;
   const mobilenumberregex = /^[0-9]{10}$/;
@@ -39,7 +41,7 @@ const Login = () => {
     e.preventDefault();
 
     if (changebutton !== "Login") {
-      if (!name.match(nameregex)) return getFormerror("Invalid Name");
+      if (!name.match(nameregex)) return getFormerror("Enter Name");
       if (!dateofbirth) return getFormerror("Enter DOB");
       if (!gender) return getFormerror("Select gender");
       if (!email.match(emailregex)) return getFormerror("Invalid Email");
@@ -89,7 +91,7 @@ const Login = () => {
           password,
         };
         const { data } = await axios.post(
-          "http://localhost:3050/auth/registration",
+          "http://localhost:3050/auth/sendotp",
           newUser
         );
 
@@ -101,10 +103,50 @@ const Login = () => {
           return;
         } else {
           getFormerror("");
-          navigate("/login");
-          toast.success("Registered Successfully");
+          // localStorage.setItem("email", data.user.email);
+          setIsOtpSent(true);
+          toast.success("OTP sent to your email Successfully");
         }
       }
+    } catch (err) {
+      if (err.response?.data?.message) {
+        getFormerror(err.response.data.message);
+      } else {
+        getFormerror("Something went wrong. Try again.");
+      }
+      console.error(err);
+    }
+  };
+
+  const verifyOtpHandler = async (e) => {
+    e.preventDefault();
+
+    if (!otp) {
+      return getFormerror("Please Enter OTP");
+    }
+
+    try {
+      const OtpData = {
+        email,
+        otp,
+      };
+
+      const { data } = await axios.post(
+        "http://localhost:3050/auth/verifyotp",
+        OtpData
+      );
+
+      if (
+        typeof data.message === "string" &&
+        data.message.includes("Invalid")
+      ) {
+        getFormerror(data.message);
+        return;
+      }
+      setIsOtpSent(false);
+      navigate("/login");
+      getFormerror("");
+      toast.success("Registered Successfully");
     } catch (err) {
       if (err.response?.data?.message) {
         getFormerror(err.response.data.message);
@@ -142,73 +184,96 @@ const Login = () => {
               {formerror}
             </p>
           )}
-
-          <form className="space-y-6" onSubmit={submitHandler}>
-            {changebutton !== "Login" && (
-              <>
-                <InputField
-                  label="Name"
-                  value={name}
-                  onChange={(e) => getName(e.target.value)}
-                />
-                <InputField
-                  label="Date of Birth"
-                  type="date"
-                  value={dateofbirth}
-                  onChange={(e) => getDateofbirth(e.target.value)}
-                />
-                <SelectField
-                  label="Gender"
-                  value={gender}
-                  onChange={(e) => getGender(e.target.value)}
-                  options={["male", "female", "other"]}
-                />
-                <InputField
-                  label="Email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => getEmail(e.target.value)}
-                />
-                <InputField
-                  label="Mobile Number"
-                  value={mobilenumber}
-                  onChange={(e) => getMobilenumber(e.target.value)}
-                />
-              </>
-            )}
-
-            {changebutton === "Login" && (
-              <InputField
-                label="Email or Mobile"
-                value={identifier}
-                onChange={(e) => getIdentifier(e.target.value)}
+          {isOtpSent ? (
+            <form onSubmit={verifyOtpHandler}>
+              <h2 className="dark:text-white font-bold text-2xl text-center">
+                Verify OTP
+              </h2>
+              <input
+                type="text"
+                placeholder="Type OTP"
+                className="mt-6 w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                maxLength={6}
+                value={otp}
+                onChange={(e) => getOtp(e.target.value)}
               />
-            )}
+              <button
+                type="submit"
+                className="mt-6 w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Submit
+              </button>
+            </form>
+          ) : (
+            <form className="space-y-6" onSubmit={submitHandler}>
+              {changebutton !== "Login" && (
+                <>
+                  <InputField
+                    label="Name"
+                    value={name}
+                    onChange={(e) => getName(e.target.value)}
+                  />
+                  <InputField
+                    label="Email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => getEmail(e.target.value)}
+                  />
+                  <InputField
+                    label="Mobile Number"
+                    value={mobilenumber}
+                    onChange={(e) => getMobilenumber(e.target.value)}
+                  />
+                  <InputField
+                    label="Date of Birth"
+                    type="date"
+                    value={dateofbirth}
+                    onChange={(e) => getDateofbirth(e.target.value)}
+                  />
+                  <SelectField
+                    label="Gender"
+                    value={gender}
+                    onChange={(e) => getGender(e.target.value)}
+                    options={["male", "female", "other"]}
+                  />
+                </>
+              )}
 
-            <InputField
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => getPassword(e.target.value)}
-            />
+              {changebutton === "Login" && (
+                <InputField
+                  label="Email or Mobile"
+                  value={identifier}
+                  onChange={(e) => getIdentifier(e.target.value)}
+                />
+              )}
 
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-            >
-              {changebutton}
-            </button>
-          </form>
+              <InputField
+                label="Password"
+                type="password"
+                value={password}
+                onChange={(e) => getPassword(e.target.value)}
+              />
 
-          <div className="mt-6 text-center">
-            <p className="text-gray-600 dark:text-gray-400">{textlink}</p>
-            <button
-              onClick={() => navigate(`/${linktext.toLowerCase()}`)}
-              className="mt-2 text-blue-600 dark:text-blue-400 hover:underline"
-            >
-              {linktext}
-            </button>
-          </div>
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                {changebutton}
+              </button>
+            </form>
+          )}
+
+          {!isOtpSent && (
+            <div className="mt-6 text-center">
+              <p className="text-gray-600 dark:text-gray-400">{textlink}</p>
+              <button
+                onClick={() => navigate(`/${linktext.toLowerCase()}`)}
+                className="mt-2 text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                {linktext}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
