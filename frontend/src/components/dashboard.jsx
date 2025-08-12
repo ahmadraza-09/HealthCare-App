@@ -34,7 +34,7 @@ const Dashboard = ({
     const fetchAppointments = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3050/auth/appointmentlist"
+          "http://localhost:3050/appointment/appointmentlist"
         );
         const appointments = res.data.message;
 

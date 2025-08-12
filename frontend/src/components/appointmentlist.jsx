@@ -15,7 +15,7 @@ const AppointmentList = () => {
 
   const getAppointmentList = () => {
     axios
-      .get("http://localhost:3050/auth/appointmentlist")
+      .get("http://localhost:3050/appointment/appointmentlist")
       .then((response) => {
         setAppointmentData(response.data.message);
         setFilteredData(response.data.message);

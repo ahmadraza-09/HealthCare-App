@@ -67,7 +67,7 @@ const AdminPanelComp = () => {
 
   const getQueryCount = () => {
     axios
-      .get("http://localhost:3050/auth/contactlist")
+      .get("http://localhost:3050/query/contactlist")
       .then((response) => {
         setQueryCount(response.data.message.length);
       })
@@ -78,7 +78,7 @@ const AdminPanelComp = () => {
 
   const getAppointmentCount = () => {
     axios
-      .get("http://localhost:3050/auth/appointmentlist")
+      .get("http://localhost:3050/appointment/appointmentlist")
       .then((response) => {
         setAppointmentCount(response.data.message.length);
       })
@@ -89,7 +89,7 @@ const AdminPanelComp = () => {
 
   const getPrescriptionCount = () => {
     axios
-      .get("http://localhost:3050/auth/showallprescription")
+      .get("http://localhost:3050/prescription/showallprescription")
       .then((response) => {
         setPrescriptionCount(response.data.message.length);
       })

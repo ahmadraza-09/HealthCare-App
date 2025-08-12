@@ -15,7 +15,7 @@ const QueriesList = () => {
 
   const getContactList = () => {
     axios
-      .get("http://localhost:3050/auth/contactlist")
+      .get("http://localhost:3050/query/contactlist")
       .then((response) => {
         setQueriesData(response.data.message);
         setFilteredData(response.data.message);

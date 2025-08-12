@@ -28,7 +28,7 @@ const PrescriptionList = () => {
 
   const getPrescriptionList = () => {
     axios
-      .get("http://localhost:3050/auth/showallprescription")
+      .get("http://localhost:3050/prescription/showallprescription")
       .then((response) => {
         setPrescriptionData(response.data.message);
         setLoading(false);
@@ -44,7 +44,7 @@ const PrescriptionList = () => {
     e.preventDefault();
     try {
       await axios.post(
-        "http://localhost:3050/auth/addprescription",
+        "http://localhost:3050/prescription/addprescription",
         addPrescriptionData
       );
       setShowModal(false);

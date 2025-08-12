@@ -32,7 +32,7 @@ const ContactSection = () => {
     const contactData = { name, mobilenumber, email, message };
 
     axios
-      .post("http://localhost:3050/auth/contact", contactData)
+      .post("http://localhost:3050/query/contact", contactData)
       .then((res) => {
         const msg = res.data.message;
         if (
