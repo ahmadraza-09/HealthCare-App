@@ -1,22 +1,24 @@
 const express = require('express');
-const mysql = require('mysql');
 const app = express();
 require('dotenv').config();
 const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const db = require('./config/db');
 
-const db = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE
-})
 
-app.use('/auth', require('./routes/authroute'));
-app.use('/auth', require('./routes/emailRoutes'));
+app.get('/', (req, res) => {
+    res.send('Welcome to the backend of the MediCare+');
+});
 
+// Importing routes
+app.use('/auth', require('./routes/authRoute'));
+app.use('/appointment', require('./routes/appointmentRoute'));
+app.use('/prescription', require('./routes/prescriptionRoute'));
+app.use('/query', require('./routes/queryRoute'));
+
+// Database connection
 db.connect((error) => {
     if (error) {
         console.log(error.message);
@@ -25,6 +27,7 @@ db.connect((error) => {
     }
 })
 
+// Starting the server
 const port = 3050;
 app.listen(port, (error) => {
     if (error) {

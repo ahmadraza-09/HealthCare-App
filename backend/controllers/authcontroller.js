@@ -1,16 +1,16 @@
-const mysql = require('mysql');
 const md5 = require('md5')
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const transporter = require('../controllers/emailController')
+const transporter = require('../config/emailSender')
 require('dotenv').config();
+const db = require('../config/db');
 
-const db = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE
-})
+const util = require('util');
+const { hash } = require('crypto');
+const query = util.promisify(db.query).bind(db);
 
+
+// Get all users
 exports.userlist = (request, response) => {
     db.query('SELECT id, name, email, dateofbirth, gender, mobilenumber FROM patients', [], (error, result) => {
         if (error) {
@@ -21,6 +21,7 @@ exports.userlist = (request, response) => {
     })
 }
 
+// Get single user by ID
 exports.singleuserlist = (request, response) => {
     const patientId = { id: request.params.id };
     db.query('SELECT * FROM patients WHERE ?', [patientId], (error, result) => {
@@ -32,45 +33,47 @@ exports.singleuserlist = (request, response) => {
     })
 }
 
-exports.registration = async (request, response) => {
-    const { name, email, dateofbirth, gender, mobilenumber, password } = request.body;
-    let hashpassword = await md5(password)
-    // console.log(hashpassword);
-    db.query('select * from patients where email= ?', [email], (error, patientData) => {
+// Registration
+// exports.registration = async (request, response) => {
+//     const { name, email, dateofbirth, gender, mobilenumber, password } = request.body;
+//     let hashpassword = await md5(password)
+//     // console.log(hashpassword);
+//     db.query('select * from patients where email= ?', [email], (error, patientData) => {
 
-        if (patientData != '') {
-            response.send(JSON.stringify({ "status": 200, "error": null, "message": "Email already exists" }));
-        } else {
-            db.query('SELECT * FROM patients WHERE mobilenumber = ?', [mobilenumber], (error, patientData) => {
-                if (patientData != '') {
-                    response.send(JSON.stringify({ "status": 200, "error": null, "message": "Mobile Number already exists" }));
-                } else {
-                    db.query('INSERT INTO patients SET ?', { name: name, email: email, gender: gender, dateofbirth: dateofbirth, mobilenumber: mobilenumber, password: hashpassword }, async (error, patientData) => {
-                        if (error) {
-                            response.send(JSON.stringify({ "status": 500, "error": error }));
-                        } else {
+//         if (patientData != '') {
+//             response.send(JSON.stringify({ "status": 200, "error": null, "message": "Email already exists" }));
+//         } else {
+//             db.query('SELECT * FROM patients WHERE mobilenumber = ?', [mobilenumber], (error, patientData) => {
+//                 if (patientData != '') {
+//                     response.send(JSON.stringify({ "status": 200, "error": null, "message": "Mobile Number already exists" }));
+//                 } else {
+//                     db.query('INSERT INTO patients SET ?', { name: name, email: email, gender: gender, dateofbirth: dateofbirth, mobilenumber: mobilenumber, password: hashpassword }, async (error, patientData) => {
+//                         if (error) {
+//                             response.send(JSON.stringify({ "status": 500, "error": error }));
+//                         } else {
 
-                            // Sending Welcome Email
-                            const mailOptions = {
-                                from: process.env.SENDER_EMAIL,
-                                to: email,
-                                subject: 'Welcome to MediCare+ ',
-                                text: `Hello ${name},\n\nThank you for registering with us. We are excited to have you on board!\n\nBest regards,\nMediCare+ Team`
-                            }
+//                             // Sending Welcome Email
+//                             const mailOptions = {
+//                                 from: process.env.SENDER_EMAIL,
+//                                 to: email,
+//                                 subject: 'Welcome to MediCare+ ',
+//                                 text: `Hello ${name},\n\nThank you for registering with us. We are excited to have you on board!\n\nBest regards,\nMediCare+ Team`
+//                             }
 
-                            await transporter.sendMail(mailOptions);
+//                             await transporter.sendMail(mailOptions);
 
-                            response.send(JSON.stringify({ "status": 200, "error": null, "message": patientData }));
-                        }
-                    });
-                }
-            });
-        }
+//                             response.send(JSON.stringify({ "status": 200, "error": null, "message": patientData }));
+//                         }
+//                     });
+//                 }
+//             });
+//         }
 
-    })
+//     })
 
-}
+// }
 
+// Update user
 exports.updateuser = (request, response) => {
     const id = request.params.id;
     db.query('update patients set ? where id= ?', [request.body, id], (error, userdata) => {
@@ -82,6 +85,7 @@ exports.updateuser = (request, response) => {
     })
 }
 
+// Delete user
 exports.deleteuser = (request, response) => {
     var id = request.params.id;
     db.query('delete from patients where id= ?', [id], (error, userdata) => {
@@ -93,56 +97,82 @@ exports.deleteuser = (request, response) => {
     })
 }
 
-exports.login = (request, response) => {
-    const { identifier, password } = request.body;
+exports.login = async (request, response) => {
+    try {
+        const { identifier, password } = request.body;
 
-    if (!identifier || !password) {
-        return response.status(400).json({
-            status: 400,
-            error: "Missing Fields",
-            message: 'Mobile number/email and password are required'
-        });
-    }
-
-    const hashedPassword = md5(password);
-
-    db.query(
-        'SELECT * FROM patients WHERE (mobilenumber = ? OR email = ?) AND password = ?',
-        [identifier, identifier, hashedPassword],
-        (error, patientData) => {
-            if (error) {
-                return response.status(500).json({
-                    status: 500,
-                    error: error,
-                    message: 'Internal server error'
-                });
-            }
-
-            if (patientData.length === 0) {
-                return response.status(401).json({
-                    status: 401,
-                    error: "Invalid Credentials",
-                    message: 'Invalid mobile number/email or password'
-                });
-            }
-
-            // Include role in JWT
-            const token = jwt.sign(
-                { userId: patientData[0].id, role: "patient" },
-                process.env.JWT_SECRET,
-                { expiresIn: "1h" }
-            );
-
-
-            response.status(200).json({
-                status: 200,
-                error: null,
-                message: 'Login successfully',
-                user: patientData[0],
-                token: token
+        if (!identifier || !password) {
+            return response.status(400).json({
+                status: 400,
+                error: "Missing Fields",
+                message: 'Mobile number/email and password are required'
             });
         }
-    );
+
+        // Pehle user ko DB se fetch karo identifier ke basis pe
+        db.query(
+            'SELECT * FROM patients WHERE mobilenumber = ? OR email = ?',
+            [identifier, identifier],
+            async (error, patientData) => {
+                if (error) {
+                    return response.status(500).json({
+                        status: 500,
+                        error: error,
+                        message: 'Internal server error'
+                    });
+                }
+
+                if (patientData.length === 0) {
+                    return response.status(401).json({
+                        status: 401,
+                        error: "Invalid Credentials",
+                        message: 'Invalid mobile number/email or password'
+                    });
+                }
+
+                const user = patientData[0];
+
+                // Password compare karo yahan asynchronously
+                const isMatch = await bcrypt.compare(password, user.password);
+
+                if (!isMatch) {
+                    return response.status(401).json({
+                        status: 401,
+                        error: "Invalid Credentials",
+                        message: 'Invalid mobile number/email or password'
+                    });
+                }
+
+                // JWT generate karo
+                const token = jwt.sign(
+                    { userId: user.id, role: "patient" },
+                    process.env.JWT_SECRET,
+                    { expiresIn: "1h" }
+                );
+
+                response.status(200).json({
+                    status: 200,
+                    error: null,
+                    message: 'Login successfully',
+                    user: {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        mobilenumber: user.mobilenumber,
+                        // sensitive info password hata ke bhejo
+                    },
+                    token: token
+                });
+            }
+        );
+    } catch (error) {
+        console.error("Login error:", error);
+        response.status(500).json({
+            status: 500,
+            error: error.message,
+            message: "Internal server error"
+        });
+    }
 };
 
 
@@ -196,150 +226,100 @@ exports.doctorlogin = (request, response) => {
     );
 };
 
+// Otp Based Login
+exports.sendOTP = async (req, res) => {
+    const { name, email, mobilenumber, gender, dateofbirth, password } = req.body;
 
-exports.contact = (req, res) => {
-    const { name, email, mobilenumber, message } = req.body;
+    const hashpassword = await bcrypt.hash(password, 10);
 
-    if (!name || !email || !mobilenumber || !message) {
-        return res.send(JSON.stringify({ "status": 401, "error": "Form Not Filled", "message": "Please fill the form" }));
-    }
+    db.query('select * from patients where email= ?', [email], (error, patientData) => {
 
-    const today = new Date();
-    const dateString = today.toISOString().split('T')[0];
-
-    db.query(`SELECT * FROM contact WHERE (email = ? OR mobilenumber = ?) AND DATE(created_at) = ?`, [email, mobilenumber, dateString], (error, contactData) => {
-        if (error) {
-            console.error(error);
-            return res.status(500).json({ "message": "Internal server error" });
-        }
-
-        if (contactData.length > 0) {
-            return res.send(JSON.stringify({ "status": 409, "error": "Allready Submitted", "message": "You have already submitted a query today. Please try again tomorrow." }));
+        if (patientData != '') {
+            res.send(JSON.stringify({ "status": 200, "error": null, "message": "Email already exists" }));
         } else {
+            db.query('SELECT * FROM patients WHERE mobilenumber = ?', [mobilenumber], async (error, patientData) => {
+                if (patientData != '') {
+                    res.send(JSON.stringify({ "status": 200, "error": null, "message": "Mobile Number already exists" }));
+                } else {
+                    const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
 
-            db.query('INSERT INTO contact SET ?', { name, email, mobilenumber, message }, (error, contactData) => {
-                if (error) {
-                    console.error(error);
-                    return res.send(JSON.stringify({ "status": 500, "error": "error", "message": "Internal server error" }));
+                    const userData = JSON.stringify({ name, email, mobilenumber, gender, dateofbirth, hashpassword });
+
+                    // Save to temp table
+                    await db.query(
+                        "INSERT INTO temp_registration_otp (email, otp, user_data, created_at) VALUES (?, ?, ?, NOW())",
+                        [email, otp, userData]
+                    );
+
+                    const mailOptions = {
+                        from: process.env.SENDER_EMAIL,
+                        to: email,
+                        subject: "Verify your Email - OTP",
+                        text: `Your OTP is: ${otp}. Valid for 10 minutes.`
+                    }
+
+                    await transporter.sendMail(mailOptions);
+
+                    res.json({ message: "OTP sent to email. Please verify." });
                 }
-                return res.send(JSON.stringify({ "status": 200, "error": '', "message": "Contact form submitted successfully", "contact": contactData }));
             });
         }
-    });
+
+    })
+
+
 };
 
-exports.contactlist = (request, response) => {
-    db.query('SELECT * FROM contact', [], (error, contactData) => {
-        if (error) {
-            response.send(JSON.stringify({ "status": '404', "error": error }));
-        } else {
-            response.send(JSON.stringify({ "status": '200', "error": '', "message": contactData }));
+exports.verifyOTP = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        const rows = await query(
+            "SELECT * FROM temp_registration_otp WHERE email = ? AND otp = ? AND TIMESTAMPDIFF(MINUTE, created_at, NOW()) <= 10",
+            [email, otp]
+        );
+
+        if (rows.length === 0) {
+            return res.status(400).json({ message: "Invalid or expired OTP" });
         }
-    })
-}
 
-exports.singlecontactlist = (request, response) => {
-    const mobilenumber = request.params.mobilenumber;
+        const userData = JSON.parse(rows[0].user_data);
 
-    if (!mobilenumber) {
-        return response.status(400).json({ status: '400', error: 'Mobile number parameter is missing.' });
+        await query(
+            "INSERT INTO patients (name, email, mobilenumber, gender, dateofbirth, password, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())",
+            [
+                userData.name,
+                userData.email,
+                userData.mobilenumber,
+                userData.gender,
+                userData.dateofbirth,
+                userData.hashpassword,
+            ]
+        );
+
+        await query("DELETE FROM temp_registration_otp WHERE email = ?", [email]);
+
+        // Sending Welcome Email
+        // const mailOptions = {
+        //     from: process.env.SENDER_EMAIL,
+        //     to: userData.email,
+        //     subject: 'Welcome to MediCare+ ',
+        //     text: `Hello ${userData.name},\n\nThank you for registering with us. We are excited to have you on board!\n\nBest regards,\nMediCare+ Team`
+        // }
+
+        // await transporter.sendMail(mailOptions);
+
+        res.json({ message: "Registration successful" });
+    } catch (error) {
+        console.error("verifyOTP error:", error);
+        res.status(500).json({ message: "Server error" });
     }
-
-    db.query('SELECT * FROM contact WHERE mobilenumber = ?', [mobilenumber], (error, contactData) => {
-        if (error) {
-            console.error('Database error: ' + error.message);
-            response.status(500).json({ status: '500', error: 'Internal server error' });
-        } else if (contactData.length === 0) {
-            response.status(404).json({ status: '404', error: 'No contact found with the provided mobile number.' });
-        } else {
-            response.status(200).json({ status: '200', error: '', message: contactData });
-        }
-    });
-}
-
-exports.appointment = (req, res) => {
-    const { name, dateofbirth, gender, concern, mobilenumber } = req.body;
-
-    if (!name || !dateofbirth || !gender || !concern || !mobilenumber) {
-        return res.status(400).json({ message: 'All fields are required' });
-    }
-
-    const today = new Date();
-    const dateString = today.toISOString().split('T')[0];
-
-    db.query(`SELECT COUNT(*) AS appointmentCount FROM appointment WHERE mobilenumber = ? AND DATE(created_at) = ?`, [mobilenumber, dateString], (error, appointmentData) => {
-        if (error) {
-            console.error('Database error: ' + error.message);
-            return res.status(500).json({ message: 'Internal server error' });
-        }
-
-        if (appointmentData[0].appointmentCount >= 5) {
-            return res.status(429).json({ message: 'Appointment limit reached for today. Try again tomorrow.' });
-        } else {
-            db.query('INSERT INTO appointment SET ?', { name, dateofbirth, gender, concern, mobilenumber }, (error, appointmentData) => {
-                if (error) {
-                    console.error('Failed to insert into appointment: ' + error.message);
-                    return res.status(500).json({ message: 'Internal server error' });
-                }
-                res.status(201).json({ message: 'Appointment created successfully', "Appointment Data": appointmentData });
-            });
-        }
-    });
 };
 
-exports.appointmentlist = (request, response) => {
-    db.query('SELECT * FROM appointment', [], (error, appointmentData) => {
-        if (error) {
-            response.send(JSON.stringify({ "status": '404', "error": error }));
-        } else {
-            response.send(JSON.stringify({ "status": '200', "error": '', "message": appointmentData }));
-        }
-    })
-}
 
-exports.singleappointmentlist = (request, response) => {
-    const mobilenumber = request.params.mobilenumber;
 
-    if (!mobilenumber) {
-        return response.status(400).json({ status: '400', error: 'Mobile number parameter is missing.' });
-    }
 
-    db.query('SELECT * FROM appointment WHERE mobilenumber = ?', [mobilenumber], (error, appointmentData) => {
-        if (error) {
-            console.error('Database error: ' + error.message);
-            response.status(500).json({ status: '500', error: 'Internal server error' });
-        } else if (appointmentData.length === 0) {
-            response.status(404).json({ status: '404', error: 'No appointments found for the provided mobile number.' });
-        } else {
-            response.status(200).json({ status: '200', error: '', message: appointmentData });
-        }
-    });
-}
 
-// Prescriptions
-exports.addPrescription = (req, res) => {
-    const { patient_name, email, phone_number, date_of_birth, concern, address, message } = req.body
 
-    if (!patient_name || !phone_number || !date_of_birth || !concern || !address) {
-        res.send(JSON.stringify({ status: '400', error: "Field Not Provided", message: "All fields are required" }))
-    }
 
-    db.query(`INSERT INTO prescription (patient_name, email, phone_number, date_of_birth, concern, address, message) VALUES (?, ?, ?, ?, ?, ?, ?)`, [patient_name, email, phone_number, date_of_birth, concern, address, message], (error, result) => {
-        if (error) {
-            console.error('Failed to insert into prescription: ' + error.message);
-            return res.status(500).json({ message: 'Internal server error' });
-        }
-        res.send(JSON.stringify({ status: '201', message: result }));
-    })
-}
-
-exports.showAllPrescription = (req, res) => {
-    db.query('SELECT * FROM prescription', [], (error, result) => {
-        if (error) {
-            res.send(JSON.stringify({ status: '404', error: error }));
-        } else {
-            res.send(JSON.stringify({ status: '200', error: '', message: result }));
-        }
-    })
-}
 

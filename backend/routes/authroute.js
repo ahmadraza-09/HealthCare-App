@@ -1,24 +1,20 @@
 const express = require('express');
-const authcontroller = require('../controllers/authcontroller');
-const router = express.Router();
-const verifyToken = require("../middlewares/verify-roles");
+const authController = require('../controllers/authcontroller');
+const authRouter = express.Router();
+// const verifyToken = require("../middlewares/verify-roles");
 
 
-router.get('/userlist', authcontroller.userlist);
-router.get('/singleuserlist/(:id)', authcontroller.singleuserlist);
-router.post('/registration', authcontroller.registration);
-router.post('/login', authcontroller.login);
-router.post('/doctorlogin', authcontroller.doctorlogin);
-router.post('/contact', authcontroller.contact);
-router.get('/contactlist', authcontroller.contactlist);
-router.get('/singlecontactlist/(:mobilenumber)', authcontroller.singlecontactlist);
-router.post('/appointment', authcontroller.appointment);
-router.get('/appointmentlist', authcontroller.appointmentlist);
-router.get('/singleappointmentlist/(:mobilenumber)', authcontroller.singleappointmentlist);
-router.delete('/deleteuser/(:id)', authcontroller.deleteuser);
-router.put('/updateuser/(:id)', authcontroller.updateuser);
-router.post('/addprescription', authcontroller.addPrescription);
-router.get('/showallprescription', authcontroller.showAllPrescription);
+authRouter.get('/userlist', authController.userlist);
+authRouter.get('/singleuserlist/(:id)', authController.singleuserlist);
+// authRouter.post('/registration', authController.registration);
+authRouter.post('/login', authController.login);
+authRouter.post('/doctorlogin', authController.doctorlogin);
+authRouter.delete('/deleteuser/(:id)', authController.deleteuser);
+authRouter.put('/updateuser/(:id)', authController.updateuser);
+
+authRouter.post('/sendotp', authController.sendOTP);
+authRouter.post('/verifyotp', authController.verifyOTP);
 
 
-module.exports = router;
+
+module.exports = authRouter;
