@@ -34,7 +34,7 @@ const AppointmentPage = () => {
     };
 
     axios
-      .post("http://localhost:3050/auth/appointment", appointmentData)
+      .post("http://localhost:3050/appointment/appointment", appointmentData)
       .then((response) => {
         const msg = response.data.message;
         if (

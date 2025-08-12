@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Trash2, FilePen } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 const QueriesList = () => {
   const [queriesData, setQueriesData] = useState([]);
@@ -24,6 +26,38 @@ const QueriesList = () => {
       .catch(() => {
         setError("Error fetching user data");
         setLoading(false);
+      });
+  };
+
+  const handleDelete = (id) => {
+    toast
+      .promise(
+        new Promise((resolve, reject) => {
+          if (window.confirm("Are you sure you want to delete this query?")) {
+            resolve();
+          } else {
+            reject();
+          }
+        }),
+        {
+          pending: "Awaiting confirmation...",
+          success: "Query deleted successfully",
+          error: "Query deletion cancelled",
+        }
+      )
+      .then(() => {
+        return axios.delete(`http://localhost:3050/query/deletequery/${id}`);
+      })
+      .then((response) => {
+        setFilteredData(filteredData.filter((query) => query.id !== id));
+        console.log("Query deleted successfully:", response.data);
+        getContactList(); // Refresh the user list after deletion
+      })
+      .catch((error) => {
+        if (error) {
+          console.error("Error deleting query:", error);
+          toast.error("Error deleting query");
+        }
       });
   };
 
@@ -128,6 +162,9 @@ const QueriesList = () => {
               <th className="px-6 py-3 text-left text-sm font-bold uppercase">
                 Query Date
               </th>
+              <th className="px-6 py-3 text-left text-sm font-bold uppercase">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -148,6 +185,14 @@ const QueriesList = () => {
                       month: "short",
                       year: "numeric",
                     })}
+                  </td>
+                  <td className="py-5 flex gap-4 items-center justify-center dark:text-gray-200">
+                    <button onClick={() => handleDelete(query.id)}>
+                      <Trash2 className="text-red-500" />
+                    </button>
+                    <button>
+                      <FilePen className="text-green-500" />
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Trash2, FilePen } from "lucide-react";
+import toast from "react-hot-toast";
 
 const AppointmentList = () => {
   const [appointmentData, setAppointmentData] = useState([]);
@@ -25,6 +27,44 @@ const AppointmentList = () => {
         setError("Error fetching user data");
         setLoading(false);
         console.error("Error fetching user data:", error);
+      });
+  };
+
+  const handleDelete = (id) => {
+    toast
+      .promise(
+        new Promise((resolve, reject) => {
+          if (
+            window.confirm("Are you sure you want to delete this appointment?")
+          ) {
+            resolve();
+          } else {
+            reject();
+          }
+        }),
+        {
+          pending: "Awaiting confirmation...",
+          success: "Appointment deleted successfully",
+          error: "Appointment deletion cancelled",
+        }
+      )
+      .then(() => {
+        return axios.delete(
+          `http://localhost:3050/appointment/deleteappointment/${id}`
+        );
+      })
+      .then((response) => {
+        setAppointmentData((prevData) =>
+          prevData.filter((appointment) => appointment.id !== id)
+        );
+        console.log("Appointment deleted successfully:", response.data);
+        getAppointmentList(); // Refresh the prescription list after deletion
+      })
+      .catch((error) => {
+        if (error) {
+          console.error("Error deleting prescription:", error);
+          toast.error("Error deleting prescription");
+        }
       });
   };
 
@@ -117,7 +157,7 @@ const AppointmentList = () => {
               <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider truncate">
                 Date of Birth
               </th>
               <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
@@ -126,11 +166,14 @@ const AppointmentList = () => {
               <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
                 Concern
               </th>
-              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider truncate">
                 Mobile Number
               </th>
-              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider truncate">
                 Appointment Date
+              </th>
+              <th className="px-6 py-3 text-left font-bold uppercase tracking-wider">
+                Actions
               </th>
             </tr>
           </thead>
@@ -142,7 +185,7 @@ const AppointmentList = () => {
                   key={appointment.id}
                   className="hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
-                  <td className="px-6 py-4">{appointment.name}</td>
+                  <td className="px-6 py-4 truncate">{appointment.name}</td>
                   <td className="px-6 py-4">
                     {new Date(appointment.dateofbirth).toLocaleDateString(
                       "en-IN",
@@ -165,6 +208,14 @@ const AppointmentList = () => {
                         year: "numeric",
                       }
                     )}
+                  </td>
+                  <td className="py-5 flex gap-4 items-center justify-center dark:text-gray-200">
+                    <button onClick={() => handleDelete(appointment.id)}>
+                      <Trash2 className="text-red-500" />
+                    </button>
+                    <button>
+                      <FilePen className="text-green-500" />
+                    </button>
                   </td>
                 </tr>
               ))}

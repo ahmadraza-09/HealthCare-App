@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Trash2, FilePen } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 const PatientsList = () => {
   const [userdata, setUserdata] = useState([]);
@@ -21,6 +23,38 @@ const PatientsList = () => {
         setError("Error fetching user data");
         setLoading(false);
         console.error("Error fetching user data:", error);
+      });
+  };
+
+  const handleDelete = (id) => {
+    toast
+      .promise(
+        new Promise((resolve, reject) => {
+          if (window.confirm("Are you sure you want to delete this user?")) {
+            resolve();
+          } else {
+            reject();
+          }
+        }),
+        {
+          pending: "Awaiting confirmation...",
+          success: "User deleted successfully",
+          error: "User deletion cancelled",
+        }
+      )
+      .then(() => {
+        return axios.delete(`http://localhost:3050/auth/deleteuser/${id}`);
+      })
+      .then((response) => {
+        setUserdata(userdata.filter((user) => user.id !== id));
+        console.log("User deleted successfully:", response.data);
+        getUserList(); // Refresh the user list after deletion
+      })
+      .catch((error) => {
+        if (error) {
+          console.error("Error deleting user:", error);
+          toast.error("Error deleting user");
+        }
       });
   };
 
@@ -55,14 +89,17 @@ const PatientsList = () => {
               <th className="py-3 px-4 text-left border-b border-gray-200 dark:border-gray-600">
                 Gender
               </th>
-              <th className="py-3 px-4 text-left border-b border-gray-200 dark:border-gray-600">
+              <th className="py-3 px-4 text-left border-b border-gray-200 dark:border-gray-600 truncate">
                 Date of Birth
               </th>
               <th className="py-3 px-4 text-left border-b border-gray-200 dark:border-gray-600">
                 Email
               </th>
-              <th className="py-3 px-4 text-left border-b border-gray-200 dark:border-gray-600">
+              <th className="py-3 px-4 text-left border-b border-gray-200 dark:border-gray-600 truncate">
                 Mobile Number
+              </th>
+              <th className="py-3 px-4 text-left border-b border-gray-200 dark:border-gray-600">
+                Actions
               </th>
             </tr>
           </thead>
@@ -74,7 +111,7 @@ const PatientsList = () => {
                   key={user.id}
                   className="hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
-                  <td className="py-3 px-4 border-b border-gray-200 dark:border-gray-600 dark:text-gray-200">
+                  <td className="py-3 px-4 border-b truncate border-gray-200 dark:border-gray-600 dark:text-gray-200">
                     {user.name}
                   </td>
                   <td className="py-3 px-4 border-b border-gray-200 dark:border-gray-600 dark:text-gray-200">
@@ -88,6 +125,14 @@ const PatientsList = () => {
                   </td>
                   <td className="py-3 px-4 border-b border-gray-200 dark:border-gray-600 dark:text-gray-200">
                     {user.mobilenumber}
+                  </td>
+                  <td className="py-5 flex gap-4 items-center border-b border-gray-200 dark:border-gray-600 justify-center dark:text-gray-200">
+                    <button onClick={() => handleDelete(user.id)}>
+                      <Trash2 className="text-red-500" />
+                    </button>
+                    <button>
+                      <FilePen className="text-green-500" />
+                    </button>
                   </td>
                 </tr>
               ))}

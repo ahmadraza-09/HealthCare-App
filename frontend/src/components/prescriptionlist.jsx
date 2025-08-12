@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NotebookPen, X } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
+import { Trash2, FilePen } from "lucide-react";
 
 const PrescriptionList = () => {
   const [prescriptionData, setPrescriptionData] = useState([]);
@@ -78,6 +79,46 @@ const PrescriptionList = () => {
     return d.toDateString() === yesterday.toDateString();
   };
 
+  const handleDelete = (id) => {
+    toast
+      .promise(
+        new Promise((resolve, reject) => {
+          if (
+            window.confirm("Are you sure you want to delete this prescription?")
+          ) {
+            resolve();
+          } else {
+            reject();
+          }
+        }),
+        {
+          pending: "Awaiting confirmation...",
+          success: "Prescription deleted successfully",
+          error: "Prescription deletion cancelled",
+        }
+      )
+      .then(() => {
+        return axios.delete(
+          `http://localhost:3050/prescription/deleteprescription/${id}`
+        );
+      })
+      .then((response) => {
+        setPrescriptionData(
+          prescriptionData.filter(
+            (prescription) => prescription.prescription_id !== id
+          )
+        );
+        console.log("Prescription deleted successfully:", response.data);
+        getPrescriptionList(); // Refresh the prescription list after deletion
+      })
+      .catch((error) => {
+        if (error) {
+          console.error("Error deleting prescription:", error);
+          toast.error("Error deleting prescription");
+        }
+      });
+  };
+
   const filteredPrescriptions = prescriptionData
     .filter((prescription) => {
       if (filter === "today") return isToday(prescription.visit_date);
@@ -148,9 +189,10 @@ const PrescriptionList = () => {
           {/* Add Prescription Button */}
           <button
             onClick={() => setShowModal(true)}
-            className="bg-white text-black dark:bg-blue-600 dark:text-white font-bold px-4 py-2 flex gap-2 items-center justify-center rounded-lg hover:opacity-90"
+            className="bg-white text-black dark:bg-blue-600 shadow dark:text-white font-bold px-4 py-2 flex gap-2 items-center justify-center rounded-lg hover:opacity-90"
           >
-            <NotebookPen size={20} color="red" /> Add Prescription
+            <NotebookPen size={20} className="text-red-500 dark:text-white" />{" "}
+            Add Prescription
           </button>
         </div>
       </div>
@@ -169,6 +211,7 @@ const PrescriptionList = () => {
                 "Address",
                 "Message",
                 "Visit Date",
+                "Actions",
               ].map((header) => (
                 <th
                   key={header}
@@ -227,6 +270,16 @@ const PrescriptionList = () => {
                       year: "numeric",
                     }
                   )}
+                </td>
+                <td className="py-5 flex gap-4 items-center justify-center dark:text-gray-200">
+                  <button
+                    onClick={() => handleDelete(prescription.prescription_id)}
+                  >
+                    <Trash2 className="text-red-500" />
+                  </button>
+                  <button>
+                    <FilePen className="text-green-500" />
+                  </button>
                 </td>
               </tr>
             ))}

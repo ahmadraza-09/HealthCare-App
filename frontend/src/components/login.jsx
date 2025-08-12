@@ -254,6 +254,15 @@ const Login = () => {
                 onChange={(e) => getPassword(e.target.value)}
               />
 
+              {changebutton === "Login" && (
+                <>
+                  <br />
+                  <span className="text-sm text-blue-800 dark:text-blue-400 cursor-pointer">
+                    Forgot Password?{" "}
+                  </span>
+                </>
+              )}
+
               <button
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
