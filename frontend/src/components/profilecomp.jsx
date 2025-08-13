@@ -68,11 +68,18 @@ const ProfileComp = () => {
           {/* Header */}
           <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-6 mb-10">
             <div className="flex items-center gap-6">
-              <img
-                src={image}
-                alt="User"
-                className="w-24 h-24 rounded-full object-cover border-4 border-blue-500 shadow-md"
-              />
+              {image ? (
+                <img
+                  src={image}
+                  alt="User"
+                  className="w-24 h-24 rounded-full object-cover border-4 border-blue-500 shadow-md"
+                />
+              ) : (
+                <div className="flex items-center justify-center w-20 h-20 bg-blue-400 rounded-full text-white font-semibold text-4xl cursor-pointer">
+                  {name.charAt(0).toUpperCase()}
+                </div>
+              )}
+
               <div>
                 <h3 className="text-2xl font-bold">{name}</h3>
                 <p className="dark:text-gray-400">User Profile</p>

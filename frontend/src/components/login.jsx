@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { RefreshCw } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const Login = () => {
   const [formerror, getFormerror] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otp, getOtp] = useState("");
+  const [timeLeft, setTimeLeft] = useState(600);
 
   const nameregex = /^[a-z A-Z]{2,15}$/;
   const mobilenumberregex = /^[0-9]{10}$/;
@@ -157,6 +159,23 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer); // cleanup on unmount
+  }, [timeLeft]);
+
+  // Format MM:SS
+  const formatTime = (seconds) => {
+    const min = String(Math.floor(seconds / 60)).padStart(2, "0");
+    const sec = String(seconds % 60).padStart(2, "0");
+    return `${min}:${sec}`;
+  };
+
   return (
     <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -189,14 +208,30 @@ const Login = () => {
               <h2 className="dark:text-white font-bold text-2xl text-center">
                 Verify OTP
               </h2>
+              {/* Timer for 10 Minutes */}
+              <div className="mt-6">
+                {timeLeft > 0 ? (
+                  <p className="text-sm ml-2 font-medium text-blue-600 dark:text-gray-400">
+                    Expires in: {formatTime(timeLeft)}
+                  </p>
+                ) : (
+                  <p className="text-md font-semibold text-red-600">
+                    OTP expired
+                  </p>
+                )}
+              </div>
               <input
                 type="text"
                 placeholder="Type OTP"
-                className="mt-6 w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="mt-2 w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 maxLength={6}
                 value={otp}
                 onChange={(e) => getOtp(e.target.value)}
               />
+              <p className="dark:text-gray-400 mt-4 ml-2 text-sm flex gap-2 items-center">
+                Note: Don't Refresh <RefreshCw size={14} /> the page before
+                Verify OTP
+              </p>
               <button
                 type="submit"
                 className="mt-6 w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"

@@ -11,6 +11,7 @@ const Header = () => {
 
   const isLoggedIn = localStorage.getItem("token") !== null;
   const id = localStorage.getItem("user_id");
+  const name = localStorage.getItem("name");
 
   const { theme, toggleTheme } = useTheme();
 
@@ -82,12 +83,12 @@ const Header = () => {
               </button>
 
               {isLoggedIn ? (
-                <img
+                <div
                   onClick={() => navigate(`/profile/${id}`)}
-                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full cursor-pointer border-2 border-blue-600"
-                />
+                  className="flex items-center justify-center w-10 h-10 bg-blue-400 rounded-full text-white font-semibold text-xl cursor-pointer"
+                >
+                  {name.charAt(0).toUpperCase()}
+                </div>
               ) : (
                 <button
                   onClick={() => navigate("/login")}
@@ -152,16 +153,11 @@ const Header = () => {
               </button>
 
               {isLoggedIn ? (
-                <div className="flex items-center space-x-3 mt-4">
-                  <img
-                    onClick={() => navigate(`/profile/${id}`)}
-                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                    alt="Profile"
-                    className="w-10 h-10 rounded-full cursor-pointer border-2 border-blue-600"
-                  />
-                  <span className="text-gray-800 dark:text-gray-200 font-medium">
-                    My Profile
-                  </span>
+                <div
+                  onClick={() => navigate(`/profile/${id}`)}
+                  className="flex items-center justify-center w-10 h-10 bg-blue-400 rounded-full text-white font-semibold text-xl cursor-pointer"
+                >
+                  {name.charAt(0).toUpperCase()}
                 </div>
               ) : (
                 <button
