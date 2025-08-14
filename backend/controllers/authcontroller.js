@@ -175,6 +175,28 @@ exports.login = async (request, response) => {
     }
 };
 
+exports.verifyToken = (req, res) => {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: "No token provided" });
+    }
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        res.json({ valid: true, user: decoded });
+    } catch (error) {
+        res.json({ valid: false });
+    }
+};
+
+exports.logout = (req, res) => {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: "No token provided" });
+    }
+
+    res.json({ message: "Logged out successfully" });
+}
+
 
 exports.doctorlogin = (request, response) => {
     const { identifier, password } = request.body;
@@ -372,10 +394,26 @@ exports.verifyOTP = async (req, res) => {
     }
 };
 
+// Update Doctor
+exports.updatedoctor = (request, response) => {
+    const id = request.params.id;
+    db.query('update doctor set ? where id= ?', [request.body, id], (error, userdata) => {
+        if (error) {
+            response.send(JSON.stringify({ "status": 200, "error": null }))
+        } else {
+            response.send(JSON.stringify({ "status": 200, "error": null, "message": userdata }))
+        }
+    })
+}
 
-
-
-
-
-
-
+// Get single user by ID
+exports.singledoctorlist = (request, response) => {
+    const id = { id: request.params.id };
+    db.query('SELECT * FROM doctor WHERE ?', [id], (error, result) => {
+        if (error) {
+            response.send(JSON.stringify({ "status": '404', "error": error }));
+        } else {
+            response.send(JSON.stringify({ "status": '200', "error": '', "message": result }));
+        }
+    })
+}

@@ -12,6 +12,10 @@ authRouter.post('/doctorlogin', authController.doctorlogin);
 authRouter.post('/registerdoctor', authController.registerDoctor);
 authRouter.delete('/deleteuser/(:id)', authController.deleteuser);
 authRouter.put('/updateuser/(:id)', authController.updateuser);
+authRouter.post('/verifytoken', authController.verifyToken);
+authRouter.post('/logout', authController.logout);
+authRouter.put('/updatedoctor/(:id)', authController.updatedoctor);
+authRouter.get('/singledoctorlist/(:id)', authController.singledoctorlist);
 
 authRouter.post('/sendotp', authController.sendOTP);
 authRouter.post('/verifyotp', authController.verifyOTP);
