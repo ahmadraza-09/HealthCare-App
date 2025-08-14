@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Settings = () => {
-  const [profile, setProfile] = useState({
-    name: "Ahmad Raza",
-    email: "ahmadraza2008@gmail.com",
-    mobile: "9297829642",
+  const id = localStorage.getItem("user_id");
+
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    mobilenumber: "",
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -14,9 +18,44 @@ const Settings = () => {
     confirmPassword: "",
   });
 
+  useEffect(() => {
+    getProfileData();
+  }, []);
+
+  const getProfileData = () => {
+    axios
+      .get(`http://localhost:3050/auth/singledoctorlist/${id}`)
+      .then((response) => {
+        const userData = response.data.message[0];
+        setUser({
+          name: userData.name || "",
+          email: userData.email || "",
+          mobilenumber: userData.mobilenumber || "",
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching profile data:", error);
+      });
+  };
+
   const handleProfileChange = (e) => {
     const { name, value } = e.target;
-    setProfile((prev) => ({ ...prev, [name]: value }));
+    setUser((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSaveProfile = (event) => {
+    event.preventDefault();
+    axios
+      .put(`http://localhost:3050/auth/updatedoctor/${id}`, user)
+      .then(() => {
+        toast.success("Profile updated successfully!");
+        setIsEditing(false);
+        getProfileData(); // refresh updated data
+      })
+      .catch((error) => {
+        console.error("Error updating profile:", error);
+        toast.error("Failed to update profile");
+      });
   };
 
   const handlePasswordChange = (e) => {
@@ -24,20 +63,27 @@ const Settings = () => {
     setPasswordData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveProfile = (e) => {
-    e.preventDefault();
-    alert("Profile updated successfully!");
-    setIsEditing(false);
-  };
-
-  const handleSavePassword = (e) => {
+  const handleSavePassword = async (e) => {
     e.preventDefault();
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert("New password and confirm password do not match!");
+      toast.error("New password and confirm password do not match!");
       return;
     }
-    alert("Password updated successfully!");
-    setPasswordData({ oldPassword: "", newPassword: "", confirmPassword: "" });
+    try {
+      await axios.put(`http://localhost:3050/auth/updatedoctor/${id}`, {
+        oldPassword: passwordData.oldPassword,
+        newPassword: passwordData.newPassword,
+      });
+      toast.success("Password updated successfully!");
+      setPasswordData({
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      console.error("Error updating password:", error);
+      toast.error("Failed to update password");
+    }
   };
 
   return (
@@ -52,13 +98,14 @@ const Settings = () => {
           {!isEditing ? (
             <div className="space-y-4 text-gray-700 dark:text-gray-300 sm:text-lg text-md">
               <p>
-                <span className="font-semibold">Name:</span> {profile.name}
+                <span className="font-semibold">Name:</span> {user.name}
               </p>
               <p>
-                <span className="font-semibold">Email:</span> {profile.email}
+                <span className="font-semibold">Email:</span> {user.email}
               </p>
               <p>
-                <span className="font-semibold">Mobile:</span> {profile.mobile}
+                <span className="font-semibold">Mobile:</span>{" "}
+                {user.mobilenumber}
               </p>
 
               <button
@@ -77,7 +124,7 @@ const Settings = () => {
                 <input
                   type="text"
                   name="name"
-                  value={profile.name}
+                  value={user.name}
                   onChange={handleProfileChange}
                   className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
@@ -90,7 +137,7 @@ const Settings = () => {
                 <input
                   type="email"
                   name="email"
-                  value={profile.email}
+                  value={user.email}
                   onChange={handleProfileChange}
                   className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                 />
@@ -102,8 +149,8 @@ const Settings = () => {
                 </label>
                 <input
                   type="text"
-                  name="mobile"
-                  value={profile.mobile}
+                  name="mobilenumber"
+                  value={user.mobilenumber}
                   onChange={handleProfileChange}
                   className="w-full px-4 py-2 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
                 />

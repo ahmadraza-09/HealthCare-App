@@ -29,7 +29,9 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/appointment" element={<Appointment />} />
           <Route path='/adminlogin' element={<AdminLogin />} />
-          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/profile/:id" element={<ProtectedRoute allowedRoles={["patient"]}>
+            <Profile />
+          </ProtectedRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute allowedRoles={["doctor"]}>
             <AdminPanel />
           </ProtectedRoute>} />

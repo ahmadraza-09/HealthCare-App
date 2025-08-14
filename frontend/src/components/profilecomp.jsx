@@ -40,10 +40,32 @@ const ProfileComp = () => {
       });
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-    toast.success("Logged Out Successfully");
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://localhost:3050/auth/logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("id");
+      localStorage.removeItem("name");
+      localStorage.removeItem("dateofbirth");
+      localStorage.removeItem("email");
+      localStorage.removeItem("mobileNumber");
+      localStorage.removeItem("gender");
+      toast.success("Logged Out Successfully");
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to logout");
+    }
   };
 
   const handleEdit = () => setIsEditing(true);

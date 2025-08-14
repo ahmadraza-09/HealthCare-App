@@ -1,19 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Heart, Moon, Sun } from "lucide-react";
 import { useTheme } from "../contexts/themeContext";
 import TopBanner from "./top-banner";
+import { useAuth } from "../contexts/authContext";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const isLoggedIn = localStorage.getItem("token") !== null;
   const id = localStorage.getItem("user_id");
   const name = localStorage.getItem("name");
 
   const { theme, toggleTheme } = useTheme();
+  const { isLoggedIn, user, checkAuth } = useAuth();
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   return (
     <div className="flex flex-row">
@@ -82,12 +88,19 @@ const Header = () => {
                 )}
               </button>
 
-              {isLoggedIn ? (
+              {isLoggedIn && user.role === "doctor" ? (
+                <div
+                  onClick={() => navigate(`/dashboard`)}
+                  className="flex items-center justify-center rounded-full text-white font-semibold text-lg cursor-pointer"
+                >
+                  Dashboard
+                </div>
+              ) : isLoggedIn && user.role === "patient" ? (
                 <div
                   onClick={() => navigate(`/profile/${id}`)}
                   className="flex items-center justify-center w-10 h-10 bg-blue-400 rounded-full text-white font-semibold text-xl cursor-pointer"
                 >
-                  {name.charAt(0).toUpperCase()}
+                  {(name && name.charAt(0).toUpperCase()) || "?"}
                 </div>
               ) : (
                 <button
