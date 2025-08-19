@@ -18,16 +18,31 @@ const ContactSection = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (!name) return setFormerror("Enter your Name");
+    if (!name)
+      return setFormerror("Enter your Name"), toast.error("Enter your Name");
     if (!nameregex.test(name))
-      return setFormerror("Name should only contain letters");
+      return (
+        setFormerror("Name should only contain letters"),
+        toast.error("Name should only contain letters")
+      );
 
-    if (!email) return setFormerror("Enter your Email");
-    if (!emailregex.test(email)) return setFormerror("Enter a valid Email");
+    if (!email)
+      return setFormerror("Enter your Email"), toast.error("Enter your Email");
+    if (!emailregex.test(email))
+      return (
+        setFormerror("Enter a valid Email"), toast.error("Enter a valid Email")
+      );
 
-    if (!mobilenumber) return setFormerror("Enter your Mobile Number");
+    if (!mobilenumber)
+      return (
+        setFormerror("Enter your Mobile Number"),
+        toast.error("Enter your Mobile Number")
+      );
     if (!mobilenumberregex.test(mobilenumber))
-      return setFormerror("Invalid Mobile Number");
+      return (
+        setFormerror("Invalid Mobile Number"),
+        toast.error("Invalid Mobile Number")
+      );
 
     const contactData = { name, mobilenumber, email, message };
 

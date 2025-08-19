@@ -16,14 +16,32 @@ const AppointmentPage = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (!name) return getFormerror("Enter your Name");
-    if (!nameregex.test(name)) return getFormerror("Enter Name in Letters");
-    if (!dateofbirth) return getFormerror("Select your Date of Birth");
-    if (!gender) return getFormerror("Select your Gender");
-    if (!concern) return getFormerror("Select Your Health Concern");
-    if (!mobilenumber) return getFormerror("Enter your Mobile Number");
+    if (!name)
+      return getFormerror("Enter your Name"), toast.error("Name is required");
+    if (!nameregex.test(name))
+      return getFormerror("Enter Name in Letters"), toast.error("Invalid Name");
+    if (!mobilenumber)
+      return (
+        getFormerror("Enter your Mobile Number"),
+        toast.error("Mobile Number is required")
+      );
     if (!mobilenumberregex.test(mobilenumber))
-      return getFormerror("Invalid Mobile Number");
+      return (
+        getFormerror("Invalid Mobile Number"),
+        toast.error("Mobile Number must be 10 digits")
+      );
+    if (!dateofbirth)
+      return (
+        getFormerror("Select your Date of Birth"),
+        toast.error("Date of Birth is required")
+      );
+    if (!gender)
+      return getFormerror("Select your Gender"), toast.error("Select Gender");
+    if (!concern)
+      return (
+        getFormerror("Select Your Health Concern"),
+        toast.error("Health Concern is required")
+      );
 
     const appointmentData = {
       name,

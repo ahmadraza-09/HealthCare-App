@@ -43,18 +43,30 @@ const Login = () => {
     e.preventDefault();
 
     if (changebutton !== "Login") {
-      if (!name.match(nameregex)) return getFormerror("Enter Name");
-      if (!dateofbirth) return getFormerror("Enter DOB");
-      if (!gender) return getFormerror("Select gender");
-      if (!email.match(emailregex)) return getFormerror("Invalid Email");
+      if (!name.match(nameregex))
+        return getFormerror("Enter Name"), toast.error("Enter Name");
+      if (!dateofbirth)
+        return getFormerror("Enter DOB"), toast.error("Enter DOB");
+      if (!gender)
+        return getFormerror("Select gender"), toast.error("Select Gender");
+      if (!email.match(emailregex))
+        return getFormerror("Invalid Email"), toast.error("Invalid Email");
       if (!mobilenumber.match(mobilenumberregex))
-        return getFormerror("Invalid Mobile Number");
+        return getFormerror(
+          "Invalid Mobile Number",
+          toast.error("Invalid Mobile Number")
+        );
     }
 
     if (!identifier && changebutton === "Login")
-      return getFormerror("Enter Mobile/Email");
+      return (
+        getFormerror("Enter Mobile/Email"), toast.error("Enter Mobile/Email")
+      );
     if (!password.match(passwordRegex))
-      return getFormerror("Password must be at least 8 characters");
+      return (
+        getFormerror("Password must be at least 8 characters"),
+        toast.error("Password must be at least 8 characters")
+      );
 
     try {
       if (location.pathname === "/login") {

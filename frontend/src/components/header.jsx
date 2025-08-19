@@ -4,18 +4,49 @@ import { Menu, X, Heart, Moon, Sun } from "lucide-react";
 import { useTheme } from "../contexts/themeContext";
 import TopBanner from "./top-banner";
 import { useAuth } from "../contexts/authContext";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const id = localStorage.getItem("user_id");
   const name = localStorage.getItem("name");
 
   const { theme, toggleTheme } = useTheme();
   const { isLoggedIn, user, checkAuth } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://localhost:3050/auth/logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("id");
+      localStorage.removeItem("name");
+      localStorage.removeItem("dateofbirth");
+      localStorage.removeItem("email");
+      localStorage.removeItem("mobileNumber");
+      localStorage.removeItem("gender");
+      toast.success("Logged Out Successfully");
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to logout");
+    }
+  };
 
   useEffect(() => {
     checkAuth();
@@ -96,12 +127,22 @@ const Header = () => {
                   Dashboard
                 </div>
               ) : isLoggedIn && user.role === "patient" ? (
-                <div
-                  onClick={() => navigate(`/profile/${id}`)}
-                  className="flex items-center justify-center w-10 h-10 bg-blue-400 rounded-full text-white font-semibold text-xl cursor-pointer"
-                >
-                  {(name && name.charAt(0).toUpperCase()) || "?"}
-                </div>
+                <>
+                  <div
+                    className="flex items-center relative justify-center w-10 h-10 bg-blue-400 rounded-full text-white font-semibold text-xl cursor-pointer"
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  >
+                    {(name && name.charAt(0).toUpperCase()) || "?"}
+                  </div>
+                  {isProfileOpen && (
+                    <div className="absolute right-8 top-16 w-32 bg-white dark:bg-gray-800 shadow-lg rounded p-4 flex flex-col space-y-2 text-start items-start">
+                      <button onClick={() => navigate(`/profile/${id}`)}>
+                        Profile
+                      </button>
+                      <button onClick={handleLogout}>Logout</button>
+                    </div>
+                  )}
+                </>
               ) : (
                 <button
                   onClick={() => navigate("/login")}
@@ -166,12 +207,22 @@ const Header = () => {
               </button>
 
               {isLoggedIn ? (
-                <div
-                  onClick={() => navigate(`/profile/${id}`)}
-                  className="flex items-center justify-center w-10 h-10 bg-blue-400 rounded-full text-white font-semibold text-xl cursor-pointer"
-                >
-                  {name.charAt(0).toUpperCase()}
-                </div>
+                <>
+                  <div
+                    className="flex items-center relative justify-center w-10 h-10 bg-blue-400 rounded-full text-white font-semibold text-xl cursor-pointer"
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  >
+                    {(name && name.charAt(0).toUpperCase()) || "?"}
+                  </div>
+                  {isProfileOpen && (
+                    <div className="absolute left-14 top-72 w-32 bg-white dark:bg-gray-800 shadow-lg rounded p-4 flex flex-col space-y-2 text-start items-start">
+                      <button onClick={() => navigate(`/profile/${id}`)}>
+                        Profile
+                      </button>
+                      <button onClick={handleLogout}>Logout</button>
+                    </div>
+                  )}
+                </>
               ) : (
                 <button
                   onClick={() => navigate("/login")}
