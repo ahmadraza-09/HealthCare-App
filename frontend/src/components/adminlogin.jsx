@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { Heart } from "lucide-react";
 
 const AdminLogin = () => {
+  const API_URL = "https://apimedicare.razasoftwares.in"
   const navigate = useNavigate();
 
   const [identifier, setIdentifier] = useState("");
@@ -36,7 +37,7 @@ const AdminLogin = () => {
       const userData = { identifier, password };
 
       const res = await axios.post(
-        "http://localhost:3050/auth/doctorlogin",
+        `${API_URL}/auth/doctorlogin`,
         userData
       );
 
