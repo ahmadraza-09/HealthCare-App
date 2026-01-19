@@ -26,6 +26,7 @@ const Dashboard = ({
   appointmentCount,
   prescriptionCount,
 }) => {
+  const API_URL = "https://apimedicare.razasoftwares.in"
   const [weeklyData, setWeeklyData] = useState([]);
   const name = localStorage.getItem("name");
   const { theme, toggleTheme } = useTheme();
@@ -34,7 +35,7 @@ const Dashboard = ({
     const fetchAppointments = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3050/appointment/appointmentlist"
+          `${API_URL}/appointment/appointmentlist`
         );
         const appointments = res.data.message;
 

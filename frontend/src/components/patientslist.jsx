@@ -4,6 +4,7 @@ import { Trash2, FilePen } from "lucide-react";
 import { toast } from "react-hot-toast";
 
 const PatientsList = () => {
+  const API_URL = "https://apimedicare.razasoftwares.in"
   const [userdata, setUserdata] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -14,7 +15,7 @@ const PatientsList = () => {
 
   const getUserList = () => {
     axios
-      .get("http://localhost:3050/auth/userlist")
+      .get(`${API_URL}/auth/userlist`)
       .then((response) => {
         setUserdata(response.data.message);
         setLoading(false);
@@ -43,7 +44,7 @@ const PatientsList = () => {
         }
       )
       .then(() => {
-        return axios.delete(`http://localhost:3050/auth/deleteuser/${id}`);
+        return axios.delete(`${API_URL}/auth/deleteuser/${id}`);
       })
       .then((response) => {
         setUserdata(userdata.filter((user) => user.id !== id));

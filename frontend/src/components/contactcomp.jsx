@@ -5,6 +5,7 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import toast from "react-hot-toast";
 
 const ContactSection = () => {
+  const API_URL = "https://apimedicare.razasoftwares.in"
   const [name, setName] = useState("");
   const [mobilenumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -47,7 +48,7 @@ const ContactSection = () => {
     const contactData = { name, mobilenumber, email, message };
 
     axios
-      .post("http://localhost:3050/query/contact", contactData)
+      .post(`${API_URL}/query/contact`, contactData)
       .then((res) => {
         const msg = res.data.message;
         if (

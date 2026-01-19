@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const ProfileComp = () => {
+  const API_URL = "https://apimedicare.razasoftwares.in"
   const navigate = useNavigate();
   const id = localStorage.getItem("id");
 
@@ -22,7 +23,7 @@ const ProfileComp = () => {
 
   const getProfileData = () => {
     axios
-      .get(`http://localhost:3050/auth/singleuserlist/${id}`)
+      .get(`${API_URL}/auth/singleuserlist/${id}`)
       .then((response) => {
         const userData = response.data.message[0];
         userData.dateofbirth = new Date(userData.dateofbirth)
@@ -44,7 +45,7 @@ const ProfileComp = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:3050/auth/logout",
+        `${API_URL}/auth/logout`,
         {},
         {
           headers: {
@@ -74,7 +75,7 @@ const ProfileComp = () => {
     event.preventDefault();
     const userData = { name, gender, dateofbirth, mobilenumber, email };
     axios
-      .put(`http://localhost:3050/auth/updateuser/${id}`, userData)
+      .put(`${API_URL}/auth/updateuser/${id}`, userData)
       .then(() => {
         setIsEditing(false);
       })

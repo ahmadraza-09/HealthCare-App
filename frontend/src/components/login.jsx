@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { RefreshCw } from "lucide-react";
 
 const Login = () => {
+  const API_URL = "https://apimedicare.razasoftwares.in"
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -73,7 +74,7 @@ const Login = () => {
         const loginData = { identifier, password };
 
         const { data } = await axios.post(
-          "http://localhost:3050/auth/login",
+          `${API_URL}/auth/login`,
           loginData
         );
 
@@ -105,7 +106,7 @@ const Login = () => {
           password,
         };
         const { data } = await axios.post(
-          "http://localhost:3050/auth/sendotp",
+          `${API_URL}/auth/sendotp`,
           newUser
         );
 
@@ -146,7 +147,7 @@ const Login = () => {
       };
 
       const { data } = await axios.post(
-        "http://localhost:3050/auth/verifyotp",
+        `${API_URL}/auth/verifyotp`,
         OtpData
       );
 

@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const AppointmentPage = () => {
+  const API_URL = "https://apimedicare.razasoftwares.in"
   const [name, getName] = useState("");
   const [dateofbirth, getDateofbirth] = useState("");
   const [gender, getGender] = useState("");
@@ -52,7 +53,7 @@ const AppointmentPage = () => {
     };
 
     axios
-      .post("http://localhost:3050/appointment/appointment", appointmentData)
+      .post(`${API_URL}/appointment/appointment`, appointmentData)
       .then((response) => {
         const msg = response.data.message;
         if (

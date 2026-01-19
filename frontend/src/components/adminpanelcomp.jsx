@@ -32,6 +32,7 @@ const navItems = [
 ];
 
 const AdminPanelComp = () => {
+  const API_URL = "https://apimedicare.razasoftwares.in"
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState("Dashboard");
   const [userCount, setUserCount] = useState(0);
@@ -56,7 +57,7 @@ const AdminPanelComp = () => {
 
   const getUserCount = () => {
     axios
-      .get("http://localhost:3050/auth/userlist")
+      .get(`${API_URL}/auth/userlist`)
       .then((response) => {
         setUserCount(response.data.message.length);
       })
@@ -67,7 +68,7 @@ const AdminPanelComp = () => {
 
   const getQueryCount = () => {
     axios
-      .get("http://localhost:3050/query/contactlist")
+      .get(`${API_URL}/query/contactlist`)
       .then((response) => {
         setQueryCount(response.data.message.length);
       })
@@ -78,7 +79,7 @@ const AdminPanelComp = () => {
 
   const getAppointmentCount = () => {
     axios
-      .get("http://localhost:3050/appointment/appointmentlist")
+      .get(`${API_URL}/appointment/appointmentlist`)
       .then((response) => {
         setAppointmentCount(response.data.message.length);
       })
@@ -89,7 +90,7 @@ const AdminPanelComp = () => {
 
   const getPrescriptionCount = () => {
     axios
-      .get("http://localhost:3050/prescription/showallprescription")
+      .get(`${API_URL}/prescription/showallprescription`)
       .then((response) => {
         setPrescriptionCount(response.data.message.length);
       })

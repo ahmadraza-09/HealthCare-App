@@ -4,6 +4,7 @@ import { Trash2, FilePen } from "lucide-react";
 import toast from "react-hot-toast";
 
 const AppointmentList = () => {
+  const API_URL = "https://apimedicare.razasoftwares.in"
   const [appointmentData, setAppointmentData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,7 @@ const AppointmentList = () => {
 
   const getAppointmentList = () => {
     axios
-      .get("http://localhost:3050/appointment/appointmentlist")
+      .get(`${API_URL}/appointment/appointmentlist`)
       .then((response) => {
         setAppointmentData(response.data.message);
         setFilteredData(response.data.message);

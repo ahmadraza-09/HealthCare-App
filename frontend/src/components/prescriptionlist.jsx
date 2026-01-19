@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NotebookPen, X } from "lucide-react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { Trash2, FilePen } from "lucide-react";
 
 const PrescriptionList = () => {
@@ -43,7 +43,15 @@ const PrescriptionList = () => {
 
   const handleAddPrescription = async (e) => {
     e.preventDefault();
-
+    const {
+      patient_name,
+      email,
+      phone_number,
+      date_of_birth,
+      concern,
+      address,
+      message,
+    } = addPrescriptionData;
     if (
       patient_name === "" ||
       email === "" ||

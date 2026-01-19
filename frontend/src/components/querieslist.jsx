@@ -4,6 +4,7 @@ import { Trash2, FilePen } from "lucide-react";
 import { toast } from "react-hot-toast";
 
 const QueriesList = () => {
+  const API_URL = "https://apimedicare.razasoftwares.in"
   const [queriesData, setQueriesData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,7 @@ const QueriesList = () => {
 
   const getContactList = () => {
     axios
-      .get("http://localhost:3050/query/contactlist")
+      .get(`${API_URL}/query/contactlist`)
       .then((response) => {
         setQueriesData(response.data.message);
         setFilteredData(response.data.message);
@@ -46,7 +47,7 @@ const QueriesList = () => {
         }
       )
       .then(() => {
-        return axios.delete(`http://localhost:3050/query/deletequery/${id}`);
+        return axios.delete(`${API_URL}/query/deletequery/${id}`);
       })
       .then((response) => {
         setFilteredData(filteredData.filter((query) => query.id !== id));
