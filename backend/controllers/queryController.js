@@ -21,7 +21,7 @@ exports.contact = (req, res) => {
             return res.send(JSON.stringify({ "status": 409, "error": "Allready Submitted", "message": "You have already submitted a query today. Please try again tomorrow." }));
         } else {
 
-            db.query('INSERT INTO contact SET ?', { name, email, mobilenumber, message }, (error, contactData) => {
+            db.query('INSERT INTO contact SET ?', { name, email, mobilenumber, message, created_at }, (error, contactData) => {
                 if (error) {
                     console.error(error);
                     return res.send(JSON.stringify({ "status": 500, "error": "error", "message": "Internal server error" }));

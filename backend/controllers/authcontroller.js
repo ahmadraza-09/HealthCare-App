@@ -1,4 +1,3 @@
-const md5 = require('md5')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const transporter = require('../config/emailSender')
