@@ -1,76 +1,95 @@
-const db = require('../config/db');
+const db = require('../config/db')
 
-// Add a new query
+// Add new query
 exports.contact = (req, res) => {
-    const { name, email, mobilenumber, message } = req.body;
+  const { name, email, mobilenumber, message } = req.body
 
-    if (!name || !email || !mobilenumber || !message) {
-        return res.send(JSON.stringify({ "status": 401, "error": "Form Not Filled", "message": "Please fill the form" }));
+  if (!name || !email || !mobilenumber || !message) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Please fill the form'
+    })
+  }
+
+  const today = new Date().toISOString().split('T')[0]
+  const created_at = new Date()
+
+  const checkSql =
+    'SELECT id FROM contact WHERE (email = ? OR mobilenumber = ?) AND DATE(created_at) = ?'
+
+  db.query(checkSql, [email, mobilenumber, today], (err, rows) => {
+    if (err) {
+      console.error(err)
+      return res.status(500).json({ message: 'Internal server error' })
     }
 
-    const today = new Date();
-    const dateString = today.toISOString().split('T')[0];
+    if (rows.length > 0) {
+      return res.status(409).json({
+        message: 'You have already submitted a query today'
+      })
+    }
 
-    db.query(`SELECT * FROM contact WHERE (email = ? OR mobilenumber = ?) AND DATE(created_at) = ?`, [email, mobilenumber, dateString], (error, contactData) => {
-        if (error) {
-            console.error(error);
-            return res.status(500).json({ "message": "Internal server error" });
+    const insertSql =
+      'INSERT INTO contact (name, email, mobilenumber, message, created_at) VALUES (?, ?, ?, ?, ?)'
+
+    db.query(
+      insertSql,
+      [name, email, mobilenumber, message, created_at],
+      (err, result) => {
+        if (err) {
+          console.error(err)
+          return res.status(500).json({ message: 'Internal server error' })
         }
 
-        if (contactData.length > 0) {
-            return res.send(JSON.stringify({ "status": 409, "error": "Allready Submitted", "message": "You have already submitted a query today. Please try again tomorrow." }));
-        } else {
+        res.status(200).json({
+          message: 'Contact form submitted successfully',
+          id: result.insertId
+        })
+      }
+    )
+  })
+}
 
-            db.query('INSERT INTO contact SET ?', { name, email, mobilenumber, message, created_at }, (error, contactData) => {
-                if (error) {
-                    console.error(error);
-                    return res.send(JSON.stringify({ "status": 500, "error": "error", "message": "Internal server error" }));
-                }
-                return res.send(JSON.stringify({ "status": 200, "error": '', "message": "Contact form submitted successfully", "contact": contactData }));
-            });
-        }
-    });
-};
 
 // Show all queries
-exports.contactlist = (request, response) => {
-    db.query('SELECT * FROM contact', [], (error, contactData) => {
-        if (error) {
-            response.send(JSON.stringify({ "status": '404', "error": error }));
-        } else {
-            response.send(JSON.stringify({ "status": '200', "error": '', "message": contactData }));
-        }
-    })
+exports.contactlist = (req, res) => {
+  db.query('SELECT * FROM contact', (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message })
+    }
+    res.status(200).json(rows)
+  })
 }
+
 
 // Show single query by mobile number
-exports.singlecontactlist = (request, response) => {
-    const mobilenumber = request.params.mobilenumber;
+exports.singlecontactlist = (req, res) => {
+  const mobilenumber = req.params.mobilenumber
 
-    if (!mobilenumber) {
-        return response.status(400).json({ status: '400', error: 'Mobile number parameter is missing.' });
+  db.query(
+    'SELECT * FROM contact WHERE mobilenumber = ?',
+    [mobilenumber],
+    (err, rows) => {
+      if (err) {
+        return res.status(500).json({ error: err.message })
+      }
+      if (rows.length === 0) {
+        return res.status(404).json({ message: 'No contact found' })
+      }
+      res.status(200).json(rows)
     }
-
-    db.query('SELECT * FROM contact WHERE mobilenumber = ?', [mobilenumber], (error, contactData) => {
-        if (error) {
-            console.error('Database error: ' + error.message);
-            response.status(500).json({ status: '500', error: 'Internal server error' });
-        } else if (contactData.length === 0) {
-            response.status(404).json({ status: '404', error: 'No contact found with the provided mobile number.' });
-        } else {
-            response.status(200).json({ status: '200', error: '', message: contactData });
-        }
-    });
+  )
 }
 
+
 // Delete Query
-exports.deletequery = (request, response) => {
-    const id = request.params.id;
-    db.query('delete from contact where id= ?', [id], (error, querydata) => {
-        if (error) {
-            response.send(JSON.stringify({ "status": 200, "error": null }))
-        } else {
-            response.send(JSON.stringify({ "status": 200, "error": null, "message": querydata }))
-        }
-    })
+exports.deletequery = (req, res) => {
+  const id = req.params.id
+
+  db.query('DELETE FROM contact WHERE id = ?', [id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message })
+    }
+    res.status(200).json({ message: 'Deleted successfully' })
+  })
 }
