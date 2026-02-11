@@ -22,8 +22,8 @@ exports.userlist = (request, response) => {
 
 // Get single user by ID
 exports.singleuserlist = (request, response) => {
-    const patientId = { id: request.params.id };
-    db.query('SELECT * FROM patients WHERE ?', [patientId], (error, result) => {
+    const id = request.params.id;
+    db.query('SELECT * FROM patients WHERE id = ?', [id], (error, result) => {
         if (error) {
             response.send(JSON.stringify({ "status": '404', "error": error }));
         } else {
