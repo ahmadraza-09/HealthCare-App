@@ -5,7 +5,7 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import toast from "react-hot-toast";
 
 const ContactSection = () => {
-  const API_URL = "https://apimedicare.razasoftwares.in"
+  const API_URL = process.env.REACT_APP_API_URL
   const [name, setName] = useState("");
   const [mobilenumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");

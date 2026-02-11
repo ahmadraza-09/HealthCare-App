@@ -32,7 +32,7 @@ const navItems = [
 ];
 
 const AdminPanelComp = () => {
-  const API_URL = "https://apimedicare.razasoftwares.in"
+  const API_URL = process.env.REACT_APP_API_URL
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState("Dashboard");
   const [userCount, setUserCount] = useState(0);

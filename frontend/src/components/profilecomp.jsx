@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const ProfileComp = () => {
-  const API_URL = "https://apimedicare.razasoftwares.in"
+  const API_URL = process.env.REACT_APP_API_URL
   const navigate = useNavigate();
   const id = localStorage.getItem("id");
 

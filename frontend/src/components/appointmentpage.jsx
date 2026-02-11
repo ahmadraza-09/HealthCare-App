@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const AppointmentPage = () => {
-  const API_URL = "https://apimedicare.razasoftwares.in"
+  const API_URL = process.env.REACT_APP_API_URL
   const [name, getName] = useState("");
   const [dateofbirth, getDateofbirth] = useState("");
   const [gender, getGender] = useState("");

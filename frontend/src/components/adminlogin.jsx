@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { Heart } from "lucide-react";
 
 const AdminLogin = () => {
-  const API_URL = "https://apimedicare.razasoftwares.in"
+  const API_URL = process.env.REACT_APP_API_URL
   const navigate = useNavigate();
 
   const [identifier, setIdentifier] = useState("");

@@ -4,7 +4,7 @@ import { Trash2, FilePen } from "lucide-react";
 import { toast } from "react-hot-toast";
 
 const PatientsList = () => {
-  const API_URL = "https://apimedicare.razasoftwares.in"
+  const API_URL = process.env.REACT_APP_API_URL
   const [userdata, setUserdata] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

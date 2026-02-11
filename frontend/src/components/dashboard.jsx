@@ -26,7 +26,7 @@ const Dashboard = ({
   appointmentCount,
   prescriptionCount,
 }) => {
-  const API_URL = "https://apimedicare.razasoftwares.in"
+  const API_URL = process.env.REACT_APP_API_URL
   const [weeklyData, setWeeklyData] = useState([]);
   const name = localStorage.getItem("name");
   const { theme, toggleTheme } = useTheme();

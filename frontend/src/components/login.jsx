@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { RefreshCw } from "lucide-react";
 
 const Login = () => {
-  const API_URL = "https://apimedicare.razasoftwares.in"
+  const API_URL = process.env.REACT_APP_API_URL
   const navigate = useNavigate();
   const location = useLocation();
 
