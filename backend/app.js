@@ -6,7 +6,8 @@ const cors = require('cors')
 const corsOptions = {
   origin: [
     'https://medicare.razasoftwares.in',
-    'http://localhost:3050'
+    'http://localhost:3050',
+    'http://localhost:3000'
   ],
   credentials: true
 }
