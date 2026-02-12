@@ -5,7 +5,7 @@ const authRouter = express.Router();
 
 
 authRouter.get('/userlist', authController.userlist);
-authRouter.get('/singleuserlist/(:id)', authController.singleuserlist);
+authRouter.get('/singleuserlist/:id', authController.singleuserlist);
 // authRouter.post('/registration', authController.registration);
 authRouter.post('/login', authController.login);
 authRouter.post('/doctorlogin', authController.doctorlogin);
@@ -15,7 +15,7 @@ authRouter.put('/updateuser/(:id)', authController.updateuser);
 authRouter.post('/verifytoken', authController.verifyToken);
 authRouter.post('/logout', authController.logout);
 authRouter.put('/updatedoctor/(:id)', authController.updatedoctor);
-authRouter.get('/singledoctorlist/(:id)', authController.singledoctorlist);
+authRouter.get('/singledoctorlist/:id', authController.singledoctorlist);
 
 authRouter.post('/sendotp', authController.sendOTP);
 authRouter.post('/verifyotp', authController.verifyOTP);

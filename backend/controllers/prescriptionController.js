@@ -1,41 +1,75 @@
 const db = require('../config/db');
 
 // Add a new prescription
-exports.addPrescription = (req, res) => {
-    const { patient_name, email, phone_number, date_of_birth, concern, address, message } = req.body
+exports.addPrescription = async (req, res) => {
+  try {
+    const {
+      patient_name,
+      email,
+      phone_number,
+      date_of_birth,
+      concern,
+      address,
+      message
+    } = req.body;
 
     if (!patient_name || !phone_number || !date_of_birth || !concern || !address) {
-        res.send(JSON.stringify({ status: '400', error: "Field Not Provided", message: "All fields are required" }))
+      return res.status(400).json({
+        message: "All required fields must be provided"
+      });
     }
 
-    db.query(`INSERT INTO prescription (patient_name, email, phone_number, date_of_birth, concern, address, message) VALUES (?, ?, ?, ?, ?, ?, ?)`, [patient_name, email, phone_number, date_of_birth, concern, address, message], (error, result) => {
-        if (error) {
-            console.error('Failed to insert into prescription: ' + error.message);
-            return res.status(500).json({ message: 'Internal server error' });
-        }
-        res.send(JSON.stringify({ status: '201', message: result }));
-    })
-}
+    await db.query(
+      `INSERT INTO prescription 
+      (patient_name, email, phone_number, date_of_birth, concern, address, message) 
+      VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [patient_name, email, phone_number, date_of_birth, concern, address, message]
+    );
+
+    res.status(201).json({
+      message: "Prescription added successfully"
+    });
+
+  } catch (error) {
+    console.error("ADD PRESCRIPTION ERROR:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 // Show all prescriptions
-exports.showAllPrescription = (req, res) => {
-    db.query('SELECT * FROM prescription', [], (error, result) => {
-        if (error) {
-            res.send(JSON.stringify({ status: '404', error: error }));
-        } else {
-            res.send(JSON.stringify({ status: '200', error: '', message: result }));
-        }
-    })
-}
+exports.showAllPrescription = async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM prescription');
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 
 // Delete Prescription
-exports.deletePrescription = (request, response) => {
-    const id = request.params.id;
-    db.query('delete from prescription where prescription_id= ?', [id], (error, prescriptiondata) => {
-        if (error) {
-            response.send(JSON.stringify({ "status": 200, "error": null }))
-        } else {
-            response.send(JSON.stringify({ "status": 200, "error": null, "message": prescriptiondata }))
-        }
-    })
-}
+exports.deletePrescription = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const [result] = await db.query(
+      'DELETE FROM prescription WHERE prescription_id = ?',
+      [id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "No prescription found with this ID"
+      });
+    }
+
+    res.status(200).json({
+      message: "Prescription deleted successfully"
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

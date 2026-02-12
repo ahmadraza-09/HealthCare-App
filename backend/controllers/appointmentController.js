@@ -1,83 +1,117 @@
 const db = require('../config/db');
 
 // Book Appointment 
-exports.appointment = (req, res) => {
+exports.appointment = async (req, res) => {
+  try {
     const { name, dateofbirth, gender, concern, mobilenumber } = req.body;
 
     if (!name || !dateofbirth || !gender || !concern || !mobilenumber) {
-        return res.status(400).json({ message: 'All fields are required' });
+      return res.status(400).json({ message: 'All fields are required' });
     }
 
-    const today = new Date();
-    const dateString = today.toISOString().split('T')[0];
+    const today = new Date().toISOString().split('T')[0];
 
-    db.query(`SELECT COUNT(*) AS appointmentCount FROM appointment WHERE mobilenumber = ? AND DATE(created_at) = ?`, [mobilenumber, dateString], (error, appointmentData) => {
-        if (error) {
-            console.error('Database error: ' + error.message);
-            return res.status(500).json({ message: 'Internal server error' });
-        }
+    const [rows] = await db.query(
+      `SELECT COUNT(*) AS appointmentCount 
+       FROM appointment 
+       WHERE mobilenumber = ? AND DATE(created_at) = ?`,
+      [mobilenumber, today]
+    );
 
-        if (appointmentData[0].appointmentCount >= 5) {
-            return res.status(429).json({ message: 'Appointment limit reached for today. Try again tomorrow.' });
-        } else {
-            db.query('INSERT INTO appointment SET ?', { name, dateofbirth, gender, concern, mobilenumber }, (error, appointmentData) => {
-                if (error) {
-                    console.error('Failed to insert into appointment: ' + error.message);
-                    return res.status(500).json({ message: 'Internal server error' });
-                }
-                res.status(201).json({ message: 'Appointment created successfully', "Appointment Data": appointmentData });
-            });
-        }
+    if (rows[0].appointmentCount >= 5) {
+      return res.status(429).json({
+        message: 'Appointment limit reached for today. Try again tomorrow.'
+      });
+    }
+
+    await db.query(
+      `INSERT INTO appointment 
+       (name, dateofbirth, gender, concern, mobilenumber, created_at) 
+       VALUES (?, ?, ?, ?, ?, NOW())`,
+      [name, dateofbirth, gender, concern, mobilenumber]
+    );
+
+    res.status(201).json({
+      message: 'Appointment created successfully'
     });
+
+  } catch (error) {
+    console.error("APPOINTMENT ERROR:", error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 // Get Appointment List
-exports.appointmentlist = (request, response) => {
-    db.query('SELECT * FROM appointment', [], (error, appointmentData) => {
-        if (error) {
-            response.send(JSON.stringify({ "status": '404', "error": error }));
-        } else {
-            response.send(JSON.stringify({ "status": '200', "error": '', "message": appointmentData }));
-        }
-    })
-}
+exports.appointmentlist = async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM appointment');
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 
 // Get Single Appointment by Mobile Number
-exports.singleappointmentlist = (request, response) => {
-    const mobilenumber = request.params.mobilenumber;
+exports.singleappointmentlist = async (req, res) => {
+  try {
+    const { mobilenumber } = req.params;
 
     if (!mobilenumber) {
-        return response.status(400).json({ status: '400', error: 'Mobile number parameter is missing.' });
+      return res.status(400).json({
+        message: 'Mobile number parameter is missing.'
+      });
     }
 
-    db.query('SELECT * FROM appointment WHERE mobilenumber = ?', [mobilenumber], (error, appointmentData) => {
-        if (error) {
-            console.error('Database error: ' + error.message);
-            response.status(500).json({ status: '500', error: 'Internal server error' });
-        } else if (appointmentData.length === 0) {
-            response.status(404).json({ status: '404', error: 'No appointments found for the provided mobile number.' });
-        } else {
-            response.status(200).json({ status: '200', error: '', message: appointmentData });
-        }
-    });
-}
+    const [rows] = await db.query(
+      'SELECT * FROM appointment WHERE mobilenumber = ?',
+      [mobilenumber]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        message: 'No appointments found for this mobile number.'
+      });
+    }
+
+    res.status(200).json(rows);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 
 // Delete Appointment
-exports.deleteAppointment = (request, response) => {
-    const id = request.params.id;
+exports.deleteAppointment = async (req, res) => {
+  try {
+    const { id } = req.params;
 
     if (!id) {
-        return response.status(400).json({ status: '400', error: 'Appointment ID parameter is missing.' });
+      return res.status(400).json({
+        message: 'Appointment ID parameter is missing.'
+      });
     }
 
-    db.query('DELETE FROM appointment WHERE id = ?', [id], (error, appointmentData) => {
-        if (error) {
-            console.error('Database error: ' + error.message);
-            response.status(500).json({ status: '500', error: 'Internal server error' });
-        } else if (appointmentData.affectedRows === 0) {
-            response.status(404).json({ status: '404', error: 'No appointment found with the provided ID.' });
-        } else {
-            response.status(200).json({ status: '200', message: 'Appointment deleted successfully' });
-        }
+    const [result] = await db.query(
+      'DELETE FROM appointment WHERE id = ?',
+      [id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: 'No appointment found with this ID.'
+      });
+    }
+
+    res.status(200).json({
+      message: 'Appointment deleted successfully'
     });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
