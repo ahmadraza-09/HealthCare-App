@@ -335,10 +335,7 @@ exports.sendOTP = async (req, res) => {
         const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
         const userData = JSON.stringify({ name, email, mobilenumber, gender, dateofbirth, hashpassword });
 
-        await db.query(
-            'INSERT INTO temp_registration_otp (email, otp, user_data, created_at) VALUES (?, ?, ?, NOW())',
-            [email, otp, userData]
-        );
+        await db.query(`INSERT INTO temp_registration_otp (email, otp, user_data, created_at, expires_at) VALUES (?, ?, ?, NOW(), DATE_ADD(NOW(), INTERVAL 5 MINUTE))`,[email, otp, userData]);
 
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
