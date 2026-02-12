@@ -26,7 +26,7 @@ const Settings = () => {
     axios
       .get(`http://localhost:3050/auth/singledoctorlist/${id}`)
       .then((response) => {
-        const userData = response.data.message[0];
+        const userData = response.data;
         setUser({
           name: userData.name || "",
           email: userData.email || "",

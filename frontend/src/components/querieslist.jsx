@@ -20,8 +20,8 @@ const QueriesList = () => {
     axios
       .get(`${API_URL}/query/contactlist`)
       .then((response) => {
-        setQueriesData(response.data.message);
-        setFilteredData(response.data.message);
+        setQueriesData(response.data);
+        setFilteredData(response.data);
         setLoading(false);
       })
       .catch(() => {

@@ -37,7 +37,7 @@ const Dashboard = ({
         const res = await axios.get(
           `${API_URL}/appointment/appointmentlist`
         );
-        const appointments = res.data.message;
+        const appointments = res.data;
 
         const now = new Date();
         const currentMonth = now.getMonth();

@@ -25,7 +25,8 @@ const ProfileComp = () => {
     axios
       .get(`${API_URL}/auth/singleuserlist/${id}`)
       .then((response) => {
-        const userData = response.data.message[0];
+        const userData = response.data[0];
+        // console.log(userData)
         userData.dateofbirth = new Date(userData.dateofbirth)
           .toISOString()
           .split("T")[0];
@@ -78,6 +79,7 @@ const ProfileComp = () => {
       .put(`${API_URL}/auth/updateuser/${id}`, userData)
       .then(() => {
         setIsEditing(false);
+        toast.success("Profile Updated Successfully");
       })
       .catch((error) => {
         console.error("Error updating profile:", error);

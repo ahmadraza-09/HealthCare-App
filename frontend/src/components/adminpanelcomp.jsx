@@ -59,7 +59,7 @@ const AdminPanelComp = () => {
     axios
       .get(`${API_URL}/auth/userlist`)
       .then((response) => {
-        setUserCount(response.data.message.length);
+        setUserCount(response.data.length);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
@@ -70,7 +70,7 @@ const AdminPanelComp = () => {
     axios
       .get(`${API_URL}/query/contactlist`)
       .then((response) => {
-        setQueryCount(response.data.message.length);
+        setQueryCount(response.data.length);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
@@ -81,7 +81,7 @@ const AdminPanelComp = () => {
     axios
       .get(`${API_URL}/appointment/appointmentlist`)
       .then((response) => {
-        setAppointmentCount(response.data.message.length);
+        setAppointmentCount(response.data.length);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
@@ -92,7 +92,7 @@ const AdminPanelComp = () => {
     axios
       .get(`${API_URL}/prescription/showallprescription`)
       .then((response) => {
-        setPrescriptionCount(response.data.message.length);
+        setPrescriptionCount(response.data.length);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);

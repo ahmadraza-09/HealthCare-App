@@ -17,7 +17,7 @@ const PatientsList = () => {
     axios
       .get(`${API_URL}/auth/userlist`)
       .then((response) => {
-        setUserdata(response.data.message);
+        setUserdata(response.data);
         setLoading(false);
       })
       .catch((error) => {

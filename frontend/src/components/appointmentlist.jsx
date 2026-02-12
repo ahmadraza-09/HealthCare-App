@@ -20,8 +20,8 @@ const AppointmentList = () => {
     axios
       .get(`${API_URL}/appointment/appointmentlist`)
       .then((response) => {
-        setAppointmentData(response.data.message);
-        setFilteredData(response.data.message);
+        setAppointmentData(response.data);
+        setFilteredData(response.data);
         setLoading(false);
       })
       .catch((error) => {

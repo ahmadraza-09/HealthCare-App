@@ -31,7 +31,7 @@ const PrescriptionList = () => {
     axios
       .get("http://localhost:3050/prescription/showallprescription")
       .then((response) => {
-        setPrescriptionData(response.data.message);
+        setPrescriptionData(response.data);
         setLoading(false);
       })
       .catch((error) => {
