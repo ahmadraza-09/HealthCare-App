@@ -116,16 +116,26 @@ exports.updateuser = async (req, res) => {
 
 
 // Delete user
-exports.deleteuser = (request, response) => {
-    var id = request.params.id;
-    db.query('delete from patients where id= ?', [id], (error, userdata) => {
-        if (error) {
-            response.send(JSON.stringify({ "status": 200, "error": null }))
-        } else {
-            response.send(JSON.stringify({ "status": 200, "error": null, "message": userdata }))
-        }
-    })
-}
+exports.deleteuser = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const [result] = await db.query(
+      'DELETE FROM patients WHERE id = ?',
+      [id]
+    );
+
+    res.status(200).json({
+      message: "User deleted successfully",
+      result
+    });
+
+  } catch (error) {
+    console.error("DELETE USER ERROR:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 exports.login = async (req, res) => {
   try {
