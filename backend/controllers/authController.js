@@ -355,40 +355,46 @@ exports.sendOTP = async (req, res) => {
 
 
 exports.verifyOTP = async (req, res) => {
-    try {
-        const { email, otp } = req.body;
+  try {
+    const { email, otp } = req.body;
 
-        const [rows] = await db.query(
-            "SELECT * FROM temp_registration_otp WHERE email = ? AND otp = ? AND TIMESTAMPDIFF(MINUTE, created_at, NOW()) <= 10",
-            [email, otp]
-        );
-
-        if (rows.length === 0) {
-            return res.status(400).json({ message: "Invalid or expired OTP" });
-        }
-
-        const userData = JSON.parse(rows[0].user_data);
-
-        await db.query(
-            "INSERT INTO patients (name, email, mobilenumber, gender, dateofbirth, password, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())",
-            [
-                userData.name,
-                userData.email,
-                userData.mobilenumber,
-                userData.gender,
-                userData.dateofbirth,
-                userData.hashpassword,
-            ]
-        );
-
-        await db.query("DELETE FROM temp_registration_otp WHERE email = ?", [email]);
-
-        res.json({ message: "Registration successful" });
-    } catch (error) {
-        console.error("verifyOTP error:", error);
-        res.status(500).json({ message: "Server error" });
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Email and OTP required" });
     }
+
+    const [rows] = await db.query(
+      "SELECT * FROM temp_registration_otp WHERE email = ? AND otp = ? AND expires_at > NOW()",
+      [email, otp]
+    );
+
+    if (rows.length === 0) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    const userData = JSON.parse(rows[0].user_data);
+
+    await db.query(
+      "INSERT INTO patients (name, email, mobilenumber, gender, dateofbirth, password, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())",
+      [
+        userData.name,
+        userData.email,
+        userData.mobilenumber,
+        userData.gender,
+        userData.dateofbirth,
+        userData.hashpassword,
+      ]
+    );
+
+    await db.query("DELETE FROM temp_registration_otp WHERE email = ?", [email]);
+
+    res.json({ message: "Registration successful" });
+
+  } catch (error) {
+    console.error("verifyOTP error FULL:", error);
+    res.status(500).json({ message: error.message });
+  }
 };
+
 
 
 // Update Doctor
