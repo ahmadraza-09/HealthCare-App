@@ -25,7 +25,7 @@ const ProfileComp = () => {
     axios
       .get(`${API_URL}/auth/singleuserlist/${id}`)
       .then((response) => {
-        const userData = response.data[0];
+        const userData = response.data;
         // console.log(userData)
         userData.dateofbirth = new Date(userData.dateofbirth)
           .toISOString()
