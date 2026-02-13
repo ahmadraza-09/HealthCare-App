@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const verifyToken = async () => {
+    const API_URL = process.env.REACT_APP_API_URL
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -9,7 +10,7 @@ export const verifyToken = async () => {
 
     try {
         const res = await axios.post(
-            "http://localhost:3050/auth/verifytoken",
+            `${API_URL}/auth/verifytoken`,
             {},
             {
                 headers: { Authorization: `Bearer ${token}` },
