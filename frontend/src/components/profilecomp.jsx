@@ -51,9 +51,16 @@ const ProfileComp = () => {
       return;
     }
 
-    const formattedDate = user.dateofbirth
-      ? new Date(user.dateofbirth).toISOString().split("T")[0]
-      : "";
+    let formattedDate = "";
+
+    if (user.dateofbirth) {
+      const parsedDate = new Date(user.dateofbirth);
+
+      if (!isNaN(parsedDate.getTime())) {
+        formattedDate = parsedDate.toISOString().split("T")[0];
+      }
+    }
+
 
     setName(user.name || "");
     setGender(user.gender || "");
