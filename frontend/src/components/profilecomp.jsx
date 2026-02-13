@@ -41,10 +41,12 @@ const ProfileComp = () => {
 
     console.log("API Response:", response.data);
 
-    // If backend returns array
-    const user = Array.isArray(response.data)
-      ? response.data[0]
-      : response.data;
+    const apiData = response.data;
+
+    let user =
+      Array.isArray(apiData) ? apiData[0] :
+      Array.isArray(apiData?.data) ? apiData.data[0] :
+      apiData;
 
     if (!user) {
       toast.error("User not found");
@@ -55,12 +57,10 @@ const ProfileComp = () => {
 
     if (user.dateofbirth) {
       const parsedDate = new Date(user.dateofbirth);
-
       if (!isNaN(parsedDate.getTime())) {
         formattedDate = parsedDate.toISOString().split("T")[0];
       }
     }
-
 
     setName(user.name || "");
     setGender(user.gender || "");
@@ -68,11 +68,13 @@ const ProfileComp = () => {
     setEmail(user.email || "");
     setMobilenumber(user.mobilenumber || "");
     setImage(user.image || "");
+
   } catch (error) {
     console.error("Error fetching profile:", error);
     toast.error("Failed to load profile");
   }
-};
+  };
+
 
 
   const handleLogout = async () => {
