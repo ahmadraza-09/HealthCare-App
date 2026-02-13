@@ -29,33 +29,42 @@ const ProfileComp = () => {
   }, [id]);
 
   const getProfileData = async () => {
-    try {
-      const { data } = await axios.get(
-        `${API_URL}/auth/singleuserlist/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (data.dateofbirth) {
-        data.dateofbirth = new Date(data.dateofbirth)
-          .toISOString()
-          .split("T")[0];
+  try {
+    const response = await axios.get(
+      `${API_URL}/auth/singleuserlist/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
 
-      setName(data.name || "");
-      setGender(data.gender || "");
-      setDateofbirth(data.dateofbirth || "");
-      setEmail(data.email || "");
-      setMobilenumber(data.mobilenumber || "");
-      setImage(data.image || "");
-    } catch (error) {
-      console.error("Error fetching profile:", error);
-      toast.error("Failed to load profile");
+    // If backend returns array
+    const user = Array.isArray(response.data)
+      ? response.data[0]
+      : response.data;
+
+    if (!user) {
+      toast.error("User not found");
+      return;
     }
-  };
+
+    const formattedDate = user.dateofbirth
+      ? new Date(user.dateofbirth).toISOString().split("T")[0]
+      : "";
+
+    setName(user.name || "");
+    setGender(user.gender || "");
+    setDateofbirth(formattedDate);
+    setEmail(user.email || "");
+    setMobilenumber(user.mobilenumber || "");
+    setImage(user.image || "");
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    toast.error("Failed to load profile");
+  }
+};
+
 
   const handleLogout = async () => {
     try {
