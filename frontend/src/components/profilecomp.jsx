@@ -39,6 +39,8 @@ const ProfileComp = () => {
       }
     );
 
+    console.log("API Response:", response.data);
+
     // If backend returns array
     const user = Array.isArray(response.data)
       ? response.data[0]
