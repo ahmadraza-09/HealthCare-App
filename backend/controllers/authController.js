@@ -335,7 +335,7 @@ exports.sendOTP = async (req, res) => {
         const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
         const userData = JSON.stringify({ name, email, mobilenumber, gender, dateofbirth, hashpassword });
 
-        await db.query(`INSERT INTO temp_registration_otp (email, otp, user_data, created_at, expires_at) VALUES (?, ?, ?, NOW(), DATE_ADD(NOW(), INTERVAL 10 MINUTE))`,[email, otp, userData]);
+        await db.query(`INSERT INTO temp_registration_otp (email, otp, user_data, expires_at)VALUES (?, ?, ?, DATE_ADD(NOW(), INTERVAL 10 MINUTE))`,[email, otp, JSON.stringify(userData)]);
 
 
         const mailOptions = {
@@ -363,7 +363,8 @@ exports.verifyOTP = async (req, res) => {
       return res.status(400).json({ message: "Email and OTP required" });
     }
 
-    const [rows] = await db.query(`SELECT * FROM temp_registration_otp WHERE email = ? AND otp = ? AND expires_at > NOW()`,[email, otp]);
+    const [rows] = await db.query(`SELECT * FROM temp_registration_otpWHERE email = ?AND otp = ?AND expires_at > NOW()ORDER BY id DESCLIMIT 1`,[email, otp]);
+
 
 
     if (rows.length === 0) {
