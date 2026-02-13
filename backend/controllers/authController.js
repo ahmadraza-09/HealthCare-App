@@ -363,7 +363,16 @@ exports.verifyOTP = async (req, res) => {
       return res.status(400).json({ message: "Email and OTP required" });
     }
 
-    const [rows] = await db.query(`SELECT * FROM temp_registration_otpWHERE email = ?AND otp = ?AND expires_at > NOW()ORDER BY id DESCLIMIT 1`,[email, otp]);
+    const [rows] = await db.query(
+  `SELECT * FROM temp_registration_otp 
+   WHERE email = ? 
+   AND otp = ? 
+   AND expires_at > NOW() 
+   ORDER BY id DESC 
+   LIMIT 1`,
+  [email, otp]
+);
+
 
 
 
